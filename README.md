@@ -41,7 +41,7 @@ It is deliberately **local-first**: plain files, plain JSON, no server, no telem
 Requires **Python 3.9+**. No third-party packages, on Windows, macOS or Linux.
 
 ```bash
-git clone https://github.com/OWNER/ai-extension-manager.git
+git clone https://github.com/Jack91124/ai-extension-manager.git
 cd ai-extension-manager
 python -m pip install .
 aem init          # create ~/.ai-extension-manager
@@ -211,3 +211,5 @@ python evals/run_tests.py
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+Gitee mirror: <https://gitee.com/ping-pong-squid-king/ai-extension-manager.git>

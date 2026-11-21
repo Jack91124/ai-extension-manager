@@ -10,7 +10,7 @@
 ## Reporting a vulnerability
 
 Please **do not open a public issue** for a vulnerability. Use GitHub's private
-[Security Advisory](https://github.com/OWNER/ai-extension-manager/security/advisories/new)
+[Security Advisory](https://github.com/Jack91124/ai-extension-manager/security/advisories/new)
 form, or contact the maintainer listed in the repository profile. Include:
 
 - what an attacker can achieve, and the preconditions;
