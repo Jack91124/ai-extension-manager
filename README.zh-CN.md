@@ -1,96 +1,142 @@
 # AI Extension Manager · AI 扩展资源管理助手
 
-### 一个中央库，六个 AI 工具，双向同步，绝不静默覆盖你的修改。
+**简体中文** | [English](README.md)
 
-`aem` 把 Agent Skill、规则文件（rules）和 MCP 配置统一存进本地中央资源库，再同步到
-Claude Code、OpenAI Codex、Gemini CLI、Cursor、VS Code Copilot 和 DSH。
-判断"谁变了"靠 SHA-256 内容哈希和每个目标的同步记录，而不是"最后修改时间更新就覆盖"。
+### 一个中央库，六个 AI 工具，双向同步，绝不静默覆盖你的改动。
 
-**快速开始** · [为什么需要它](#为什么需要它) · [60 秒上手](#60-秒上手) ·
-[冲突模型](#冲突模型) · [支持矩阵](#支持矩阵) · [安全策略](#安全策略) · [CLI](#cli-速查)
+`aem` 把你的 Agent Skill、规则和 MCP 服务器定义集中存放在一个本地库中，再同步到 Claude Code、
+OpenAI Codex、Gemini CLI、Cursor、VS Code Copilot 和 DSH。它用 SHA-256 内容哈希和每个目标的
+同步记录来判断"谁变了"，而不是"谁的文件更新就覆盖谁"。
+
+![Python](https://img.shields.io/badge/python-3.9%2B-blue)
+![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Tests](https://img.shields.io/badge/scenario%20tests-22%20passing-brightgreen)
+![Platforms](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
+
+**快速开始** · [为什么还要一个同步工具](#为什么还要一个同步工具) ·
+[60 秒工作流](#60-秒工作流) · [冲突模型](#冲突是怎么判断的) ·
+[支持矩阵](#目前支持什么) · [安全设计](#默认安全) · [CLI](#cli-速查) ·
+[演示](demo/) · [文档](#文档)
 
 ---
 
-## 为什么需要它
+## 为什么还要一个同步工具？
 
-每个 AI 工具都有自己的目录：`~/.claude/skills`、`~/.codex/skills`、`~/.gemini/skills`、
-`~/.cursor/skills`、`~/.copilot/skills`、`~/.dsh/skills`。结果就是：同一个技能复制五份、
-在其中三份里被改过；给一个工具装了，另外五个不知道；一个"同步脚本"把上周的本地修改静默删掉。
+每个 AI 编程工具都自创了一套目录：`~/.claude/skills`、`~/.codex/skills`、
+`~/.gemini/skills`、`~/.cursor/skills`、`~/.copilot/skills`、`~/.dsh/skills`。
+现实结果就是：
 
-`aem` 以**中央资源库为唯一事实来源**，记录每个工具实际收到的是哪个哈希，因此能区分
-"只有库变了 / 只有目标变了 / 两边都变了"，并在第三种情况下拒绝猜测。
+- 同一个 Skill 被复制五份，然后在三个地方分别被改过；
+- 为一个工具装的 Skill，另外五个工具完全不知道；
+- 所谓"同步脚本"直接复制文件，把上周的本地修复静默删掉；
+- 没人答得上来："哪些工具装着这个 Skill 的 1.2 版？哪一份已经漂移了？"
 
-它坚持**本地优先**：纯文件、纯 JSON，无服务端、无账号、无遥测。
+`aem` 把**中央资源库当作唯一事实来源**，并精确记录每个工具收到的是哪个版本。正是这份记录让它能
+区分"只有库变了""只有工具变了""两边都变了"——并且在最后一种情况下拒绝猜测、拒绝覆盖。
 
-## 60 秒上手
+它刻意做成 **local-first（本地优先）**：纯文件、纯 JSON，没有服务器、没有遥测、不需要账号。
 
-需要 **Python 3.9+**，无第三方依赖，支持 Windows / macOS / Linux。
+## 快速开始
+
+需要 **Python 3.9+**，无第三方依赖，支持 Windows、macOS、Linux。
 
 ```bash
 git clone https://github.com/OWNER/ai-extension-manager.git
 cd ai-extension-manager
 python -m pip install .
 aem init          # 创建 ~/.ai-extension-manager
-aem doctor        # 检查 Python、路径、注册表、锁、已安装工具
-aem scan          # 扫描六个工具及其技能目录
+aem doctor        # 检查 Python、路径、注册表、锁和已安装工具
+aem scan          # 探测六个 AI 工具及其 Skill 目录
 ```
 
-不安装也可以：所有命令等价于 `python scripts/aem.py <命令>`。
+不安装也能用——每条命令都可以写成 `python scripts/aem.py <command>`。
+
+一台装了三个工具的 Windows 机器上真实的 `aem doctor` 输出：
+
+```text
+$ aem doctor
+[ok]   python    3.14.4 (requires 3.9+)
+[ok]   library   C:\Users\you\.ai-extension-manager is writable
+[ok]   registry  0 resources
+[ok]   schema    schema 1
+[ok]   payloads  all payload directories present
+[ok]   lock      no library lock
+[ok]   agents    3/6 tools installed; absent: gemini, cursor
+[ok]   disk      132.4GB free
+[ok]   backups   0 snapshots, 0B
+[ok]   conflicts 0 unresolved conflict(s)
+result: healthy
+```
 
 ## 60 秒工作流
 
 ```bash
-# 1. 从 GitHub 或本地目录导入
+# 1. 从 GitHub 或本地目录导入一个 Skill
 aem import --source https://github.com/owner/repo/tree/main/skills/my-skill
 
 # 2. 分发到需要的工具（--agent 可重复）
 aem sync --direction distribute --agent claude --agent codex --resource my-skill
 
-# 3. 验证副本与库一致
+# 3. 证明各工具副本与中央库一致
 aem verify --all
 aem status
 ```
 
-所有操作可回滚：`aem backups` 列出快照，`aem restore` 恢复旧版本，`aem compare` 输出
-统一 diff。在某个工具里改了技能想拉回来？`aem sync --direction both` 会安全导入目标侧修改；
-两边都改过时返回退出码 `2`，不写任何文件。
+一切可回滚：`aem backups` 列出快照，`aem restore` 恢复旧版本，`aem compare` 在中央库版本、
+历史快照和工具副本之间给出 unified diff。
 
-## 冲突模型
+想在某个工具里改 Skill 再把改动拉回来？用 `aem sync --direction both`：它会安全导入目标侧的改动，
+一旦两边都改过，就以退出码 `2` 停下，不写任何文件。
+
+## 冲突是怎么判断的？
+
+每个资源保存一个 SHA-256 目录树哈希；每个目标保存三个事实：同步来源哈希（`source_hash`）、
+实际写入哈希（`target_hash`）和同步时间（`synced_at`）。据此得到：
 
 | 状态 | 发生了什么 | 默认动作 |
 |---|---|---|
 | **A** | 只有中央库变了 | 备份后更新目标 |
-| **B** | 只有目标变了 | 保留目标，建议导入 |
-| **C** | 两边都变了 | **冲突：不写文件，退出码 2** |
-| **D** | 目标被删除 | 报告缺失，不静默重建 |
-| **E** | 目标目录不存在 | 报告不可用，不猜路径 |
-| untracked | 存在从未同步过的副本 | 内容相同则登记，不同则冲突 |
+| **B** | 只有目标变了 | 保留目标，建议反向导入 |
+| **C** | 两边都变了 | **冲突：不写任何文件，退出码 2** |
+| **D** | 目标被删除了 | 报告缺失，不静默重建 |
+| **E** | 目标目录不存在 | 报告不可用，不臆造路径 |
+| untracked | 存在一份从未同步过的副本 | 内容相同则认领；不同则冲突 |
 
-冲突证据保存在 `conflicts/`。解决方式必须显式选择：保留库版本、保留目标版本、另存为新版本、
-手动合并、或恢复历史版本。默认绝不覆盖。
+冲突会连同证据（哈希、路径、时间戳）写入 `conflicts/` 目录。处理方式必须显式指定：
 
-## 支持矩阵
+```bash
+aem compare --left resource:my-skill --right agent:claude:my-skill --diff
+aem sync --direction distribute --agent claude --resource my-skill --on-conflict library   # 保留中央库
+aem sync --direction import    --agent claude --on-conflict new-version                    # 把目标存为新版本
+aem restore --resource my-skill --version <label>                                          # 回滚
+```
 
-| 工具 | Skill | Rules | MCP | Plugin | 验证程度 |
+默认不覆盖任何东西——冲突时不覆盖，第一次遇到未跟踪副本时也不覆盖。
+
+## 目前支持什么
+
+| 工具 | Skills | 规则 | MCP | 插件 | 验证程度 |
 |---|---|---|---|---|---|
-| **Claude Code** | 复制 / 链接 | `CLAUDE.md` | JSON 合并 | marketplace 命令 | 本机实测（2.1.318） |
-| **OpenAI Codex** | 复制 / 链接 | `AGENTS.md` | 手动（TOML） | marketplace 命令 | 配置目录实测，无 CLI |
-| **DSH** | 复制 / 链接 | `AGENTS.md` | 经插件 | `dsh plugin add` | 本机实测（0.2.0-rc.2） |
-| **Gemini CLI** | 复制 / 链接 | `GEMINI.md` | JSON 合并 | `gemini extensions install` | 官方文档，未运行时验证 |
-| **Cursor** | 复制 / 链接 | `.cursor/rules` | JSON 合并 | 仅市场 UI | 路径部分验证 |
-| **VS Code / Copilot** | 复制 / 链接 | instructions | JSON 合并 | VS Code 扩展 | 文档 + 本机 VS Code |
+| **Claude Code** | 复制 / 链接 | `CLAUDE.md` | JSON 合并 | marketplace 命令 | 本机实测（CLI 2.1.318） |
+| **OpenAI Codex** | 复制 / 链接 | `AGENTS.md` | 手动（TOML） | marketplace 命令 | 配置目录已实测；CLI 未安装 |
+| **DSH** | 复制 / 链接 | `AGENTS.md` | 通过插件 | `dsh plugin add` | 本机实测（0.2.0-rc.2） |
+| **Gemini CLI** | 复制 / 链接 | `GEMINI.md` | JSON 合并 | `gemini extensions install` | 官方文档；未跑运行时 |
+| **Cursor** | 复制 / 链接 | `.cursor/rules` | JSON 合并 | 仅 marketplace UI | 路径部分验证（未安装） |
+| **VS Code / Copilot** | 复制 / 链接 | instructions 文件 | JSON 合并 | VS Code 扩展 | 官方文档 + 本机 VS Code 1.115 |
 
-插件代码**不会跨工具复制**：插件必须用目标工具自己的安装机制，`aem` 返回精确命令，
-并拒绝把工具专属插件搬到别的工具。
+插件代码**绝不跨工具复制**。插件通过目标工具自己的机制安装；`aem` 只返回准确命令，
+对工具专属插件拒绝跨工具搬运。
 
-## 安全策略
+## 默认安全
 
-- 导入前扫描危险 Shell 模式、可疑脚本和密钥；高风险需 `--allow-risk`，凭据直接拒绝；
-- 覆盖前自动备份；
-- 不删除未经确认的资源；
-- 拒绝把 `github.com` 重写到第三方镜像的 git 配置（`--allow-mirror` 才放行）；
-- 密钥使用环境变量占位符，中央库只存哈希与元数据；
-- 全部支持 `--dry-run`，试运行不留 journal。
+- **导入前扫描**——危险 Shell 模式、高风险脚本、密钥；高风险需 `--allow-risk`，
+  凭据一律拒绝（MCP 可改写成 `${ENV_VAR}` 占位符）。
+- **覆盖前备份**——任何目标或中央库 payload 被修改前都先做快照。
+- **绝不擅自删除**——没有显式 uninstall/restore 命令，不动别的工具里的资源。
+- **拒绝 git URL 重写**——防止 `github.com` 被劫持到第三方镜像（`--allow-mirror` 才能放行）。
+- **不外传密钥**——库纯本地，`metadata/registry.json` 只存哈希，不存密钥。
+- **处处可 dry-run**——`--dry-run` 只展示计划，不留下 journal。
 
 完整策略见 [references/security-policy.md](references/security-policy.md)。
 
@@ -100,40 +146,66 @@ aem status
 |---|---|
 | `aem init` | 创建中央库目录结构 |
 | `aem doctor` | 诊断 Python、路径、注册表、schema、锁、工具、磁盘 |
-| `aem status` | 资源 × 工具同步状态总表，`--strict` 有漂移即失败 |
-| `aem scan` | 扫描工具、版本与技能目录 |
-| `aem detect --path P` | 判定 P 是 skill / plugin / MCP / rules |
-| `aem import --source P` | 导入本地路径或 GitHub 地址 |
-| `aem sync --direction import\|distribute\|both` | 双向同步与冲突检测 |
-| `aem compare --left A --right B --diff` | 哈希清单 + 统一 diff |
-| `aem verify --all` | 校验已安装副本 |
-| `aem backup / backups / restore / prune` | 快照与回滚 |
+| `aem status` | 一张表列出每个资源 × 工具，`--strict` 遇漂移即失败 |
+| `aem scan` | 探测工具、版本和 Skill 目录 |
+| `aem detect --path P` | 判断 P 是 Skill / Plugin / MCP / 规则 |
+| `aem import --source P` | 导入本地路径或 GitHub URL |
+| `aem sync --direction import|distribute|both` | 双向同步并检测冲突 |
+| `aem compare --left A --right B --diff` | 哈希清单 + unified diff |
+| `aem verify --all` | 校验已安装副本与中央库是否一致 |
+| `aem backup` / `backups` / `restore` / `prune` | 快照与回滚 |
 
-所有命令都接受 `--home`、`--workspace`、`--json`。退出码：`0` 成功、`1` 错误、
-`2` 冲突或差异。详见 [references/cli-reference.md](references/cli-reference.md)。
+所有命令都接受 `--home`、`--workspace`、`--json`。退出码：`0` 成功，`1` 错误，
+`2` 冲突或存在差异。完整参数见 [references/cli-reference.md](references/cli-reference.md)。
 
 ## 演示
+
+仓库自带一个完全自包含的演示，绝不碰你真实的工具目录：
 
 ```bash
 python demo/run_demo.py
 ```
 
-演示在临时沙箱里创建假中央库和六个假工具目录，完整走一遍：导入 → 分发到三个工具 → 校验哈希
-→ 修改其中一个副本 → 显示漂移 → 修改上游 → 触发真实冲突并拒绝覆盖。不会碰你的真实配置。
-完整输出见 [demo/demo-output.txt](demo/demo-output.txt)。
+它会创建假中央库和六个假工具 home，导入一个 Skill，分发到三个工具，校验哈希，修改其中一份副本，
+展示漂移，再修改上游，最后触发一次真实的 C 状态冲突并拒绝覆盖。完整运行记录见
+[demo/demo-output.txt](demo/demo-output.txt)。
+
+## 文档
+
+| 文档 | 内容 |
+|---|---|
+| [SKILL.md](SKILL.md) | 面向 AI Agent 的技能：何时使用、决策规则、命令配方 |
+| [references/architecture.md](references/architecture.md) | 分层、数据模型、目录结构 |
+| [references/resource-types.md](references/resource-types.md) | Skill / Plugin / MCP / 规则兼容性 |
+| [references/agent-compatibility.md](references/agent-compatibility.md) | 各工具路径与验证状态 |
+| [references/synchronization-engine.md](references/synchronization-engine.md) | 导入 / 分发协议与状态机 |
+| [references/conflict-resolution.md](references/conflict-resolution.md) | A–E 状态与处理手册 |
+| [references/security-policy.md](references/security-policy.md) | 扫描、密钥、确认策略 |
+| [references/installation-methods.md](references/installation-methods.md) | 复制 / 链接 / 工具原生安装 |
+| [references/dsh-plugin-spec.md](references/dsh-plugin-spec.md) | 规划中的 GUI/执行插件（尚未实现） |
+| [docs/ROADMAP.md](docs/ROADMAP.md) | 后续路线图 |
 
 ## 状态与限制
 
-这是可运行的 **v1.0 CLI + Agent Skill**，不是完成品：
+这是可用的 **v1.0 CLI + Agent Skill**，不是完成品：
 
-- ✅ 导入、分发、双向同步、冲突检测、备份、校验、比较、恢复；
-- ✅ 六个适配器、安全扫描、JSON 输出契约；
-- ✅ 22 个场景测试（全部使用一次性假目录）；
-- 🚧 DSH Plugin 图形面板**只有规格，尚未实现**；
-- 🚧 插件安装委托给各工具原生命令，尚未自动执行；
-- ⚠️ Gemini CLI 与 Cursor 只对照官方文档/路径映射，未做运行时验证；
-- ⚠️ Codex 的 MCP 写入是手动的（刻意不自动改 TOML）。
+- ✅ 导入、分发、双向同步、冲突检测、备份、校验、对比、恢复；
+- ✅ 六个适配器（附诚实的验证等级）、安全扫描、JSON 契约；
+- ✅ 22 个场景测试，全部跑在一次性假 home 上；
+- 🚧 DSH Plugin 面板**只有规格，尚未实现**——这里不声称存在 GUI；
+- 🚧 插件安装委托给各工具原生命令（暂不自动安装）；
+- ⚠️ Gemini CLI 与 Cursor 只按官方文档/路径映射验证，未跑真实运行时；
+- ⚠️ Codex 的 MCP 写入是手动的（有意不自动改 TOML）。
+
+## 参与贡献
+
+欢迎 Issue 和 PR——见 [CONTRIBUTING.md](CONTRIBUTING.md) 与 [SECURITY.md](SECURITY.md)。
+场景测试用纯 Python 即可运行：
+
+```bash
+python evals/run_tests.py
+```
 
 ## 许可证
 
-MIT，见 [LICENSE](LICENSE)。
+MIT —— 见 [LICENSE](LICENSE)。

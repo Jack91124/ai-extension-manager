@@ -302,3 +302,23 @@ Verified on the authoring machine: DSH 0.2.0-rc.2, Claude Code 2.1.318,
 Codex config-only (no CLI on PATH), VS Code 1.115.0, Gemini CLI and Cursor not
 installed. Re-verify with `scan_agents.py` on every new machine; paths and
 capabilities are data, not assumptions.
+
+## 中文速查（给中文用户）
+
+完整中文说明见 [README.zh-CN.md](README.zh-CN.md) 与 [references/cli-reference.md](references/cli-reference.md)。
+
+```bash
+python -m pip install .              # 安装 aem 命令
+python scripts/aem.py <命令>          # 或不安装直接运行
+aem init && aem doctor && aem scan    # 建库、体检、探测六个工具
+```
+
+| 用户说 | 执行 |
+|---|---|
+| 把这个 GitHub 上的 Skill 装到 DSH/Codex/Claude | 先 `aem detect --url <url>` 识别类型与风险，再 `aem import --source <url>`，然后 `aem sync --direction distribute --agent ... --resource ...`，最后 `aem verify --all` |
+| 把六个工具新增的 Skill 导入中央库 | `aem sync --direction import --all-agents`，冲突时报告并停下，不覆盖 |
+| 检查哪些副本漂移/损坏 | `aem verify --all` 或 `aem status --strict` |
+| 回滚某个资源 | `aem backups` 找到快照，再 `aem restore --resource <名> --version <标签>` |
+| 两边都改过怎么办 | 不自动合并；给出 `aem compare --diff` 证据，让用户选保留中央库、保留目标、手动合并或另存新版本 |
+
+默认不覆盖、先备份、危险操作要确认。DSH Plugin 面板尚未实现，不要声称存在。

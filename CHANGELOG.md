@@ -26,6 +26,8 @@ First public release: a working CLI + Agent Skill. The DSH Plugin dashboard is s
 - Self-contained demo (`demo/run_demo.py`) and 22 scenario tests (`evals/run_tests.py`).
 - Agent Skill entry point (`SKILL.md`) with references for architecture, resources, adapters,
   sync, conflicts, security, installation methods and the planned DSH Plugin.
+- Complete Simplified Chinese README (`README.zh-CN.md`), a language switch on both READMEs,
+  and a Chinese quick-reference section in `SKILL.md`.
 
 ### Known limitations
 

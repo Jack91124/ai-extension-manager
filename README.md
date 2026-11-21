@@ -1,5 +1,7 @@
 # AI Extension Manager
 
+**English** | [简体中文](README.zh-CN.md)
+
 ### One library. Six AI tools. Two-way sync that never silently overwrites your work.
 
 `aem` keeps your Agent Skills, rules and MCP server definitions in one local library and syncs
