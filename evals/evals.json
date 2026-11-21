@@ -1,0 +1,194 @@
+{
+  "skill_name": "ai-extension-manager",
+  "scenarios_note": "Each eval is also executed by evals/run_tests.py against real CLI scripts in a disposable fake agent home. 'expectations' are the machine-checkable and judge-checkable criteria.",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "帮我看下 https://github.com/acme/awesome-skills 这个仓库是 Skill 还是 Plugin，装之前要检查什么？",
+      "expected_output": "Classifies the URL as a repository that must be cloned before the type is known, explains the skill/plugin classification signals, runs environment detection first, lists the security checks, and does not guess paths.",
+      "files": [],
+      "expectations": [
+        "Runs scan_agents.py before planning an install",
+        "Uses detect_resources.py --url and explains the clone-then-classify step",
+        "Names the classification signals for skill (SKILL.md) vs plugin manifests",
+        "Mentions security scan findings that require confirmation",
+        "Does not claim a DSH Plugin or native install API exists"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "把这个 GitHub 上的 Skill 下载下来，并同步到 DSH、Codex 和 Claude Code。",
+      "expected_output": "Executes the full pipeline: classify/import into the central library, distribute to the three tools, verify hashes, report per-tool results and any unverified steps.",
+      "files": [],
+      "expectations": [
+        "Imports into the central library before distributing",
+        "Uses sync_resources.py --direction distribute with three --agent flags",
+        "Verifies each target with verify_sync.py",
+        "Reports per-tool status and does not claim success without verification",
+        "Explains the conflict policy if any copy differs"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "检查六个 AI 工具，把各自新增的 Skill 导入中央资源库，并报告版本冲突。",
+      "expected_output": "Runs import direction over all six tools, separates new / updated / skipped / conflicted, explains states A-F, leaves conflicts untouched and offers resolutions.",
+      "files": [],
+      "expectations": [
+        "Runs sync_resources.py --direction import for all tools",
+        "Distinguishes imported / imported-update / skip / conflict",
+        "Explains state B (target changed) vs state C (both changed)",
+        "Does not overwrite the library on conflicts",
+        "Offers the four resolution options"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Claude Code 里的 demo-notes 和中央库不一样了，但我也改过中央库，现在两边都有我的改动，怎么办？",
+      "expected_output": "Identifies a state C conflict, shows the diff, explains the four resolutions, requests a decision, then verifies after resolving.",
+      "files": [],
+      "expectations": [
+        "Recognises a two-sided conflict (state C)",
+        "Runs compare_resources.py with a diff",
+        "Presents keep-library / keep-target / manual-merge / new-version",
+        "Asks before overwriting either side",
+        "Verifies after resolution"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "把这个 Claude Code 的插件装到 Codex 上，再顺手复制到 Gemini。",
+      "expected_output": "Refuses cross-tool plugin copying, explains per-tool plugin packaging, offers the target tool's real install mechanism and notes unverified paths.",
+      "files": [],
+      "expectations": [
+        "Refuses to copy plugin files across tools",
+        "Explains that plugins are tool-specific packages",
+        "Returns the real per-tool install command instead",
+        "Detects whether Gemini is installed before promising anything",
+        "Does not fabricate a plugin install API"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "我机器上 Codex 只有配置目录没有 CLI，Claude Code 也有；帮我确认每个工具的实际状态和 Skill 目录。",
+      "expected_output": "Reports installed/config-only/absent per tool with versions and resolved skill directories, marks verification levels, and never creates directories for absent tools.",
+      "files": [],
+      "expectations": [
+        "Runs scan_agents.py",
+        "Distinguishes installed from config-only and absent",
+        "Reports verification level per tool",
+        "Warns when a path is unverified instead of presenting it as fact"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "我要在一台新机器上重建我的 AI 工具链，把中央库里的 Skill 全部同步到所有兼容工具，并且别覆盖我已有的文件。",
+      "expected_output": "Plans a dry-run batch distribution, explains conflict states and backups, executes idempotently, verifies, and reports anything skipped for manual handling.",
+      "files": [],
+      "expectations": [
+        "Runs a dry run before writing",
+        "Uses --all with conflict policy skip by default",
+        "Explains backups and state A/B/C/D/E",
+        "Verifies and reports skipped/manual items honestly"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "同步以后 Codex 里少了一个文件，Claude Code 里有人改过 SKILL.md，怎么查？",
+      "expected_output": "Runs verify_sync.py, interprets missing/changed lists, explains drift vs conflict, and proposes repair direction only after asking.",
+      "files": [],
+      "expectations": [
+        "Runs verify_sync.py with --include-unmanaged or per resource",
+        "Interprets drifted with missing and changed file lists",
+        "Explains that repair direction is a user decision",
+        "Runs compare_resources.py before changing anything"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "恢复 demo-notes 的上一版，并告诉我恢复了哪个 hash。",
+      "expected_output": "Lists versions/backups, restores the selected version, reports the restored hash and that the restore is undoable.",
+      "files": [],
+      "expectations": [
+        "Lists versions or backups before restoring",
+        "Uses backup_restore.py restore with a version label or backup id",
+        "Reports the restored hash",
+        "Mentions the pre-restore snapshot/backup"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "从 PR 里下载这个 skill 到我的库里，但是我看它安装脚本里在 curl 一个 URL，安全吗？",
+      "expected_output": "Runs the security review, explains the specific high-risk pattern, blocks the import pending confirmation, and offers a safer path.",
+      "files": [],
+      "expectations": [
+        "Runs the safety scan and quotes file/line evidence",
+        "Explains why piping a download into a shell is high risk",
+        "Requires explicit confirmation before importing",
+        "Suggests inspecting/removing the script or a safer alternative",
+        "Does not import silently"
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "把中央库的 MCP server demo-fetch 装到 Claude Code 和 Codex，我的 API key 别弄丢了。",
+      "expected_output": "Explains secret redaction with ${ENV_VAR} placeholders, writes the Claude JSON config, marks Codex TOML as manual, and instructs the user to export the env var.",
+      "files": [],
+      "expectations": [
+        "Redacts the API key into a ${ENV_NAME} placeholder",
+        "Writes the Claude JSON MCP config with a backup",
+        "Marks Codex as manual TOML editing",
+        "Tells the user to export the env var and restart",
+        "Never prints or stores the raw key"
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "我装了同一个 Skill 的旧版和新版，怎么对比差异再决定用哪个？",
+      "expected_output": "Compares version snapshots or two paths, shows file-level differences and unified diff, then guides restore of the chosen version.",
+      "files": [],
+      "expectations": [
+        "Uses compare_resources.py with resource@version operands",
+        "Reports file-level differences and unified diff",
+        "Explains how to restore the chosen version",
+        "Does not overwrite current content without confirmation"
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "把所有工具里新增的 skill 都导入，但不要动我手动改过的 Codex 版本。",
+      "expected_output": "Imports per tool, treats the edited Codex copy as state B/C, preserves manual edits as new versions or conflicts, and reports what was left untouched.",
+      "files": [],
+      "expectations": [
+        "Runs per-tool import",
+        "Distinguishes target-only changes from two-sided conflicts",
+        "Preserves manual edits as a version snapshot",
+        "Does not delete or overwrite the Codex copy",
+        "Reports untouched items"
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "同步过程中断过一次，现在再跑会不会重复安装或者生成一堆备份？",
+      "expected_output": "Explains idempotency and the journal, demonstrates a --resume run, and shows that identical content is skipped without new backups.",
+      "files": [],
+      "expectations": [
+        "Explains content hashing and skip-on-identical",
+        "Mentions staging/journal-*.json and --resume",
+        "Runs or proposes a dry run first",
+        "Reports backup counts / unchanged state as evidence"
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "这个 skill 的 SKILL.md 里 name 写成了 Demo Notes，能装吗？",
+      "expected_output": "Reports the validation error (kebab-case and folder mismatch), refuses by default, and only imports with explicit --force plus a clear warning.",
+      "files": [],
+      "expectations": [
+        "Detects invalid kebab-case name",
+        "Explains why some tools silently fail to load it",
+        "Refuses without --force",
+        "Documents the risk when forcing"
+      ]
+    }
+  ]
+}

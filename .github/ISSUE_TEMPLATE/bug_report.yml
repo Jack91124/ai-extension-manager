@@ -1,0 +1,46 @@
+name: Bug report
+description: Something behaved differently from what the docs say
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Please do not paste real credentials or your full home directory.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: The exact command, what you expected, and what happened instead.
+      placeholder: |
+        $ aem sync --direction distribute --agent claude --resource x
+        expected: ...
+        actual: ...
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Output / traceback
+      description: Paste stdout, stderr, or the --json result. Redact paths and tokens if needed.
+      render: text
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: aem version
+      description: Output of `aem version`
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS and Python
+      placeholder: Windows 11, Python 3.12.4
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Tool setup
+      description: Which AI tools are installed, and is the affected path user or workspace scope?

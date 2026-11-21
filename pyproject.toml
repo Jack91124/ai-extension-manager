@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-extension-manager"
+version = "1.0.0"
+description = "Local-first sync and version control for AI agent skills, rules and MCP configs."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+authors = [{ name = "AI Extension Manager contributors" }]
+keywords = ["ai", "agent-skills", "claude-code", "codex", "cursor", "mcp", "sync", "cli"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Software Development :: Version Control",
+  "Topic :: Utilities",
+]
+dependencies = []
+
+[project.scripts]
+aem = "aem:main"
+
+[tool.setuptools]
+include-package-data = false
+package-dir = { "" = "scripts" }
+py-modules = [
+  "aem",
+  "aem_core",
+  "backup_restore",
+  "compare_resources",
+  "detect_resources",
+  "import_resource",
+  "scan_agents",
+  "sync_resources",
+  "verify_sync",
+]

@@ -1,0 +1,36 @@
+name: Feature request
+description: Suggest a capability or a new AI tool adapter
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do that the tool cannot do today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behaviour
+      description: Command shape, expected output, and what must never be overwritten.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Sync engine / conflicts
+        - New AI tool adapter
+        - Import / security scanning
+        - CLI / JSON output
+        - DSH Plugin
+        - Documentation
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Official docs or a verified local path for adapter requests. Guessed paths are not accepted.
