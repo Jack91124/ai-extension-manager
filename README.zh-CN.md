@@ -43,6 +43,18 @@ OpenAI Codex、Gemini CLI、Cursor、VS Code Copilot 和 DSH。它用 SHA-256 �
 
 需要 **Python 3.9+**，无第三方依赖，支持 Windows、macOS、Linux。
 
+不克隆仓库直接安装（需要 `git`，锁定版本标签以保证可复现）：
+
+```bash
+python -m pip install --user "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.3"
+aem init && aem doctor
+```
+
+想隔离安装？用 `pipx install "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.3"`，
+或从[最新 Release](https://github.com/Jack91124/ai-extension-manager/releases/latest) 下载 wheel 后 `pip install`。
+
+或者克隆仓库：
+
 ```bash
 git clone https://github.com/Jack91124/ai-extension-manager.git
 # 国内镜像：git clone https://gitee.com/ping-pong-squid-king/ai-extension-manager.git

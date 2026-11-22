@@ -3,6 +3,21 @@
 All notable changes are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions use [SemVer](https://semver.org/).
 
+## [1.0.3] - 2026-11-22
+
+### Added
+
+- One-line install without cloning: `python -m pip install --user "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.3"`
+  (or `pipx install`), plus a prebuilt wheel attached to the v1.0.3 release.
+- End-to-end verification of `npx skills add Jack91124/ai-extension-manager`: the CLI installs the whole
+  skill into `.agents/skills/ai-extension-manager` and symlinks it for every detected agent.
+
+### Changed
+
+- The repository homepage now points at the [skills.sh listing](https://www.skills.sh/jack91124/ai-extension-manager),
+  so discovery and install share one entry point.
+- README quick start leads with the no-clone install path; cloning stays documented for contributors.
+
 ## [1.0.2] - 2026-11-22
 
 ### Added

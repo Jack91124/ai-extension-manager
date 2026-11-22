@@ -1,13 +1,15 @@
 # Launch kit · 发布材料
 
 Everything needed to announce AI Extension Manager on developer channels. Copy, paste, adapt.
-发布时按渠道取用；所有数字和命令都在 v1.0.1 上验证过。
+发布时按渠道取用；所有数字和命令都在 v1.0.3 上验证过。
 
 - Repository: https://github.com/Jack91124/ai-extension-manager
 - Mirror (China): https://gitee.com/ping-pong-squid-king/ai-extension-manager
 - Skill listing: https://www.skills.sh/jack91124/ai-extension-manager
-- Install: `pip install .` from a clone, or `npx skills add Jack91124/ai-extension-manager`
+- Install: `python -m pip install --user "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.3"`
+  (or download the v1.0.3 wheel), or `npx skills add Jack91124/ai-extension-manager`
 - Hero image: [hero.png](hero.png)
+- Release: <https://github.com/Jack91124/ai-extension-manager/releases/latest>
 
 ---
 
