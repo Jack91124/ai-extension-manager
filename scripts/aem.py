@@ -12,6 +12,8 @@ Commands
   aem detect | inspect         classify a path / URL / installed resources
   aem import | add             import skill / plugin / MCP / rules
   aem sync                     two-way sync (import, distribute, both)
+  aem adopt                    import everything new from every tool (sync --direction import)
+  aem distribute               push library resources to tools (sync --direction distribute)
   aem compare | diff           compare two copies
   aem verify                   verify installed copies against the library
   aem backup | restore | prune snapshots
@@ -44,6 +46,8 @@ Usage:
   aem detect --path PATH        classify a skill / plugin / MCP / rules
   aem import --source PATH      import a resource into the central library
   aem sync --direction both     two-way sync (import | distribute | both)
+  aem adopt [--agent ID]        pull new/changed resources from tools into the library
+  aem distribute [--agent ID]   push library resources to tools (backs up first)
   aem compare --left A --right B   compare two copies
   aem verify --all              verify installed copies
   aem backup backup --resource NAME
@@ -91,6 +95,8 @@ TASK_COMMANDS = {
     "import": ("import_resource", []),
     "add": ("import_resource", []),
     "sync": ("sync_resources", []),
+    "adopt": ("sync_resources", ["--direction", "import"]),
+    "distribute": ("sync_resources", ["--direction", "distribute"]),
     "compare": ("compare_resources", []),
     "diff": ("compare_resources", []),
     "verify": ("verify_sync", []),

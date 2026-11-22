@@ -13,7 +13,7 @@ allowed-tools: Read Write Edit Bash Glob Grep
 metadata:
   display_name: AI Extension Manager
   display_name_zh: AI 扩展资源管理助手
-  version: 1.0.3
+  version: 1.0.4
   category: developer-tools
   phase: v1.0 (CLI + Agent Skill; DSH Plugin specified, not built)
 ---
@@ -48,6 +48,7 @@ Without installing, every command also works as `python scripts/aem.py <command>
 | `aem detect --path P` | classify P as skill / plugin / MCP / rules |
 | `aem import --source P` | import into the central library |
 | `aem sync --direction distribute --agent claude --agent codex --resource NAME` | distribute |
+| `aem adopt` / `aem distribute` | one-word shortcuts for the two sync directions |
 | `aem verify --all` | verify installed copies |
 | `aem status` | one table of every resource x agent pair |
 | `aem doctor` | diagnose setup problems with fixes |
@@ -316,7 +317,7 @@ aem init && aem doctor && aem scan    # 建库、体检、探测六个工具
 | 用户说 | 执行 |
 |---|---|
 | 把这个 GitHub 上的 Skill 装到 DSH/Codex/Claude | 先 `aem detect --url <url>` 识别类型与风险，再 `aem import --source <url>`，然后 `aem sync --direction distribute --agent ... --resource ...`，最后 `aem verify --all` |
-| 把六个工具新增的 Skill 导入中央库 | `aem sync --direction import --all-agents`，冲突时报告并停下，不覆盖 |
+| 把六个工具新增的 Skill 导入中央库 | `aem adopt`（等价于 `aem sync --direction import --all-agents`），冲突时报告并停下，不覆盖 |
 | 检查哪些副本漂移/损坏 | `aem verify --all` 或 `aem status --strict` |
 | 回滚某个资源 | `aem backups` 找到快照，再 `aem restore --resource <名> --version <标签>` |
 | 两边都改过怎么办 | 不自动合并；给出 `aem compare --diff` 证据，让用户选保留中央库、保留目标、手动合并或另存新版本 |

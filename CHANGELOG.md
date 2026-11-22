@@ -3,9 +3,16 @@
 All notable changes are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions use [SemVer](https://semver.org/).
 
-## [Unreleased]
+## [1.0.4] - 2026-11-22
 
 ### Added
+
+- `aem adopt` and `aem distribute`: one-word shortcuts for the two sync directions
+  (`aem adopt --agent claude` = `aem sync --direction import --agent claude`).
+- Scenario test 25 covers both shortcuts end to end (25 tests total).
+- CI and latest-release badges in both READMEs; CI is green on main.
+
+### Documentation
 
 - Animated 10-second demo (`docs/demo.gif`, 109 KB) rendered from the real `demo/run_demo.py`
   transcript via `docs/make_demo_gif.py`; both READMEs now show it instead of the static hero image.

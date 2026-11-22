@@ -12,7 +12,9 @@ OpenAI Codex、Gemini CLI、Cursor、VS Code Copilot 和 DSH。它用 SHA-256 �
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Tests](https://img.shields.io/badge/scenario%20tests-24%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/scenario%20tests-25%20passing-brightgreen)
+[![CI](https://github.com/Jack91124/ai-extension-manager/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Jack91124/ai-extension-manager/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/Jack91124/ai-extension-manager?color=blue)](https://github.com/Jack91124/ai-extension-manager/releases/latest)
 ![Platforms](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
 
 **快速开始** · [为什么还要一个同步工具](#为什么还要一个同步工具) ·
@@ -179,6 +181,8 @@ aem restore --resource my-skill --version <label>                               
 | `aem detect --path P` | 判断 P 是 Skill / Plugin / MCP / 规则 |
 | `aem import --source P` | 导入本地路径或 GitHub URL |
 | `aem sync --direction import|distribute|both` | 双向同步并检测冲突 |
+| `aem adopt` | 导入方向快捷命令：把各工具新增/变更的资源吸回中央库 |
+| `aem distribute` | 分发方向快捷命令：把中央库资源推送到工具（先备份） |
 | `aem compare --left A --right B --diff` | 哈希清单 + unified diff |
 | `aem verify --all` | 校验已安装副本与中央库是否一致 |
 | `aem backup` / `backups` / `restore` / `prune` | 快照与回滚 |
@@ -220,7 +224,7 @@ python demo/run_demo.py
 
 - ✅ 导入、分发、双向同步、冲突检测、备份、校验、对比、恢复；
 - ✅ 六个适配器（附诚实的验证等级）、安全扫描、JSON 契约；
-- ✅ 24 个场景测试，全部跑在一次性假 home 上；
+- ✅ 25 个场景测试，全部跑在一次性假 home 上；
 - 🚧 DSH Plugin 面板**只有规格，尚未实现**——这里不声称存在 GUI；
 - 🚧 插件安装委托给各工具原生命令（暂不自动安装）；
 - ⚠️ Gemini CLI 与 Cursor 只按官方文档/路径映射验证，未跑真实运行时；

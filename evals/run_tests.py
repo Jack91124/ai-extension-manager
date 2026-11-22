@@ -760,6 +760,31 @@ def test_24_compare_missing_operand(case: Case) -> str:
 
 
 # ---------------------------------------------------------------------------
+# 25. aem adopt / aem distribute are real one-word directions
+# ---------------------------------------------------------------------------
+
+@test
+def test_25_cli_adopt_and_distribute(case: Case) -> str:
+    case.make_skill(case.home(".claude", "skills"), "adopt-demo", body="pulled from claude")
+    completed, data = case.run("aem.py", "adopt", "--agent", "claude", "--json")
+    check_exit(completed, 0, "aem adopt")
+    check(any(item.get("action") == "imported" for item in data["results"]),
+          "adopt should import the claude copy, got " + json.dumps(data["results"]))
+    check(case.record("adopt-demo") is not None, "adopt must register the resource")
+    completed, data = case.run("aem.py", "distribute", "--agent", "codex",
+                               "--resource", "adopt-demo", "--json")
+    check_exit(completed, 0, "aem distribute")
+    installed = case.home(".codex", "skills", "adopt-demo", "SKILL.md")
+    check(installed.exists(), "aem distribute must write the codex copy")
+    check("pulled from claude" in installed.read_text(encoding="utf-8"),
+          "distributed copy should carry the adopted payload")
+    completed, _ = case.run("aem.py", "help")
+    check_exit(completed, 0, "aem help")
+    check("aem adopt" in completed.stdout and "aem distribute" in completed.stdout,
+          "help should document the direction shortcuts")
+    return "aem adopt pulls from a tool; aem distribute pushes to a tool"
+
+# ---------------------------------------------------------------------------
 # runner
 # ---------------------------------------------------------------------------
 

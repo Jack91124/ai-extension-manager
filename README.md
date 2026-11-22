@@ -12,7 +12,9 @@ changed using SHA-256 content hashes and per-target sync records — never "the 
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Tests](https://img.shields.io/badge/scenario%20tests-24%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/scenario%20tests-25%20passing-brightgreen)
+[![CI](https://github.com/Jack91124/ai-extension-manager/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Jack91124/ai-extension-manager/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/Jack91124/ai-extension-manager?color=blue)](https://github.com/Jack91124/ai-extension-manager/releases/latest)
 ![Platforms](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
 
 **Quick start** · [Why](#why-another-skill-manager) · [60-second workflow](#the-60-second-workflow) ·
@@ -180,6 +182,8 @@ Read the full policy in [references/security-policy.md](references/security-poli
 | `aem detect --path P` | classify P as skill / plugin / MCP / rules |
 | `aem import --source P` | import a local path or GitHub URL |
 | `aem sync --direction import\|distribute\|both` | two-way sync with conflict detection |
+| `aem adopt` | shortcut for import: pull every tool's new/changed resources in |
+| `aem distribute` | shortcut for distribute: push library resources to tools (backs up first) |
 | `aem compare --left A --right B --diff` | hash inventory + unified diff |
 | `aem verify --all` | verify installed copies against the library |
 | `aem backup` / `aem backups` / `aem restore` / `aem prune` | snapshots and rollback |
@@ -222,7 +226,7 @@ This is a working **v1.0 CLI + Agent Skill**, not a finished product:
 
 - ✅ import, distribute, both-way sync, conflict detection, backups, verify, compare, restore;
 - ✅ six adapters with honest verification levels, safety scanner, JSON contracts;
-- ✅ 24 scenario tests on disposable fake homes;
+- ✅ 25 scenario tests on disposable fake homes;
 - 🚧 DSH Plugin dashboard is **specified, not implemented** — no GUI is claimed here;
 - 🚧 plugin installation is delegated to each tool's native command (no auto-install yet);
 - ⚠️ Gemini CLI and Cursor were verified against official docs/path maps, not exercised at runtime;
