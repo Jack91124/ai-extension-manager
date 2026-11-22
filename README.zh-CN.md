@@ -144,6 +144,9 @@ aem restore --resource my-skill --version <label>                               
 
 默认不覆盖任何东西——冲突时不覆盖，第一次遇到未跟踪副本时也不覆盖。
 
+完整论证（为什么修改时间不能当冲突策略、猜错一次要付出什么代价）见
+[docs/why-sync-overwrites.md](docs/why-sync-overwrites.md)。
+
 ## 目前支持什么
 
 | 工具 | Skills | 规则 | MCP | 插件 | 验证程度 |
