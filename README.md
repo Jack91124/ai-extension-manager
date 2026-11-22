@@ -11,7 +11,7 @@ changed using SHA-256 content hashes and per-target sync records — never "the 
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Tests](https://img.shields.io/badge/scenario%20tests-22%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/scenario%20tests-24%20passing-brightgreen)
 ![Platforms](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
 
 **Quick start** · [Why](#why-another-skill-manager) · [60-second workflow](#the-60-second-workflow) ·
@@ -36,6 +36,8 @@ changed" from "both changed" — and refuse to guess in the last case.
 
 It is deliberately **local-first**: plain files, plain JSON, no server, no telemetry, no account.
 
+![aem demo: import, distribute to two tools, verify, then a state-C conflict that writes nothing](docs/hero.png)
+
 ## Quick start
 
 Requires **Python 3.9+**. No third-party packages, on Windows, macOS or Linux.
@@ -50,6 +52,16 @@ aem scan          # detect the six tools and their skill folders
 ```
 
 No install needed — every command also runs as `python scripts/aem.py <command>`.
+
+Already use the [`skills`](https://github.com/vercel-labs/skills) CLI? Install it as an agent skill
+(Node 22.20+), which also lists it on [skills.sh](https://www.skills.sh/jack91124/ai-extension-manager):
+
+```bash
+npx skills add Jack91124/ai-extension-manager
+```
+
+The repository root is a valid skill, so the CLI installs the whole toolkit (docs, scripts, evals)
+into `.claude/skills/ai-extension-manager` or `.agents/skills/ai-extension-manager`.
 
 A real `aem doctor` run on a Windows machine where three of the six tools are installed:
 
@@ -185,6 +197,7 @@ state-C conflict that it refuses to overwrite. The full captured transcript is i
 | [references/security-policy.md](references/security-policy.md) | scanning, secrets, confirmations |
 | [references/installation-methods.md](references/installation-methods.md) | copy vs link vs tool-native install |
 | [references/dsh-plugin-spec.md](references/dsh-plugin-spec.md) | the planned GUI/execution plugin (not built) |
+| [docs/launch.md](docs/launch.md) | launch positioning, copy and channel checklist |
 | [docs/ROADMAP.md](docs/ROADMAP.md) | where this is going |
 
 ## Status and limits

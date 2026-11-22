@@ -3,6 +3,29 @@
 All notable changes are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions use [SemVer](https://semver.org/).
 
+## [1.0.2] - 2026-11-22
+
+### Added
+
+- `npx skills add Jack91124/ai-extension-manager` install path: the repository root is a valid
+  Agent Skill and is now listed on skills.sh; README documents the CLI install next to `pip install`.
+- Launch kit (`docs/launch.md`) with English/Chinese positioning, social copy and a channel checklist,
+  plus a real-transcript hero image (`docs/hero.png`, reproducible via `docs/make_hero.py`).
+- Two regression scenarios (`evals/run_tests.py`, 24 total): out-of-band library edits followed by
+  a two-sided change, and `compare` with missing/unknown operands.
+
+### Fixed
+
+- Synchronisation could treat a state-C situation as state-B when the library payload had been
+  edited outside the import pipeline (stale record hash), risking an overwrite in
+  `--direction both`. Target state checks, post-write verification and target records now use the
+  current payload tree hash; the record is refreshed when that hash changes.
+- `compare_resources.py` raised `TypeError: string indices must be integers` when one side was
+  missing; missing operands (including `library:` / `<agent>:` typos) now exit `1` with a clear
+  `operand not found on disk` error instead of crashing or reporting a fake difference.
+- `demo/run_demo.py` used a doubled `library/library` path; the sandbox home is now `home/`.
+- One-step syncs printed `(1 steps)`; pluralisation is correct.
+
 ## [1.0.1] - 2026-11-22
 
 ### Fixed

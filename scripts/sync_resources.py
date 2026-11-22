@@ -112,6 +112,7 @@ def import_one_skill(home, agent, path: Path, skill_dir: dict, args) -> dict:
     name = validation.get("name") or path.name
     existing = home.find_resource(name)
     actual_hash = core.tree_hash(path)
+    library_hash = core.tree_hash(core.payload_path(home, existing)) if existing is not None else None
     if existing is None:
         prepared = importer.prepare_skill(path, {"force": False, "allow_risk": False})
         if prepared.get("status") != "ready":
@@ -130,13 +131,13 @@ def import_one_skill(home, agent, path: Path, skill_dir: dict, args) -> dict:
         return {"agent": agent["id"], "resource": name, "action": mapped,
                 "reason": outcome.get("reason"), "id": outcome.get("id"),
                 "safety": outcome.get("safety"), "scope": skill_dir["scope"]}
-    if exists_identical(existing, actual_hash, path):
+    if exists_identical(existing, actual_hash, path, library_hash):
         record_target_from_import(home, existing, agent, path, skill_dir)
         return {"agent": agent["id"], "resource": name, "action": "skip",
                 "reason": "target and library already identical", "id": existing["id"],
                 "scope": skill_dir["scope"]}
     state = core.compute_target_state(existing, (existing.get("targets") or {}).get(agent["id"]),
-                                      actual_hash, True)
+                                      actual_hash, True, library_hash=library_hash)
     if state["state"] == "B":
         if args.dry_run:
             return {"agent": agent["id"], "resource": name, "action": "would-import",
@@ -180,8 +181,8 @@ def import_one_skill(home, agent, path: Path, skill_dir: dict, args) -> dict:
             "target": str(path)}
 
 
-def exists_identical(existing, actual_hash, path: Path) -> bool:
-    return existing.get("hash") == actual_hash
+def exists_identical(existing, actual_hash, path: Path, library_hash=None) -> bool:
+    return (library_hash or existing.get("hash")) == actual_hash
 
 
 def record_target_from_import(home, record, agent, path: Path, skill_dir: dict) -> None:
@@ -288,7 +289,8 @@ def main(argv=None) -> int:
     result = {"ok": not errors and not conflicts, "direction": args.direction,
               "results": results, "summary": summary,
               "conflicts": len(conflicts), "errors": len(errors), "manual": len(manual)}
-    lines = ["Sync " + args.direction + " (" + str(len(results)) + " steps)"]
+    lines = ["Sync " + args.direction + " (" + str(len(results)) + " " +
+             ("step" if len(results) == 1 else "steps") + ")"]
     for item in results:
         agent = item.get("agent") or "?"
         resource = item.get("resource") or ""

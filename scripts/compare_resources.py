@@ -169,6 +169,13 @@ def main(argv=None) -> int:
         result = {"ok": False, "left": left_side, "right": right_side, "errors": errors}
         core.output(result, args)
         return 1
+    missing = [side for side in (left_side, right_side) if not side.get("present")]
+    if missing:
+        result = {"ok": False, "left": left_side, "right": right_side,
+                  "errors": [{"error": "operand not found on disk",
+                              "label": side.get("label"), "path": side.get("path")} for side in missing]}
+        core.output(result, args, ["Compare:", "  missing: " + ", ".join(str(side.get("label")) for side in missing)])
+        return 1
     if args.diff and left_side.get("present") and right_side.get("present") and left_side.get("kind") != "mcp":
         # full-tree diff mode uses the raw paths
         comparison = compare_sides(left_side, right_side, args.max_diff_lines, True)
@@ -186,7 +193,10 @@ def main(argv=None) -> int:
     else:
         lines.append("identical: no (" + str(len(comparison["differences"])) + " file differences)")
         for item in comparison["differences"][:40]:
-            lines.append("  " + item["kind"].ljust(11) + " " + item["path"])
+            if isinstance(item, str):
+                lines.append("  " + item)
+            else:
+                lines.append("  " + str(item.get("kind", "changed")).ljust(11) + " " + str(item.get("path")))
         for block in comparison["diffs"]:
             lines.append("")
             lines.append("--- " + block["file"] + " ---")

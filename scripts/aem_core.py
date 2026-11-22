@@ -21,7 +21,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 SCHEMA_VERSION = 1
-TOOL_VERSION = "1.0.1"
+TOOL_VERSION = "1.0.2"
 VCS_DIRS = {".git", ".svn", ".hg", ".bzr", "__pycache__", ".mypy_cache", ".pytest_cache"}
 SYSTEM_JUNK = {".DS_Store", "Thumbs.db", "desktop.ini"}
 
@@ -972,17 +972,24 @@ STATE_DESCRIPTIONS = {
 }
 
 
-def compute_target_state(record: dict, target, actual_hash, exists: bool) -> dict:
+def compute_target_state(record: dict, target, actual_hash, exists: bool, library_hash=None) -> dict:
+    """Classify one target copy against the library.
+
+    library_hash must be the *current* payload hash when the caller can compute it.
+    Passing only record["hash"] would miss edits made directly inside the central
+    library and could misreport state C as state B (then let an import overwrite the
+    library-side change).
+    """
     if not exists:
         state = "D" if target else "E"
         return {"state": state, "description": STATE_DESCRIPTIONS[state]}
     if not target:
-        if actual_hash and actual_hash == record.get("hash"):
+        if actual_hash and actual_hash == (library_hash or record.get("hash")):
             return {"state": "in-sync", "description": "target copy is identical to the library (not yet recorded)"}
         return {"state": "untracked", "description": STATE_DESCRIPTIONS["untracked"]}
     recorded_source = target.get("source_hash")
     recorded_target = target.get("target_hash")
-    library_hash = record.get("hash")
+    library_hash = library_hash or record.get("hash")
     if actual_hash and actual_hash == library_hash:
         return {"state": "in-sync", "description": STATE_DESCRIPTIONS["in-sync"]}
     library_unchanged = recorded_source == library_hash
@@ -1304,6 +1311,7 @@ def _install_dir_resource(home, record, agent, payload, target, mode, on_conflic
     recorded = (record.get("targets") or {}).get(agent_id)
     exists = destination.exists()
     actual_hash = tree_hash(destination) if exists and destination.is_dir() else None
+    library_hash = tree_hash(payload)
     base = {"resource": record["id"], "agent": agent_id, "path": str(destination),
             "mode": mode, "scope": target.get("scope")}
     if is_link(destination):
@@ -1315,7 +1323,7 @@ def _install_dir_resource(home, record, agent, payload, target, mode, on_conflic
         except OSError:
             pass
     if not recorded and exists:
-        if actual_hash and actual_hash == record["hash"]:
+        if actual_hash and actual_hash == library_hash:
             if not dry_run:
                 _record_target(home, record, agent, target, mode, "adopt")
             return dict(base, action="adopt", state="in-sync", reason="target already identical; recorded without writing")
@@ -1340,7 +1348,7 @@ def _install_dir_resource(home, record, agent, payload, target, mode, on_conflic
                 return dict(base, action="unavailable", state="E",
                             reason="tool home does not exist for " + agent_id + ": " + str(agent_home(agent)))
     else:
-        state = compute_target_state(record, recorded, actual_hash, exists)
+        state = compute_target_state(record, recorded, actual_hash, exists, library_hash=library_hash)
         if state["state"] == "in-sync" and recorded.get("mode") == mode:
             return dict(base, action="skip", state="in-sync", reason=state["description"])
         if state["state"] == "B" and on_conflict == "target":
@@ -1388,12 +1396,30 @@ def _install_dir_resource(home, record, agent, payload, target, mode, on_conflic
         remove_tree(staging)
         return dict(base, action="error", reason="write failed: " + str(exc))
     remove_tree(staging)
-    if written_hash != record["hash"]:
+    if written_hash != library_hash:
         return dict(base, action="error", reason="post-write hash mismatch",
-                    expected=record["hash"], actual=written_hash, backup=backup)
+                    expected=library_hash, actual=written_hash, backup=backup)
+    if library_hash != record.get("hash"):
+        # The library payload was edited outside the import pipeline; adopt the
+        # current payload hash so target records and future state checks are honest.
+        refresh_library_hash(home, record, payload, library_hash)
     _record_target(home, record, agent, target, mode, "install", written_hash)
     return dict(base, action="install", state="in-sync", backup=backup, hash=written_hash,
                 files=record.get("files"))
+
+
+def refresh_library_hash(home, record, payload, current_hash=None) -> str:
+    """Recompute a skill record's hash/manifest from its payload after an out-of-band edit."""
+    manifest = tree_manifest(payload)
+    current_hash = current_hash or manifest_hash(manifest)
+    stats = tree_stats(manifest)
+    record["hash"] = current_hash
+    record["manifest"] = manifest
+    record["files"] = stats["files"]
+    record["bytes"] = stats["bytes"]
+    record["updated_at"] = utcnow()
+    home.upsert_resource(record)
+    return current_hash
 
 
 def _record_target(home, record, agent, target, mode, action, written_hash=None) -> None:

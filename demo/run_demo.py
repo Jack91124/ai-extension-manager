@@ -42,7 +42,7 @@ def make_skill(base: Path) -> Path:
 
 def make_sandbox() -> tuple:
     base = Path(tempfile.mkdtemp(prefix="aem-demo-"))
-    home = base / "library"
+    home = base / "home"
     workspace = base / "workspace"
     workspace.mkdir()
     userhome = base / "userhome"

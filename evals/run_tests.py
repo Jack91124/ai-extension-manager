@@ -693,6 +693,73 @@ def test_22_cli_aliases(case: Case) -> str:
     return "aliases dispatch correctly, unknown commands exit 2"
 
 # ---------------------------------------------------------------------------
+# 23. a library payload edited outside the CLI is detected, not overwritten
+# ---------------------------------------------------------------------------
+
+@test
+def test_23_direct_library_edit(case: Case) -> str:
+    repo = case.make_repo("lib-edit-repo")
+    case.import_skill(case.make_skill(repo, "lib-edit"))
+    completed, _ = case.run("sync_resources.py", "--direction", "distribute", "--agent", "dsh",
+                            "--agent", "codex", "--resource", "lib-edit", "--json")
+    check_exit(completed, 0, "initial distribute")
+    library_file = case.aem("library", "skills", "lib-edit", "payload", "SKILL.md")
+    check(library_file.exists(), "library payload should exist")
+    library_file.write_text(library_file.read_text(encoding="utf-8") + "\nlibrary edit\n", encoding="utf-8")
+    completed, _ = case.run("sync_resources.py", "--direction", "distribute", "--agent", "dsh",
+                            "--agent", "codex", "--resource", "lib-edit", "--json")
+    check_exit(completed, 0, "distribute after a direct library edit")
+    for agent, relative in (("dsh", (".dsh", "skills")), ("codex", (".codex", "skills"))):
+        target = case.home(*relative, "lib-edit", "SKILL.md")
+        check("library edit" in target.read_text(encoding="utf-8"),
+              "direct library edit should reach " + agent)
+    completed, data = case.run("aem.py", "status", "--json")
+    check_exit(completed, 0, "status after library edit sync")
+    check(all(row["status"] == "in-sync" for row in data["rows"]),
+          "refreshed library hash should restore in-sync status, got " + json.dumps(data["rows"]))
+    library_file.write_text(library_file.read_text(encoding="utf-8") + "\nsecond library edit\n",
+                            encoding="utf-8")
+    codex_file = case.home(".codex", "skills", "lib-edit", "SKILL.md")
+    codex_file.write_text(codex_file.read_text(encoding="utf-8") + "\ntarget edit\n", encoding="utf-8")
+    completed, data = case.run("sync_resources.py", "--direction", "both", "--agent", "codex",
+                               "--resource", "lib-edit", "--json")
+    check_exit(completed, 2, "both sides edited")
+    result = [item for item in data["results"] if item.get("agent") == "codex"][0]
+    check(result["action"] == "conflict" and result["state"] == "C",
+          "both-side edit must be state C, got " + json.dumps(result))
+    check("library edit" in library_file.read_text(encoding="utf-8"), "conflict must not overwrite the library")
+    check("target edit" in codex_file.read_text(encoding="utf-8"), "conflict must not overwrite the target")
+    check(case.conflicts(), "a conflict artefact should be recorded")
+    return "out-of-band library edits refresh the hash; later both-side edits conflict as state C"
+
+
+# ---------------------------------------------------------------------------
+# 24. compare handles missing operands and reports real differences
+# ---------------------------------------------------------------------------
+
+@test
+def test_24_compare_missing_operand(case: Case) -> str:
+    repo = case.make_repo("compare-repo")
+    case.import_skill(case.make_skill(repo, "cmp-demo"))
+    check_exit(case.run("sync_resources.py", "--direction", "distribute", "--agent", "dsh",
+                        "--resource", "cmp-demo", "--json")[0], 0, "distribute")
+    target = case.home(".dsh", "skills", "cmp-demo", "SKILL.md")
+    target.write_text(target.read_text(encoding="utf-8") + "\ntarget drift\n", encoding="utf-8")
+    completed, data = case.run("compare_resources.py", "--left", "resource:cmp-demo",
+                               "--right", "agent:dsh:cmp-demo", "--json")
+    check_exit(completed, 2, "drifted comparison")
+    check(data["identical"] is False, "drifted copies must not be identical")
+    kinds = [item["kind"] for item in data["differences"] if isinstance(item, dict)]
+    check("changed" in kinds, "changed files should be listed, got " + json.dumps(data["differences"]))
+    completed, data = case.run("compare_resources.py", "--left", "library:cmp-demo",
+                               "--right", "dsh:cmp-demo", "--json")
+    check_exit(completed, 1, "unknown operand syntax")
+    check(data["errors"][0]["error"] == "operand not found on disk",
+          "missing operands must be a clean error, got " + json.dumps(data.get("errors")))
+    return "compare reports changed files, and unknown operands fail cleanly instead of crashing"
+
+
+# ---------------------------------------------------------------------------
 # runner
 # ---------------------------------------------------------------------------
 

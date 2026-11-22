@@ -11,7 +11,7 @@ OpenAI Codex、Gemini CLI、Cursor、VS Code Copilot 和 DSH。它用 SHA-256 �
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Tests](https://img.shields.io/badge/scenario%20tests-22%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/scenario%20tests-24%20passing-brightgreen)
 ![Platforms](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
 
 **快速开始** · [为什么还要一个同步工具](#为什么还要一个同步工具) ·
@@ -37,6 +37,8 @@ OpenAI Codex、Gemini CLI、Cursor、VS Code Copilot 和 DSH。它用 SHA-256 �
 
 它刻意做成 **local-first（本地优先）**：纯文件、纯 JSON，没有服务器、没有遥测、不需要账号。
 
+![aem 演示：导入、分发到两个工具、校验，然后在两边都改时报告 C 状态冲突且一个字都不写](docs/hero.png)
+
 ## 快速开始
 
 需要 **Python 3.9+**，无第三方依赖，支持 Windows、macOS、Linux。
@@ -52,6 +54,16 @@ aem scan          # 探测六个 AI 工具及其 Skill 目录
 ```
 
 不安装也能用——每条命令都可以写成 `python scripts/aem.py <command>`。
+
+如果你已经在用 [`skills`](https://github.com/vercel-labs/skills) CLI，也可以把它当 Agent Skill 安装
+（需要 Node 22.20+），同时会在 [skills.sh](https://www.skills.sh/jack91124/ai-extension-manager) 上被收录：
+
+```bash
+npx skills add Jack91124/ai-extension-manager
+```
+
+仓库根目录本身就是合法 Skill，因此 CLI 会把整套工具（文档、脚本、测试）装进
+`.claude/skills/ai-extension-manager` 或 `.agents/skills/ai-extension-manager`。
 
 一台装了三个工具的 Windows 机器上真实的 `aem doctor` 输出：
 
@@ -184,6 +196,7 @@ python demo/run_demo.py
 | [references/security-policy.md](references/security-policy.md) | 扫描、密钥、确认策略 |
 | [references/installation-methods.md](references/installation-methods.md) | 复制 / 链接 / 工具原生安装 |
 | [references/dsh-plugin-spec.md](references/dsh-plugin-spec.md) | 规划中的 GUI/执行插件（尚未实现） |
+| [docs/launch.md](docs/launch.md) | 发布定位、文案与渠道清单 |
 | [docs/ROADMAP.md](docs/ROADMAP.md) | 后续路线图 |
 
 ## 状态与限制
