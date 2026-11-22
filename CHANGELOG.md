@@ -16,6 +16,8 @@ All notable changes are documented here. The format follows
 
 - Animated 10-second demo (`docs/demo.gif`, 109 KB) rendered from the real `demo/run_demo.py`
   transcript via `docs/make_demo_gif.py`; both READMEs now show it instead of the static hero image.
+- 1200x630 social card (`docs/og.png`, rendered by `docs/make_og.py`).
+- Long-form article `docs/why-sync-overwrites.md` (English + 中文摘要) linked from both READMEs.
 
 ## [1.0.3] - 2026-11-22
 

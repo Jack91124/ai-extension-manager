@@ -144,6 +144,9 @@ aem restore --resource my-skill --version <label>                               
 
 Nothing is overwritten by default — not on conflict, not on first contact with an untracked copy.
 
+The long version of this argument (why mtime is not a conflict policy, and what it costs to get it
+wrong) is in [docs/why-sync-overwrites.md](docs/why-sync-overwrites.md).
+
 ## What is supported today
 
 | Tool | Skills | Rules | MCP | Plugins | Verification |
