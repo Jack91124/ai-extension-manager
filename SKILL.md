@@ -16,7 +16,7 @@ allowed-tools: Read Write Edit Bash Glob Grep
 metadata:
   display_name: AI Extension Manager
   display_name_zh: AI 扩展资源管理助手
-  version: 1.0.7
+  version: 1.0.8
   category: developer-tools
   phase: v1.0 (CLI + Agent Skill; DSH Plugin specified, not built)
 ---
@@ -49,7 +49,7 @@ Without installing, every command also works as `python scripts/aem.py <command>
 |---|---|
 | `aem scan` | detect the six tools and their skill directories |
 | `aem detect --path P` | classify P as skill / plugin / MCP / rules |
-| `aem import --source P` | import into the central library |
+| `aem import --source P` | import into the central library (`--pick PATH` / `--all` when a source bundles several resources) |
 | `aem sync --direction distribute --agent claude --agent codex --resource NAME` | distribute |
 | `aem adopt` / `aem distribute` | one-word shortcuts for the two sync directions |
 | `aem verify --all` | verify installed copies |
@@ -145,8 +145,10 @@ Detailed contracts live in `references/`; read only what the task needs:
    summarize the findings, show the file and line, and ask before re-running
    with `--allow-risk`. `secret-detected` means a credential is embedded; do not
    retry with `--allow-secrets` unless the user explicitly wants that risk.
-5. A repository may contain several resources; the importer imports each typed
-   candidate. Use `--type skill` / `--type plugin` / `--kinds` to narrow.
+5. A repository may contain several resources. When it does, the importer refuses to
+   guess: it lists the candidates and exits 2. Ask the user which one they mean, then
+   re-run with `--pick <path>` (path shown relative to the source), or `--all` to take
+   every match. `--type` / `--kinds` narrow the candidate set before that choice.
 6. Distribute only after import succeeded (workflow C).
 
 ## Workflow B - scan tools and import their resources

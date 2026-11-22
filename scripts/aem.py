@@ -47,6 +47,7 @@ Usage:
   aem scan [--agent ID]         detect AI tools and directories
   aem detect --path PATH        classify a skill / plugin / MCP / rules
   aem import --source PATH      import a resource into the central library
+                               (--pick PATH for one of many, --all for every match)
   aem sync --direction both     two-way sync (import | distribute | both)
   aem adopt [--agent ID]        pull new/changed resources from tools into the library
   aem distribute [--agent ID]   push library resources to tools (backs up first)

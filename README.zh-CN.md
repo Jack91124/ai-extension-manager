@@ -15,7 +15,7 @@ OpenAI Codex、Gemini CLI、Cursor、VS Code Copilot 和 DSH。它用 SHA-256 �
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Tests](https://img.shields.io/badge/scenario%20tests-26%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/scenario%20tests-27%20passing-brightgreen)
 [![CI](https://github.com/Jack91124/ai-extension-manager/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Jack91124/ai-extension-manager/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/Jack91124/ai-extension-manager?color=blue)](https://github.com/Jack91124/ai-extension-manager/releases/latest)
 ![Platforms](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
@@ -107,6 +107,9 @@ result: healthy
 ```bash
 # 1. 从 GitHub 或本地目录导入一个 Skill
 aem import --source https://github.com/owner/repo/tree/main/skills/my-skill
+
+# 仓库里打包了多个 Skill：挑一个，或者全部导入
+aem import --source https://github.com/owner/repo --pick skills/pdf
 
 # 2. 分发到需要的工具（--agent 可重复）
 aem sync --direction distribute --agent claude --agent codex --resource my-skill
@@ -214,7 +217,7 @@ aem restore --resource my-skill --version <label>                               
 | `aem status` | 一张表列出每个资源 × 工具，`--strict` 遇漂移即失败 |
 | `aem scan` | 探测工具、版本和 Skill 目录 |
 | `aem detect --path P` | 判断 P 是 Skill / Plugin / MCP / 规则 |
-| `aem import --source P` | 导入本地路径或 GitHub URL |
+| `aem import --source P` | 导入本地路径或 GitHub URL（多资源源用 `--pick` / `--all`） |
 | `aem sync --direction import|distribute|both` | 双向同步并检测冲突 |
 | `aem adopt` | 导入方向快捷命令：把各工具新增/变更的资源吸回中央库 |
 | `aem distribute` | 分发方向快捷命令：把中央库资源推送到工具（先备份） |

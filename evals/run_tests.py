@@ -818,6 +818,39 @@ def test_26_cli_report(case: Case) -> str:
 
 
 # ---------------------------------------------------------------------------
+# 27. a bundled source with several skills is not imported by accident
+# ---------------------------------------------------------------------------
+
+@test
+def test_27_cli_import_pick(case: Case) -> str:
+    bundle = case.make_repo("skill-bundle")
+    case.make_skill(bundle / "skills", "alpha")
+    case.make_skill(bundle / "skills", "beta")
+    completed, data = case.import_skill(bundle)
+    check_exit(completed, 2, "ambiguous import")
+    check(data["ok"] is False, "ambiguous import must not claim success")
+    item = data["results"][0]
+    check(item["status"] == "multiple-candidates", "expected multiple-candidates, got " + str(item["status"]))
+    check(item["count"] == 2, "expected two candidates, got " + str(item.get("count")))
+    paths = [entry["path"] for entry in item["candidates"]]
+    check(paths == ["skills/alpha", "skills/beta"], "candidate paths should be source relative, got " + json.dumps(paths))
+    check(case.registry() == {}, "nothing may be imported before the user picks")
+    completed, data = case.import_skill(bundle, "--pick", "skills/alpha")
+    check_exit(completed, 0, "picked import")
+    check(case.record("alpha") is not None, "the picked skill should be imported")
+    check(case.record("beta") is None, "the other skill must stay out of the library")
+    completed, data = case.import_skill(bundle, "--pick", "skills/nope")
+    check_exit(completed, 1, "missing pick")
+    check(data["results"][0]["status"] == "pick-not-found", "missing pick should say pick-not-found")
+    completed, data = case.import_skill(bundle, "--all")
+    check_exit(completed, 0, "import all")
+    check(case.record("alpha") is not None and case.record("beta") is not None,
+          "aem import --all should import every match")
+    check(data["summary"].get("duplicate") == 1, "the already imported skill should be a duplicate")
+    return "ambiguous bundle exits 2 with candidates; --pick imports one; --all imports every match"
+
+
+# ---------------------------------------------------------------------------
 # runner
 # ---------------------------------------------------------------------------
 

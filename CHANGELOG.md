@@ -5,6 +5,19 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.8] - 2026-11-22
+
+### Added
+
+- `aem import --pick PATH` imports exactly one resource from a source that bundles several
+  skills, and `aem import --all` imports every match.
+
+### Fixed
+
+- `aem import` no longer sweeps up every skill in a repository by accident: when a folder or
+  GitHub repository contains more than one resource it now lists the candidates and exits with
+  code 2 until you choose `--pick` or `--all`.
+
 ## [1.0.7] - 2026-11-22
 
 ### Added

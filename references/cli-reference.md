@@ -92,6 +92,10 @@ aem import --source ./local/skill
 aem import --source https://github.com/owner/repo --ref main --kinds skills
 aem import --source ./rules.json --type rules
 aem import --source ./mcp.json --type mcp --server github
+
+# a repository that bundles several skills: choose one, or take them all
+aem import --source https://github.com/owner/repo --pick skills/pdf
+aem import --source https://github.com/owner/repo --all
 ```
 
 | Option | Effect |
@@ -99,6 +103,8 @@ aem import --source ./mcp.json --type mcp --server github
 | `--type auto|skill|plugin|mcp|rules` | force a resource type |
 | `--kinds skills,plugins,mcp,rules` | what to take from a repository |
 | `--server NAME` | import one MCP server from a config |
+| `--pick PATH` | import exactly this resource (path relative to the source) |
+| `--all` | import every resource found in the source (default refuses when ambiguous) |
 | `--ref` / `--depth` | Git branch/tag and clone depth |
 | `--on-conflict skip|keep-library|keep-source|new-version` | behaviour when the resource exists |
 | `--force` | import despite SKILL.md validation failure |

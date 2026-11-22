@@ -15,7 +15,7 @@ changed using SHA-256 content hashes and per-target sync records — never "the 
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Tests](https://img.shields.io/badge/scenario%20tests-26%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/scenario%20tests-27%20passing-brightgreen)
 [![CI](https://github.com/Jack91124/ai-extension-manager/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Jack91124/ai-extension-manager/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/Jack91124/ai-extension-manager?color=blue)](https://github.com/Jack91124/ai-extension-manager/releases/latest)
 ![Platforms](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
@@ -106,6 +106,9 @@ result: healthy
 ```bash
 # 1. bring a skill in from GitHub or a local folder
 aem import --source https://github.com/owner/repo/tree/main/skills/my-skill
+
+# a repository that bundles many skills: pick one, or take them all
+aem import --source https://github.com/owner/repo --pick skills/pdf
 
 # 2. send it to the tools that need it (repeatable --agent)
 aem sync --direction distribute --agent claude --agent codex --resource my-skill
@@ -217,7 +220,7 @@ Read the full policy in [references/security-policy.md](references/security-poli
 | `aem status` | one table of every resource × tool, `--strict` fails on drift |
 | `aem scan` | detect tools, versions and skill folders |
 | `aem detect --path P` | classify P as skill / plugin / MCP / rules |
-| `aem import --source P` | import a local path or GitHub URL |
+| `aem import --source P` | import a local path or GitHub URL (`--pick` / `--all` for bundles) |
 | `aem sync --direction import\|distribute\|both` | two-way sync with conflict detection |
 | `aem adopt` | shortcut for import: pull every tool's new/changed resources in |
 | `aem distribute` | shortcut for distribute: push library resources to tools (backs up first) |

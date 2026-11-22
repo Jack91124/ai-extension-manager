@@ -159,6 +159,60 @@ def prepare_rules(path: Path, ctx: dict) -> dict:
 PREPARERS = {"skill": prepare_skill, "plugin": prepare_plugin, "mcp": prepare_mcp, "rules": prepare_rules}
 
 
+def relative_to_root(root: Path, path) -> str:
+    try:
+        return Path(path).resolve().relative_to(Path(root).resolve()).as_posix()
+    except (ValueError, OSError):
+        return str(path)
+
+
+def describe_candidate(root: Path, candidate: dict) -> dict:
+    return {
+        "name": candidate.get("name") or Path(candidate["path"]).name,
+        "type": candidate.get("type"),
+        "path": relative_to_root(root, candidate["path"]),
+        "confidence": candidate.get("confidence"),
+    }
+
+
+def select_candidates(root: Path, candidates: list, ctx: dict):
+    """Reduce discovered candidates to the ones the user asked for.
+
+    A repository or folder that bundles several skills must not import all of
+    them by accident: the default is to stop with exit code 2 and list the
+    choices. --pick <path> imports exactly one, --all imports every match.
+    """
+    pick = ctx.get("pick")
+    if pick:
+        target = Path(pick).expanduser()
+        if not target.is_absolute():
+            target = Path(root) / target
+        target = target.resolve()
+        if not target.exists():
+            return None, {
+                "status": "pick-not-found", "pick": pick, "root": str(root),
+                "reason": "no such path inside the source: " + str(pick),
+                "available": [describe_candidate(root, item) for item in candidates],
+            }
+        info = core.classify_path(target)
+        if info["type"] not in PREPARERS and not target.is_dir():
+            return None, {
+                "status": "pick-not-found", "pick": pick, "root": str(root),
+                "reason": "picked path is not a skill / plugin / MCP config / rules file (" +
+                          str(info["type"]) + ")",
+                "available": [describe_candidate(root, item) for item in candidates],
+            }
+        return [info], None
+    if ctx.get("all") or len(candidates) <= 1:
+        return candidates, None
+    return None, {
+        "status": "multiple-candidates", "root": str(root), "count": len(candidates),
+        "candidates": [describe_candidate(root, item) for item in candidates],
+        "reason": "found %d resources in this source; choose one with --pick <path> " % len(candidates) +
+                  "or import every match with --all",
+    }
+
+
 def stage_payload(home, prepared: dict, ctx: dict) -> Path:
     """Materialise the payload that will live under library/<kind>/<slug>/payload."""
     staging_root = home.staging / ("import-" + uuid.uuid4().hex[:8])
@@ -359,6 +413,12 @@ def import_source(home, source: str, ctx: dict) -> list:
         if allowed:
             candidates = [candidate for candidate in candidates if candidate["type"] in allowed]
     ctx["_clone_dir"] = str(root) if source.startswith("http") else None
+    selected, problem = select_candidates(root, candidates, ctx)
+    if problem:
+        if ctx.get("_clone_dir"):
+            core.remove_tree(Path(ctx["_clone_dir"]))
+        return [problem]
+    candidates = selected
     results = []
     for candidate in candidates:
         kind = candidate["type"]
@@ -386,6 +446,10 @@ def main(argv=None) -> int:
     parser.add_argument("--source", required=True, help="local path or https repository URL")
     parser.add_argument("--type", default="auto", choices=["auto", "skill", "plugin", "mcp", "rules"])
     parser.add_argument("--kinds", default=None, help="comma separated kinds to import from a repository")
+    parser.add_argument("--pick", default=None,
+                        help="import exactly this resource from the source (path relative to it)")
+    parser.add_argument("--all", action="store_true",
+                        help="import every resource found in the source (default: refuse when ambiguous)")
     parser.add_argument("--server", default=None, help="MCP server name to import (default: all)")
     parser.add_argument("--ref", default=None, help="git branch/tag for URL sources")
     parser.add_argument("--depth", type=int, default=3)
@@ -405,6 +469,7 @@ def main(argv=None) -> int:
         "allow_secrets": args.allow_secrets, "allow_mirror": args.allow_mirror,
         "dry_run": args.dry_run, "type": args.type,
         "server": args.server, "ref": args.ref, "depth": args.depth, "kinds": kinds,
+        "pick": args.pick, "all": args.all,
         "workspace": core.workspace_path(args),
     }
     with core.library_lock(home, "library"):
@@ -413,8 +478,9 @@ def main(argv=None) -> int:
     conflicts = [item for item in results if item.get("status") == "conflict"]
     errors = [item for item in results if item.get("status") in
               ("error", "invalid", "secret-detected", "needs-confirmation",
-               "git-rewrite-detected")]
-    result = {"ok": not errors, "source": args.source, "results": results,
+               "git-rewrite-detected", "pick-not-found")]
+    ambiguous = [item for item in results if item.get("status") == "multiple-candidates"]
+    result = {"ok": not errors and not ambiguous, "source": args.source, "results": results,
               "summary": summary, "conflicts": len(conflicts), "errors": len(errors)}
     lines = ["Import " + args.source]
     for item in results:
@@ -426,11 +492,15 @@ def main(argv=None) -> int:
         if item.get("safety"):
             lines.append("    safety: risk=" + str(item["safety"].get("risk")) +
                          " high=" + str((item["safety"].get("counts") or {}).get("high")))
+        for candidate in item.get("candidates") or []:
+            lines.append("    " + str(candidate["type"]) + " " + str(candidate["path"]) + "  " + str(candidate["name"]))
+        for candidate in (item.get("available") or []) if item.get("status") == "pick-not-found" else []:
+            lines.append("    " + str(candidate["type"]) + " " + str(candidate["path"]) + "  " + str(candidate["name"]))
         for finding in (item.get("safety") or {}).get("findings", [])[:3]:
             lines.append("      ! " + finding["severity"] + ": " + finding["rule"] + " in " + finding["file"] + ":" + str(finding["line"]))
     lines.append("summary: " + core.pj(summary).replace("\n", " "))
     core.output(result, args, lines)
-    if conflicts:
+    if conflicts or ambiguous:
         return 2
     if errors:
         return 1
