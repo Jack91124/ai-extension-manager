@@ -36,7 +36,9 @@ changed" from "both changed" — and refuse to guess in the last case.
 
 It is deliberately **local-first**: plain files, plain JSON, no server, no telemetry, no account.
 
-![aem demo: import, distribute to two tools, verify, then a state-C conflict that writes nothing](docs/hero.png)
+![aem demo: import, distribute to two tools, verify, then a state-C conflict that writes nothing](docs/demo.gif)
+
+<sub>10-second demo, rendered from the real `demo/run_demo.py` transcript ([static version](docs/hero.png), [how it is made](docs/make_demo_gif.py)).</sub>
 
 ## Quick start
 

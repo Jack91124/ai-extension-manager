@@ -8,7 +8,7 @@ Everything needed to announce AI Extension Manager on developer channels. Copy, 
 - Skill listing: https://www.skills.sh/jack91124/ai-extension-manager
 - Install: `python -m pip install --user "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.3"`
   (or download the v1.0.3 wheel), or `npx skills add Jack91124/ai-extension-manager`
-- Hero image: [hero.png](hero.png)
+- Hero image: [demo.gif](demo.gif) (animated, 109 KB) or the static [hero.png](hero.png)
 - Release: <https://github.com/Jack91124/ai-extension-manager/releases/latest>
 
 ---

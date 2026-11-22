@@ -3,6 +3,13 @@
 All notable changes are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions use [SemVer](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- Animated 10-second demo (`docs/demo.gif`, 109 KB) rendered from the real `demo/run_demo.py`
+  transcript via `docs/make_demo_gif.py`; both READMEs now show it instead of the static hero image.
+
 ## [1.0.3] - 2026-11-22
 
 ### Added

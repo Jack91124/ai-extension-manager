@@ -37,7 +37,9 @@ OpenAI Codex、Gemini CLI、Cursor、VS Code Copilot 和 DSH。它用 SHA-256 �
 
 它刻意做成 **local-first（本地优先）**：纯文件、纯 JSON，没有服务器、没有遥测、不需要账号。
 
-![aem 演示：导入、分发到两个工具、校验，然后在两边都改时报告 C 状态冲突且一个字都不写](docs/hero.png)
+![aem 演示：导入、分发到两个工具、校验，然后在两边都改时报告 C 状态冲突且一个字都不写](docs/demo.gif)
+
+<sub>10 秒演示，由真实的 `demo/run_demo.py` 输出渲染而成（[静态版](docs/hero.png)，[生成脚本](docs/make_demo_gif.py)）。</sub>
 
 ## 快速开始
 
