@@ -785,6 +785,39 @@ def test_25_cli_adopt_and_distribute(case: Case) -> str:
     return "aem adopt pulls from a tool; aem distribute pushes to a tool"
 
 # ---------------------------------------------------------------------------
+# 26. aem report: single-file HTML dashboard with real state
+# ---------------------------------------------------------------------------
+
+@test
+def test_26_cli_report(case: Case) -> str:
+    repo = case.make_repo("report-repo")
+    case.import_skill(case.make_skill(repo, "report-demo"))
+    check_exit(case.run("sync_resources.py", "--direction", "distribute", "--agent", "dsh",
+                        "--agent", "codex", "--resource", "report-demo", "--json")[0], 0, "distribute")
+    target = case.home(".codex", "skills", "report-demo", "SKILL.md")
+    target.write_text(target.read_text(encoding="utf-8") + "\nuser edit\n", encoding="utf-8")
+    out = case.root / "report" / "aem-report.html"
+    completed, data = case.run("aem.py", "report", "--json", "--out", str(out))
+    check_exit(completed, 0, "aem report")
+    check(data["ok"] is True, "report should report ok")
+    check(data["resources"] == 1 and data["targets"] == 2,
+          "report counts, got resources=" + str(data["resources"]) + " targets=" + str(data["targets"]))
+    check(data["in_sync"] == 1 and data["problems"] == 1,
+          "one target in sync, one drifted, got " + json.dumps({"in_sync": data["in_sync"],
+                                                               "problems": data["problems"]}))
+    check(Path(data["out"]) == out and out.exists(), "report should write the requested file")
+    text = out.read_text(encoding="utf-8")
+    check(text.startswith("<!doctype html>"), "report must be a standalone HTML document")
+    check("report-demo" in text and "drifted" in text, "report should name the resource and its drift")
+    check("aem report" in text and "aem " + TOOL_VERSION in text, "report should carry the tool version")
+    check(len(text) > 3000, "report should not be a stub")
+    completed, data = case.run("aem.py", "report", "--json")
+    check_exit(completed, 0, "default report path")
+    check(data["out"].endswith("aem-report.html"), "default output should be aem-report.html")
+    return "report renders resources, targets, drift and tool status into one HTML file"
+
+
+# ---------------------------------------------------------------------------
 # runner
 # ---------------------------------------------------------------------------
 

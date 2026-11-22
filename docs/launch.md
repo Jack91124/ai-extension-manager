@@ -45,7 +45,7 @@ folders every AI coding tool invented separately.
 - **A/B/C/D/E conflict model** — hashes + last-sync records, not "newest file wins".
 - **Reversible by default** — every distribute backs up first; `aem restore` brings any version back.
 - **Local-first** — plain files and JSON, zero dependencies, no telemetry, Python 3.9+.
-- **25 end-to-end scenarios** — real CLI runs against throwaway fake tool homes; CI on 3 OS × 2 Pythons.
+- **26 end-to-end scenarios** — real CLI runs against throwaway fake tool homes; CI on 3 OS × 2 Pythons.
 - **Tested safety rails** — blocks high-risk scripts and secrets, refuses git mirror rewrites.
 
 ## 4. Social copy · 社交文案
@@ -68,7 +68,7 @@ I built aem: one local library, six adapters, SHA-256 state tracking.
 - only target changed -> import it back
 - both changed -> exit 2, write nothing
 
-25 scenario tests, CI on 3 OS. No deps. MIT.
+26 scenario tests, CI on 3 OS. No deps. MIT.
 
 https://github.com/Jack91124/ai-extension-manager
 
@@ -88,7 +88,7 @@ https://github.com/Jack91124/ai-extension-manager
 · 两边都变了 → 直接报冲突，退出码 2，一个字都不写
 
 本地优先，纯文件 + JSON，零依赖，Python 3.9+。
-25 个端到端场景测试，Windows/macOS/Linux CI 全绿，MIT。
+26 个端到端场景测试，Windows/macOS/Linux CI 全绿，MIT。
 
 GitHub: https://github.com/Jack91124/ai-extension-manager
 Gitee（国内）: https://gitee.com/ping-pong-squid-king/ai-extension-manager
@@ -113,7 +113,7 @@ per-file unified diffs; restore brings any snapshot back.
 Scope is deliberately boring: skills, rules, MCP server definitions. Plugins are
 detected but installed through each vendor's own mechanism, never copied across tools.
 
-Python 3.9+, no dependencies, local-first. 25 scenario tests, CI on 3 OS.
+Python 3.9+, no dependencies, local-first. 26 scenario tests, CI on 3 OS.
 Happy to answer questions about the per-tool path verification — some of it is
 documented by vendors, some is marked "partial" in the support matrix on purpose.
 ```

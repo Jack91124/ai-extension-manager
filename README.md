@@ -15,7 +15,7 @@ changed using SHA-256 content hashes and per-target sync records — never "the 
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Tests](https://img.shields.io/badge/scenario%20tests-25%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/scenario%20tests-26%20passing-brightgreen)
 [![CI](https://github.com/Jack91124/ai-extension-manager/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Jack91124/ai-extension-manager/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/Jack91124/ai-extension-manager?color=blue)](https://github.com/Jack91124/ai-extension-manager/releases/latest)
 ![Platforms](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
@@ -121,6 +121,21 @@ Everything is reversible: `aem backups` lists snapshots, `aem restore` brings ba
 Want to edit a skill inside one tool and pull the change back? `aem sync --direction both` imports
 target-side changes that are safe, and stops with exit code `2` when both sides changed.
 
+## One page for the whole library
+
+`aem report` renders everything the registry knows into a single self-contained HTML file: resources
+by type, every tracked target with its live state (in-sync / drifted / missing), the tools detected on
+this machine, and the recent activity log. It is written locally, opens offline, and makes no network
+calls. Use `--json` when a script needs the same data.
+
+```bash
+aem report                 # writes ./aem-report.html and prints the path
+aem report --open          # same, then opens it in the browser
+aem report --json          # machine-readable summary for CI or dashboards
+```
+
+![aem report — one page per library](docs/report.png)
+
 ## How conflicts work
 
 Each resource stores a SHA-256 tree hash. Each target stores the hash it was synced from
@@ -192,6 +207,7 @@ Read the full policy in [references/security-policy.md](references/security-poli
 | `aem distribute` | shortcut for distribute: push library resources to tools (backs up first) |
 | `aem compare --left A --right B --diff` | hash inventory + unified diff |
 | `aem verify --all` | verify installed copies against the library |
+| `aem report` | one self-contained HTML page for the whole library (`--json`, `--open`) |
 | `aem backup` / `aem backups` / `aem restore` / `aem prune` | snapshots and rollback |
 
 Every command accepts `--home`, `--workspace` and `--json`. Exit codes: `0` success,
@@ -232,7 +248,7 @@ This is a working **v1.0 CLI + Agent Skill**, not a finished product:
 
 - ✅ import, distribute, both-way sync, conflict detection, backups, verify, compare, restore;
 - ✅ six adapters with honest verification levels, safety scanner, JSON contracts;
-- ✅ 25 scenario tests on disposable fake homes;
+- ✅ 26 scenario tests on disposable fake homes;
 - 🚧 DSH Plugin dashboard is **specified, not implemented** — no GUI is claimed here;
 - 🚧 plugin installation is delegated to each tool's native command (no auto-install yet);
 - ⚠️ Gemini CLI and Cursor were verified against official docs/path maps, not exercised at runtime;

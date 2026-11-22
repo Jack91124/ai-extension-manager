@@ -15,7 +15,7 @@ OpenAI Codex、Gemini CLI、Cursor、VS Code Copilot 和 DSH。它用 SHA-256 �
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Tests](https://img.shields.io/badge/scenario%20tests-25%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/scenario%20tests-26%20passing-brightgreen)
 [![CI](https://github.com/Jack91124/ai-extension-manager/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Jack91124/ai-extension-manager/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/Jack91124/ai-extension-manager?color=blue)](https://github.com/Jack91124/ai-extension-manager/releases/latest)
 ![Platforms](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
@@ -122,6 +122,20 @@ aem status
 想在某个工具里改 Skill 再把改动拉回来？用 `aem sync --direction both`：它会安全导入目标侧的改动，
 一旦两边都改过，就以退出码 `2` 停下，不写任何文件。
 
+## 一页看清整个库
+
+`aem report` 把注册表里的全部信息渲染成一个自包含的 HTML 文件：按类型统计的资源、每个已跟踪目标
+的实时状态（一致 / 漂移 / 缺失）、本机探测到的工具，以及最近的操作日志。文件只写在本地，离线可看，
+不发起任何网络请求；需要给脚本用时加 `--json`。
+
+```bash
+aem report                 # 输出 ./aem-report.html 并打印路径
+aem report --open          # 输出后直接打开浏览器
+aem report --json          # 机器可读的摘要，便于 CI 或看板
+```
+
+![aem report —— 一页看清整个库](docs/report.png)
+
 ## 冲突是怎么判断的？
 
 每个资源保存一个 SHA-256 目录树哈希；每个目标保存三个事实：同步来源哈希（`source_hash`）、
@@ -191,6 +205,7 @@ aem restore --resource my-skill --version <label>                               
 | `aem distribute` | 分发方向快捷命令：把中央库资源推送到工具（先备份） |
 | `aem compare --left A --right B --diff` | 哈希清单 + unified diff |
 | `aem verify --all` | 校验已安装副本与中央库是否一致 |
+| `aem report` | 一页自包含 HTML 报告（`--json`、`--open`） |
 | `aem backup` / `backups` / `restore` / `prune` | 快照与回滚 |
 
 所有命令都接受 `--home`、`--workspace`、`--json`。退出码：`0` 成功，`1` 错误，
@@ -230,7 +245,7 @@ python demo/run_demo.py
 
 - ✅ 导入、分发、双向同步、冲突检测、备份、校验、对比、恢复；
 - ✅ 六个适配器（附诚实的验证等级）、安全扫描、JSON 契约；
-- ✅ 25 个场景测试，全部跑在一次性假 home 上；
+- ✅ 26 个场景测试，全部跑在一次性假 home 上；
 - 🚧 DSH Plugin 面板**只有规格，尚未实现**——这里不声称存在 GUI；
 - 🚧 插件安装委托给各工具原生命令（暂不自动安装）；
 - ⚠️ Gemini CLI 与 Cursor 只按官方文档/路径映射验证，未跑真实运行时；

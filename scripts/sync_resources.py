@@ -235,6 +235,9 @@ def run_distribute(home, agents, workspace, scope, journal, args, resume) -> lis
                             "agent": agent["id"]})
             results.append(outcome)
             if not args.dry_run:
+                if outcome.get("action") in ("install", "adopt"):
+                    home.log_event("distribute", resource_id=record["id"], agent=agent["id"],
+                                   mode=args.mode, outcome=outcome.get("action"))
                 mark(journal, home, key, outcome.get("action") not in ("error", "conflict"))
     return results
 

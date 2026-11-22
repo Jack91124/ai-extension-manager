@@ -5,6 +5,15 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.5] - 2026-11-22
+
+### Added
+
+- `aem report`: renders the whole library into one self-contained HTML file — resources by type,
+  every tracked target with its live state (in-sync / drifted / missing), detected tools, and the
+  recent activity log. No network calls; `--json` returns the same data for scripting.
+  Screenshot: `docs/report.png`. Scenario test 26 covers it (26 tests total).
+
 ### Documentation
 
 - GitHub Pages landing site: <https://jack91124.github.io/ai-extension-manager/> (English) and
