@@ -1,19 +1,22 @@
 ---
 name: ai-extension-manager
 description: >-
-  Sync AI agent skills, rules and MCP configs across Claude Code, Codex, Gemini CLI, Cursor, VS Code Copilot
-  and DSH from one local library, with hash-based conflict detection, backups and security review. Use when
-  the user wants to install a skill or plugin from GitHub, keep skills in sync between AI tools, import what
-  a tool already has, compare or repair drifted copies, resolve a two-way sync conflict, or back up / restore
-  AI resources. Triggers: "把这个 GitHub 技能装到 Claude Code 和 Codex", "把六个工具新增的 Skill 导入中央库",
-  "同步/备份/恢复 AI 扩展". Do not use it for editing application code that merely mentions MCP or skills.
+  One local library for AI agent skills, rules and MCP configs, with two-way sync across Claude Code, Codex,
+  Gemini CLI, Cursor, VS Code Copilot and DSH. SHA-256 state tracking per copy, per-target backups, and
+  conflicts that stop with exit code 2 instead of silently overwriting your edits. Use when the user wants to
+  install an agent skill from GitHub, copy or move skills between AI tools, pull what a tool already has into
+  a shared library, check which tool copies drifted, repair or reinstall a copy, resolve a two-way sync
+  conflict, or back up and restore AI resources. Triggers: "sync skills across my AI tools", "copy this skill
+  to Cursor and Codex", "install this GitHub skill", "把这个 GitHub 技能装到 Claude Code 和 Codex",
+  "把六个工具新增的 Skill 导入中央库", "同步/备份/恢复 AI 扩展". Not for editing application code that
+  merely mentions MCP or skills.
 license: MIT
 compatibility: Python 3.9+ (standard library only), git for remote repositories, Windows/macOS/Linux. Optional DSH Plugin is NOT included; scripts are the execution layer until that plugin exists.
 allowed-tools: Read Write Edit Bash Glob Grep
 metadata:
   display_name: AI Extension Manager
   display_name_zh: AI 扩展资源管理助手
-  version: 1.0.5
+  version: 1.0.6
   category: developer-tools
   phase: v1.0 (CLI + Agent Skill; DSH Plugin specified, not built)
 ---

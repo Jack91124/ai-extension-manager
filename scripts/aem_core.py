@@ -21,7 +21,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 SCHEMA_VERSION = 1
-TOOL_VERSION = "1.0.5"
+TOOL_VERSION = "1.0.6"
 VCS_DIRS = {".git", ".svn", ".hg", ".bzr", "__pycache__", ".mypy_cache", ".pytest_cache"}
 SYSTEM_JUNK = {".DS_Store", "Thumbs.db", "desktop.ini"}
 

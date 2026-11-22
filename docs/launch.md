@@ -167,6 +167,9 @@ adjectives, one PR at a time, and reply to review comments the same day.
 
 ## 8. Social preview · 仓库社交预览图
 
+Copy-paste post drafts (X thread, Reddit, Show HN, 中文社区, awesome-list PR template) live in
+[`posts.md`](posts.md). Nothing there is posted automatically — you paste, you post.
+
 GitHub has no API for this. Settings → General → Social preview → **Upload an image** → `docs/og.png`
 (1200x630, 697 KB). This is what shows up when the link is pasted into X, Slack, Discord or Reddit —
 without it the preview is a generic grey box, and link cards get measurably fewer clicks.

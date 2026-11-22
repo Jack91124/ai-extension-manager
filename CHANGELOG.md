@@ -5,9 +5,17 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.6] - 2026-11-22
+
+### Changed
+
+- Rewrote the skill description around what people actually search for (one library, two-way sync, install
+  a skill from GitHub, copy skills between tools, drifted copies, conflicts) instead of listing features.
+
 ### Documentation
 
-- Both landing pages show the `aem report` page and what it answers.
+- `docs/launch/posts.md`: copy-paste launch copy — X thread, Reddit post, Show HN, Chinese community post,
+  awesome-list PR template, image assets and posting order. Nothing in it is posted automatically.
 
 ## [1.0.5] - 2026-11-22
 
