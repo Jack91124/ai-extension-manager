@@ -8,6 +8,7 @@
 them to Claude Code, OpenAI Codex, Gemini CLI, Cursor, VS Code Copilot and DSH. It decides what
 changed using SHA-256 content hashes and per-target sync records — never "the newest file wins".
 
+[![skills.sh](https://skills.sh/b/Jack91124/ai-extension-manager)](https://www.skills.sh/jack91124/ai-extension-manager)
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
