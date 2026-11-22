@@ -71,6 +71,20 @@ aem scan [--agent ID] [--require ID] [--workspace PATH] [--json]
 
 `--require` exits `1` unless that tool is installed (useful in scripts).
 
+### `aem dirs` (alias `paths`)
+
+Same registry as `aem scan`, but prints what you normally have to ask: the resolved personal and
+project skill folders, MCP config files and rules files for each tool, with scope, existence and the
+plugin mechanism. Read-only, works without a library, and respects `--home` / `--workspace`.
+
+```bash
+aem dirs                              # human output, all six tools
+aem dirs --agent claude --existing    # one installed tool
+aem dirs --workspace ./my-project --json
+```
+
+An unknown `--agent` is reported in `unknown_agents` and exits `1`.
+
 ### `aem detect` / `inspect`
 
 Classifies a path, a URL or an installed tool's resources.

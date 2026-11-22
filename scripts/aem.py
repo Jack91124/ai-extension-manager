@@ -10,6 +10,7 @@ Commands
   aem status                   one table: resource x agent sync state
   aem report                   single-file HTML dashboard of the library and its targets
   aem scan | agents            detect AI tools and their resource directories
+  aem dirs | paths             resolved skills / MCP / rules paths for each tool
   aem detect | inspect         classify a path / URL / installed resources
   aem import | add             import skill / plugin / MCP / rules
   aem sync                     two-way sync (import, distribute, both)
@@ -45,6 +46,7 @@ Usage:
   aem status [--agent ID]       show resource x agent sync state
   aem report [--out FILE]       write a single-file HTML dashboard (screenshot-friendly)
   aem scan [--agent ID]         detect AI tools and directories
+  aem dirs [--agent ID]        resolved skills / MCP / rules paths on this machine
   aem detect --path PATH        classify a skill / plugin / MCP / rules
   aem import --source PATH      import a resource into the central library
                                (--pick PATH for one of many, --all for every match)
@@ -376,6 +378,99 @@ def cmd_status(argv) -> int:
 
 
 # ---------------------------------------------------------------------------
+# dirs - print the resolved skill / MCP / rules paths on THIS machine
+# ---------------------------------------------------------------------------
+
+DIRS_ORDER = ("claude", "codex", "gemini", "cursor", "copilot", "dsh")
+
+
+def _dirs_entry(agent: dict, workspace) -> dict:
+    detected = core.detect_agent(agent, workspace)
+    mcp = []
+    for config in (agent.get("mcp") or {}).get("configs") or []:
+        scope = config.get("scope") or "user"
+        path = core.resolve_agent_path(agent, config.get("path") or "", workspace, scope)
+        mcp.append({"kind": config.get("kind"), "scope": scope,
+                    "path": str(path) if path else None, "pointer": config.get("pointer"),
+                    "exists": bool(path and path.exists())})
+    rules = []
+    for raw in (agent.get("rules") or {}).get("paths") or []:
+        scope = "user" if str(raw).startswith("~") else "workspace"
+        path = core.resolve_agent_path(agent, raw, workspace, scope)
+        rules.append({"scope": scope, "path": str(path) if path else None,
+                      "exists": bool(path and path.exists())})
+    plugin = agent.get("plugin") or {}
+    return {
+        "id": agent["id"], "label": agent["label"],
+        "status": detected["status"], "verification": agent.get("verification"),
+        "cli": detected.get("cli"), "cli_version": detected.get("cli_version"),
+        "home": detected.get("home"), "home_env": agent.get("home_env"),
+        "skills": detected["skills"], "mcp": mcp, "rules": rules,
+        "plugin": {"supported": plugin.get("supported"), "system": plugin.get("system"),
+                   "manifests": plugin.get("manifests") or [], "install": plugin.get("install")},
+        "docs": agent.get("docs"),
+    }
+
+
+def cmd_dirs(argv) -> int:
+    parser = argparse.ArgumentParser(
+        prog="aem dirs",
+        description="Print where each AI tool keeps skills, MCP configs and rules on this machine")
+    parser.add_argument("--home", default=None)
+    parser.add_argument("--workspace", default=None)
+    parser.add_argument("--agent", action="append", default=None, help="limit to an agent id (repeatable)")
+    parser.add_argument("--existing", action="store_true", help="only tools that are installed or configured")
+    parser.add_argument("--json", action="store_true")
+    args = parser.parse_args(argv)
+    home = core.Home(args.home)
+    workspace = core.workspace_path(args) or Path.cwd()
+    configs = core.load_agent_configs(home)
+    order = [agent_id for agent_id in DIRS_ORDER if agent_id in configs]
+    order += [agent_id for agent_id in configs if agent_id not in DIRS_ORDER]
+    agents = []
+    for agent_id in order:
+        if args.agent and agent_id not in args.agent:
+            continue
+        entry = _dirs_entry(configs[agent_id], workspace)
+        if args.existing and entry["status"] == "absent":
+            continue
+        agents.append(entry)
+    missing = sorted(set(args.agent or []) - set(configs))
+    result = {"ok": not missing, "generated_at": core.utcnow(),
+              "home": str(home.root), "workspace": str(workspace),
+              "agents": agents, "unknown_agents": missing}
+    lines = ["aem dirs - this machine, paths resolved from metadata/agents.json",
+             "workspace " + str(workspace) + "   library " + str(home.root)]
+    if not agents:
+        lines.append("no tools matched" + ((" (unknown: " + ", ".join(missing) + ")") if missing else ""))
+    for entry in agents:
+        head = entry["label"] + "  " + entry["status"]
+        if entry.get("cli_version"):
+            head += "  " + str(entry["cli_version"])
+        if entry.get("verification"):
+            head += "  (" + str(entry["verification"]) + ")"
+        lines.append("")
+        lines.append(head)
+        for item in entry["skills"]:
+            detail = "exists, " + str(item["skill_count"]) + " skill(s)" if item["exists"] else "missing"
+            lines.append("  skills  " + item["scope"].ljust(9) + " " +
+                         str(item["path"]).ljust(58) + "  " + detail)
+        for item in entry["mcp"]:
+            detail = "exists" if item["exists"] else "missing"
+            lines.append("  mcp     " + str(item["scope"] or "").ljust(9) + " " +
+                         str(item["path"]).ljust(58) + "  " + detail)
+        for item in entry["rules"]:
+            detail = "exists" if item["exists"] else "missing"
+            lines.append("  rules   " + str(item["scope"]).ljust(9) + " " +
+                         str(item["path"]).ljust(58) + "  " + detail)
+        plugin = entry["plugin"]
+        if plugin.get("supported") in ("yes", "unverified"):
+            lines.append("  plugins           " + str(plugin.get("system") or "manual") +
+                         ("  - " + str(plugin["install"]) if plugin.get("install") else ""))
+    _human(result, lines, args.json)
+    return 0 if not missing else 1
+
+# ---------------------------------------------------------------------------
 # report - a single-file HTML dashboard you can screenshot or commit
 # ---------------------------------------------------------------------------
 
@@ -628,6 +723,8 @@ def main(argv=None) -> int:
         return cmd_status(rest)
     if command == "report":
         return cmd_report(rest)
+    if command in ("dirs", "paths"):
+        return cmd_dirs(rest)
     if command in TASK_COMMANDS:
         module_name, prefix = TASK_COMMANDS[command]
         try:

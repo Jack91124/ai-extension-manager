@@ -851,6 +851,53 @@ def test_27_cli_import_pick(case: Case) -> str:
 
 
 # ---------------------------------------------------------------------------
+# 28. aem dirs answers "where does each tool keep skills / MCP / rules"
+# ---------------------------------------------------------------------------
+
+@test
+def test_28_cli_dirs(case: Case) -> str:
+    case.make_skill(case.home(".claude", "skills"), "dirs-demo")
+    completed, data = case.run("aem.py", "dirs", "--json")
+    check_exit(completed, 0, "aem dirs")
+    check(data["ok"] is True, "aem dirs should be ok on a machine with tool homes")
+    ids = [agent["id"] for agent in data["agents"]]
+    expected = ["claude", "codex", "gemini", "cursor", "copilot", "dsh"]
+    check(ids == expected, "agents should follow the documented order, got " + json.dumps(ids))
+    claude = data["agents"][0]
+    check(claude["label"] == "Claude Code", "first entry should be Claude Code")
+    user_skills = [item for item in claude["skills"] if item["scope"] == "user"]
+    check(user_skills and Path(user_skills[0]["path"]) == case.home(".claude", "skills"),
+          "user skills path should resolve under the fake home")
+    check(user_skills[0]["exists"] is True and user_skills[0]["skill_count"] == 1,
+          "the one fixture skill should be counted, got " + json.dumps(user_skills[0]))
+    project_skills = [item for item in claude["skills"] if item["scope"] == "workspace"]
+    check(project_skills and Path(project_skills[0]["path"]) == case.root / ".claude" / "skills",
+          "workspace skills path should resolve under the current directory")
+    check(project_skills[0]["exists"] is False, "the fake project must not have project skills")
+    check(any(str(item["path"]).endswith(".claude.json") for item in claude["mcp"]),
+          "claude MCP config should be listed")
+    check(any(str(item["path"]).endswith("CLAUDE.md") for item in claude["rules"]),
+          "claude rules file should be listed")
+    check(claude["plugin"]["system"] == "claude-marketplace", "claude plugin mechanism should be reported")
+    completed, data = case.run("aem.py", "dirs", "--json", "--agent", "copilot")
+    check_exit(completed, 0, "dirs --agent")
+    check([agent["id"] for agent in data["agents"]] == ["copilot"], "agent filter should keep one entry")
+    completed, data = case.run("aem.py", "dirs", "--json", "--existing")
+    check_exit(completed, 0, "dirs --existing")
+    check(not any(agent["status"] == "absent" for agent in data["agents"]),
+          "--existing must drop tools that are not installed")
+    completed, data = case.run("aem.py", "dirs", "--json", "--agent", "nope")
+    check_exit(completed, 1, "unknown agent must exit 1")
+    check(data["ok"] is False and data["unknown_agents"] == ["nope"],
+          "unknown agent should be reported, got " + json.dumps(data.get("unknown_agents")))
+    completed, _ = case.run("aem.py", "dirs")
+    check_exit(completed, 0, "human dirs output")
+    check("Claude Code" in completed.stdout and "skills" in completed.stdout,
+          "human output should name tools and path kinds")
+    return "aem dirs resolves skills/MCP/rules paths per tool with scope, filters and unknown-agent errors"
+
+
+# ---------------------------------------------------------------------------
 # runner
 # ---------------------------------------------------------------------------
 

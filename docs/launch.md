@@ -68,7 +68,7 @@ I built aem: one local library, six adapters, SHA-256 state tracking.
 - only target changed -> import it back
 - both changed -> exit 2, write nothing
 
-27 scenario tests, CI on 3 OS. No deps. MIT.
+28 scenario tests, CI on 3 OS. No deps. MIT.
 
 https://github.com/Jack91124/ai-extension-manager
 
@@ -113,7 +113,7 @@ per-file unified diffs; restore brings any snapshot back.
 Scope is deliberately boring: skills, rules, MCP server definitions. Plugins are
 detected but installed through each vendor's own mechanism, never copied across tools.
 
-Python 3.9+, no dependencies, local-first. 27 scenario tests, CI on 3 OS.
+Python 3.9+, no dependencies, local-first. 28 scenario tests, CI on 3 OS.
 Happy to answer questions about the per-tool path verification — some of it is
 documented by vendors, some is marked "partial" in the support matrix on purpose.
 ```

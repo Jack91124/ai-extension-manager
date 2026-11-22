@@ -219,6 +219,7 @@ Read the full policy in [references/security-policy.md](references/security-poli
 | `aem doctor` | diagnose Python, paths, registry, schema, locks, tools, disk |
 | `aem status` | one table of every resource × tool, `--strict` fails on drift |
 | `aem scan` | detect tools, versions and skill folders |
+| `aem dirs` | resolve the real skills / MCP / rules paths for every tool, with scope and existence |
 | `aem detect --path P` | classify P as skill / plugin / MCP / rules |
 | `aem import --source P` | import a local path or GitHub URL (`--pick` / `--all` for bundles) |
 | `aem sync --direction import\|distribute\|both` | two-way sync with conflict detection |

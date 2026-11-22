@@ -16,7 +16,7 @@ allowed-tools: Read Write Edit Bash Glob Grep
 metadata:
   display_name: AI Extension Manager
   display_name_zh: AI 扩展资源管理助手
-  version: 1.0.9
+  version: 1.0.10
   category: developer-tools
   phase: v1.0 (CLI + Agent Skill; DSH Plugin specified, not built)
 ---
@@ -48,6 +48,7 @@ Without installing, every command also works as `python scripts/aem.py <command>
 | Command | Purpose |
 |---|---|
 | `aem scan` | detect the six tools and their skill directories |
+| `aem dirs` | print the resolved skills / MCP / rules paths per tool (scope, existence) |
 | `aem detect --path P` | classify P as skill / plugin / MCP / rules |
 | `aem import --source P` | import into the central library (`--pick PATH` / `--all` when a source bundles several resources) |
 | `aem sync --direction distribute --agent claude --agent codex --resource NAME` | distribute |

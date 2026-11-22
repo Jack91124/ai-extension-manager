@@ -216,6 +216,7 @@ aem restore --resource my-skill --version <label>                               
 | `aem doctor` | 诊断 Python、路径、注册表、schema、锁、工具、磁盘 |
 | `aem status` | 一张表列出每个资源 × 工具，`--strict` 遇漂移即失败 |
 | `aem scan` | 探测工具、版本和 Skill 目录 |
+| `aem dirs` | 解析六个工具真实的 skills / MCP / rules 路径（含 scope 与是否存在） |
 | `aem detect --path P` | 判断 P 是 Skill / Plugin / MCP / 规则 |
 | `aem import --source P` | 导入本地路径或 GitHub URL（多资源源用 `--pick` / `--all`） |
 | `aem sync --direction import|distribute|both` | 双向同步并检测冲突 |

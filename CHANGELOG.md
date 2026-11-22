@@ -5,6 +5,14 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.10] - 2026-11-22
+
+### Added
+
+- `aem dirs` (alias `aem paths`) prints the resolved personal and project skill folders, MCP
+  config files and rules files for all six tools, with scope and existence, straight from the same
+  agent registry `aem scan` and the public paths page use.
+
 ## [1.0.9] - 2026-11-22
 
 ### Fixed
