@@ -832,7 +832,7 @@ def test_27_cli_import_pick(case: Case) -> str:
     item = data["results"][0]
     check(item["status"] == "multiple-candidates", "expected multiple-candidates, got " + str(item["status"]))
     check(item["count"] == 2, "expected two candidates, got " + str(item.get("count")))
-    paths = [entry["path"] for entry in item["candidates"]]
+    paths = sorted(entry["path"] for entry in item["candidates"])
     check(paths == ["skills/alpha", "skills/beta"], "candidate paths should be source relative, got " + json.dumps(paths))
     check(case.registry() == {}, "nothing may be imported before the user picks")
     completed, data = case.import_skill(bundle, "--pick", "skills/alpha")

@@ -5,6 +5,13 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.9] - 2026-11-22
+
+### Fixed
+
+- The multi-resource import test compares candidate paths as a set, so CI is stable on
+  case-insensitive macOS filesystems where directory listing order differs.
+
 ## [1.0.8] - 2026-11-22
 
 ### Added
