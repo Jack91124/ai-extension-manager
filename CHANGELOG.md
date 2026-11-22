@@ -3,6 +3,13 @@
 All notable changes are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions use [SemVer](https://semver.org/).
 
+## [Unreleased]
+
+### Documentation
+
+- GitHub Pages landing site (`docs/index.html`): live at
+  <https://jack91124.github.io/ai-extension-manager/>, linked from both READMEs.
+
 ## [1.0.4] - 2026-11-22
 
 ### Added

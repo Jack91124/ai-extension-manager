@@ -8,6 +8,8 @@
 OpenAI Codex、Gemini CLI、Cursor、VS Code Copilot 和 DSH。它用 SHA-256 内容哈希和每个目标的
 同步记录来判断"谁变了"，而不是"谁的文件更新就覆盖谁"。
 
+**落地页：** <https://jack91124.github.io/ai-extension-manager/>
+
 [![skills.sh](https://skills.sh/b/Jack91124/ai-extension-manager)](https://www.skills.sh/jack91124/ai-extension-manager)
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
