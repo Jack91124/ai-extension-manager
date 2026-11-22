@@ -178,6 +178,21 @@ aem restore --resource my-skill --version <label>                               
 插件代码**绝不跨工具复制**。插件通过目标工具自己的机制安装；`aem` 只返回准确命令，
 对工具专属插件拒绝跨工具搬运。
 
+## 各工具的技能目录
+
+| 工具 | 用户级技能目录 | 项目级技能目录 | MCP 配置 |
+|---|---|---|---|
+| **Claude Code** | `~/.claude/skills` | `.claude/skills` | `~/.claude.json`、`.mcp.json` |
+| **OpenAI Codex** | `~/.codex/skills`、`~/.agents/skills` | `.agents/skills`、`.codex/skills` | `~/.codex/config.toml` |
+| **Gemini CLI** | `~/.gemini/skills`、`~/.agents/skills` | `.gemini/skills`、`.agents/skills` | `~/.gemini/settings.json` |
+| **Cursor** | `~/.cursor/skills` | `.cursor/skills` | `~/.cursor/mcp.json` |
+| **VS Code / Copilot** | `~/.copilot/skills` | `.github/skills` | `~/.copilot/mcp-config.json` |
+| **DSH** | `~/.dsh/skills`、`~/.agents/skills` | `.dsh/skills`、`.agents/skills` | 通过已安装插件 |
+
+这些路径与 `aem scan` 读取的是同一份注册表，所以扫描结果和上表永远不会不一致；它还会告诉你
+这些目录在**你这台机器上**是否存在。完整版（规则文件、插件机制、官方文档链接、逐行验证等级）见
+**[jack91124.github.io/ai-extension-manager/where.html](https://jack91124.github.io/ai-extension-manager/where.html)**，
+面向 AI 抓取的机器可读摘要见 [docs/llms.txt](docs/llms.txt)。
 ## 默认安全
 
 - **导入前扫描**——危险 Shell 模式、高风险脚本、密钥；高风险需 `--allow-risk`，
@@ -236,6 +251,8 @@ python demo/run_demo.py
 | [references/security-policy.md](references/security-policy.md) | 扫描、密钥、确认策略 |
 | [references/installation-methods.md](references/installation-methods.md) | 复制 / 链接 / 工具原生安装 |
 | [references/dsh-plugin-spec.md](references/dsh-plugin-spec.md) | 规划中的 GUI/执行插件（尚未实现） |
+| [docs/where.html](https://jack91124.github.io/ai-extension-manager/where.html) | 各工具技能 / MCP / 规则目录（生成页） |
+| [docs/llms.txt](docs/llms.txt) | 面向 AI 抓取的机器可读摘要 |
 | [docs/launch.md](docs/launch.md) | 发布定位、文案与渠道清单 |
 | [docs/ROADMAP.md](docs/ROADMAP.md) | 后续路线图 |
 

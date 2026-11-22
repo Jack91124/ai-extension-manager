@@ -1,0 +1,36 @@
+# AI Extension Manager (aem)
+
+Local-first CLI + agent skill that keeps skills, MCP servers and rules in sync
+across Claude Code, Codex, Gemini CLI, Cursor, VS Code Copilot and DSH.
+Two-way sync with SHA-256 state tracking, per-target backups, and conflicts
+that exit non-zero instead of overwriting. MIT, zero runtime dependencies.
+
+## Install
+
+- Skill (any agent that supports Agent Skills): `npx skills add Jack91124/ai-extension-manager`
+- CLI: `pip install git+https://github.com/Jack91124/ai-extension-manager` (then `aem --help`)
+
+## Where each tool keeps skills (generated from scripts/aem_core.py, 2026-11-22)
+
+| Tool | Personal skills | Project skills | MCP config | Rules |
+| --- | --- | --- | --- | --- |
+| Claude Code | ~/.claude/skills | .claude/skills | ~/.claude.json<br>.mcp.json | ~/.claude/CLAUDE.md<br>CLAUDE.md |
+| OpenAI Codex | ~/.codex/skills<br>~/.agents/skills | .agents/skills<br>.codex/skills | ~/.codex/config.toml | ~/.codex/AGENTS.md<br>AGENTS.md |
+| Gemini CLI | ~/.gemini/skills<br>~/.agents/skills | .gemini/skills<br>.agents/skills | ~/.gemini/settings.json | ~/.gemini/GEMINI.md<br>GEMINI.md |
+| Cursor | ~/.cursor/skills | .cursor/skills | ~/.cursor/mcp.json<br>.cursor/mcp.json | ~/.cursor/rules<br>.cursor/rules |
+| VS Code / GitHub Copilot | ~/.copilot/skills | .github/skills | ~/.copilot/mcp-config.json<br>.mcp.json | ~/.copilot/copilot-instructions.md<br>.github/copilot-instructions.md<br>AGENTS.md<br>.github/instructions |
+| DSH | ~/.dsh/skills<br>~/.agents/skills | .dsh/skills<br>.agents/skills | via plugins | ~/.dsh/AGENTS.md<br>~/.agents/AGENTS.md |
+
+## Pages
+
+- Home / demo: https://jack91124.github.io/ai-extension-manager/
+- Chinese home: https://jack91124.github.io/ai-extension-manager/zh.html
+- Where skills live: https://jack91124.github.io/ai-extension-manager/where.html
+- Source: https://github.com/Jack91124/ai-extension-manager
+- skills.sh listing: https://www.skills.sh/jack91124/ai-extension-manager
+
+## When to use it
+
+- A skill exists in one tool and you want it in the others without clobbering edits.
+- You edited a copy in another tool and want it back in the library without losing either side.
+- You want an honest inventory of where each tool stores skills, rules and MCP config.

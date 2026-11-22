@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where Claude Code, Codex, Gemini CLI, Cursor, Copilot and DSH keep skills, MCP configs and rules</title>
+<meta name="description" content="Exact skills, MCP and rules directories for Claude Code, OpenAI Codex, Gemini CLI, Cursor, VS Code Copilot and DSH — with plugin mechanisms and honest verification levels. Generated from the aem scanner registry.">
+<meta property="og:title" content="Where each AI tool keeps its skills, MCP configs and rules">
+<meta property="og:description" content="One table: personal skills dirs, project skills dirs, MCP config files, rules files and plugin mechanisms for six AI coding tools.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://jack91124.github.io/ai-extension-manager/where.html">
+<meta property="og:image" content="https://jack91124.github.io/ai-extension-manager/og.png">
+<link rel="canonical" href="https://jack91124.github.io/ai-extension-manager/where.html">
+<link rel="alternate" hreflang="en" href="https://jack91124.github.io/ai-extension-manager/where.html">
+<link rel="alternate" hreflang="zh-CN" href="https://jack91124.github.io/ai-extension-manager/zh.html">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b1020'/><text x='50' y='68' font-size='52' font-family='monospace' font-weight='700' fill='%2364d2ff' text-anchor='middle'>aem</text></svg>">
+<style>
+:root{--bg:#080b14;--panel:#0f1524;--line:#1e2740;--fg:#e8eefc;--dim:#93a0bd;--accent:#5eead4;--blue:#64d2ff;--amber:#fbbf24}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 ui-sans-serif,-apple-system,"Segoe UI",Inter,Roboto,sans-serif}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+nav{display:flex;align-items:center;justify-content:space-between;padding:20px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(8,11,20,.88);backdrop-filter:blur(8px);z-index:10}
+.logo{font-weight:800;letter-spacing:.5px;font-size:20px}.logo span{color:var(--blue)}
+nav .links{display:flex;gap:22px;font-size:14px}nav .links a{color:var(--dim)}nav .links a:hover{color:var(--fg)}
+.hero{padding:64px 0 40px;background:radial-gradient(900px 420px at 15% -10%,rgba(100,210,255,.16),transparent 60%),radial-gradient(700px 360px at 90% 0%,rgba(94,234,212,.12),transparent 60%)}
+h1{font-size:clamp(32px,5vw,52px);line-height:1.08;letter-spacing:-1.2px;margin:0 0 18px;font-weight:800}
+.lede{font-size:clamp(17px,2vw,20px);color:#c3cee4;max-width:820px;margin:0 0 12px}
+.sub{color:var(--dim);max-width:820px;margin:0}
+section{padding:46px 0;border-top:1px solid var(--line)}
+h2{font-size:clamp(22px,3vw,30px);margin:0 0 8px;letter-spacing:-.5px}
+h2+p.kicker{color:var(--dim);margin:0 0 24px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--dim);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.6px}
+td code{color:#dbe4f5;font-size:13px}
+.dim{color:var(--dim);font-size:12.5px}
+.pill{display:inline-block;font-size:11px;padding:1px 8px;border-radius:999px;border:1px solid;white-space:nowrap;font-weight:600;vertical-align:middle}
+.ok{color:var(--accent);border-color:rgba(94,234,212,.4);background:rgba(94,234,212,.08)}
+.partial{color:var(--amber);border-color:rgba(251,191,36,.4);background:rgba(251,191,36,.08)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+.card h3{margin:0 0 12px;font-size:17px;display:flex;gap:8px;align-items:center}
+.card h4{margin:12px 0 3px;font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--dim)}
+.card p{margin:0;font-size:13px;line-height:1.7}
+.card code{font-size:12.5px;color:#dbe4f5}
+pre.quick{background:#05080f;border:1px solid var(--line);border-radius:12px;padding:18px;overflow-x:auto;font-size:13px;line-height:1.8;margin:0}
+pre.quick .c{color:#6f7e9e}
+footer{padding:36px 0 60px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px;display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between}
+@media(max-width:640px){nav .links{gap:12px;font-size:13px}nav .links a.hide-sm{display:none}table{font-size:12.5px}th,td{padding:9px 7px}}
+</style>
+</head>
+<body>
+<nav class="wrap">
+  <div class="logo"><span>aem</span> AI Extension Manager</div>
+  <div class="links">
+    <a href="./">Home</a>
+    <a href="zh.html">简体中文</a>
+    <a class="hide-sm" href="https://github.com/Jack91124/ai-extension-manager">GitHub</a>
+    <a class="hide-sm" href="https://www.skills.sh/jack91124/ai-extension-manager">skills.sh</a>
+  </div>
+</nav>
+
+<header class="hero"><div class="wrap">
+  <h1>Where each AI tool keeps its skills, MCP configs and rules</h1>
+  <p class="lede">Exact personal and project directories for Claude Code, OpenAI Codex, Gemini CLI, Cursor, VS Code / GitHub Copilot and DSH — plus each tool’s MCP config file, rules files and plugin mechanism.</p>
+  <p class="sub">Generated from the same registry <code>aem scan</code> uses (6 tools, 2026-11-22), so this page cannot drift from what the CLI actually reads. Every row carries its verification level: <span class="pill ok">verified locally</span> means a real install was inspected; <span class="pill partial">official docs</span> or <span class="pill partial">partial</span> means the paths come from vendor documentation and were not exercised on this machine.</p>
+</div></header>
+
+<section><div class="wrap">
+  <h2>The short answer</h2>
+  <p class="kicker">All six tools read the Agent Skills format (<code>SKILL.md</code> + <code>scripts/</code>, <code>references/</code>, <code>assets/</code>). Only the directory differs — and Gemini CLI, Codex and DSH also accept the shared <code>~/.agents/skills</code> alias.</p>
+  <div style="overflow-x:auto"><table>
+    <thead><tr><th>Tool</th><th>Personal skills</th><th>Project skills</th><th>MCP config</th><th>Rules</th><th>Plugins</th><th>Verified</th></tr></thead>
+    <tbody>
+<tr><td><b>Claude Code</b><div class="dim">claude</div></td><td><code style="font-size:13px">~/.claude/skills</code></td><td><code>.claude/skills</code></td><td><code>~/.claude.json</code><br><code>.mcp.json</code></td><td><code>~/.claude/CLAUDE.md</code><br><code>CLAUDE.md</code></td><td>claude marketplace</td><td><span class="pill ok">verified locally</span></td></tr>
+<tr><td><b>OpenAI Codex</b><div class="dim">codex</div></td><td><code style="font-size:13px">~/.codex/skills</code><br><code style="font-size:13px">~/.agents/skills</code></td><td><code>.agents/skills</code><br><code>.codex/skills</code></td><td><code>~/.codex/config.toml</code></td><td><code>~/.codex/AGENTS.md</code><br><code>AGENTS.md</code></td><td>codex marketplace</td><td><span class="pill ok">verified locally</span></td></tr>
+<tr><td><b>Gemini CLI</b><div class="dim">gemini</div></td><td><code style="font-size:13px">~/.gemini/skills</code><br><code style="font-size:13px">~/.agents/skills</code></td><td><code>.gemini/skills</code><br><code>.agents/skills</code></td><td><code>~/.gemini/settings.json</code></td><td><code>~/.gemini/GEMINI.md</code><br><code>GEMINI.md</code></td><td>gemini extension</td><td><span class="pill partial">official docs</span></td></tr>
+<tr><td><b>Cursor</b><div class="dim">cursor</div></td><td><code style="font-size:13px">~/.cursor/skills</code></td><td><code>.cursor/skills</code></td><td><code>~/.cursor/mcp.json</code><br><code>.cursor/mcp.json</code></td><td><code>~/.cursor/rules</code><br><code>.cursor/rules</code></td><td>cursor-plugin (unverified CLI path)</td><td><span class="pill partial">partial</span></td></tr>
+<tr><td><b>VS Code / GitHub Copilot</b><div class="dim">copilot</div></td><td><code style="font-size:13px">~/.copilot/skills</code></td><td><code>.github/skills</code></td><td><code>~/.copilot/mcp-config.json</code><br><code>.mcp.json</code></td><td><code>~/.copilot/copilot-instructions.md</code><br><code>.github/copilot-instructions.md</code><br><code>AGENTS.md</code><br><code>.github/instructions</code></td><td>vscode agent plugin</td><td><span class="pill ok">official docs + local</span></td></tr>
+<tr><td><b>DSH</b><div class="dim">dsh</div></td><td><code style="font-size:13px">~/.dsh/skills</code><br><code style="font-size:13px">~/.agents/skills</code></td><td><code>.dsh/skills</code><br><code>.agents/skills</code></td><td><span class="dim">No standalone MCP config file was found on this machine; MCP usually arrives through installed plugins.</span></td><td><code>~/.dsh/AGENTS.md</code><br><code>~/.agents/AGENTS.md</code></td><td>dsh bundle</td><td><span class="pill ok">verified locally</span></td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Tool by tool</h2>
+  <p class="kicker">Same data, with the plugin install command and the vendor documentation each path was checked against.</p>
+  <div class="cards">
+<div class="card">
+  <h3>Claude Code <span class="pill ok">verified locally</span></h3>
+  <h4>Skills — personal</h4><p><code>~/.claude/skills</code></p>
+  <h4>Skills — project</h4><p><code>.claude/skills</code></p>
+  <h4>MCP config</h4><p><code>~/.claude.json</code><br><code>.mcp.json</code></p>
+  <h4>Rules / instructions</h4><p><code>~/.claude/CLAUDE.md</code><br><code>CLAUDE.md</code></p>
+  <h4>Plugins</h4><p>claude marketplace<br><code>claude plugin install &lt;plugin&gt;@&lt;marketplace&gt; (add marketplaces with claude plugin marketplace add &lt;repo&gt;)</code></p>
+  <p class="dim">Source: <a href="https://code.claude.com/docs/en/skills">https://code.claude.com/docs/en/skills</a></p>
+</div>
+<div class="card">
+  <h3>OpenAI Codex <span class="pill ok">verified locally</span></h3>
+  <h4>Skills — personal</h4><p><code>~/.codex/skills</code><br><code>~/.agents/skills</code></p>
+  <h4>Skills — project</h4><p><code>.agents/skills</code><br><code>.codex/skills</code></p>
+  <h4>MCP config</h4><p><code>~/.codex/config.toml</code></p>
+  <h4>Rules / instructions</h4><p><code>~/.codex/AGENTS.md</code><br><code>AGENTS.md</code></p>
+  <h4>Plugins</h4><p>codex marketplace<br><code>Configure [marketplaces.&lt;id&gt;] and [plugins.&quot;&lt;name&gt;@&lt;id&gt;&quot;] in ~/.codex/config.toml, or use the Codex app marketplace UI.</code></p>
+  <p class="dim">Source: <a href="https://developers.openai.com/codex/">https://developers.openai.com/codex/</a></p>
+</div>
+<div class="card">
+  <h3>Gemini CLI <span class="pill partial">official docs</span></h3>
+  <h4>Skills — personal</h4><p><code>~/.gemini/skills</code><br><code>~/.agents/skills</code></p>
+  <h4>Skills — project</h4><p><code>.gemini/skills</code><br><code>.agents/skills</code></p>
+  <h4>MCP config</h4><p><code>~/.gemini/settings.json</code></p>
+  <h4>Rules / instructions</h4><p><code>~/.gemini/GEMINI.md</code><br><code>GEMINI.md</code></p>
+  <h4>Plugins</h4><p>gemini extension<br><code>gemini extensions install &lt;github-url|local-path&gt;</code></p>
+  <p class="dim">Source: <a href="https://geminicli.com/docs/cli/skills">https://geminicli.com/docs/cli/skills</a></p>
+</div>
+<div class="card">
+  <h3>Cursor <span class="pill partial">partial</span></h3>
+  <h4>Skills — personal</h4><p><code>~/.cursor/skills</code></p>
+  <h4>Skills — project</h4><p><code>.cursor/skills</code></p>
+  <h4>MCP config</h4><p><code>~/.cursor/mcp.json</code><br><code>.cursor/mcp.json</code></p>
+  <h4>Rules / instructions</h4><p><code>~/.cursor/rules</code><br><code>.cursor/rules</code></p>
+  <h4>Plugins</h4><p>cursor-plugin (unverified CLI path)<br><code>No verified CLI install path; use the Cursor plugin marketplace UI.</code></p>
+  <p class="dim">Source: <a href="https://cursor.com/docs">https://cursor.com/docs</a></p>
+</div>
+<div class="card">
+  <h3>VS Code / GitHub Copilot <span class="pill ok">official docs + local</span></h3>
+  <h4>Skills — personal</h4><p><code>~/.copilot/skills</code></p>
+  <h4>Skills — project</h4><p><code>.github/skills</code></p>
+  <h4>MCP config</h4><p><code>~/.copilot/mcp-config.json</code><br><code>.mcp.json</code></p>
+  <h4>Rules / instructions</h4><p><code>~/.copilot/copilot-instructions.md</code><br><code>.github/copilot-instructions.md</code><br><code>AGENTS.md</code><br><code>.github/instructions</code></p>
+  <h4>Plugins</h4><p>vscode agent plugin<br><code>VS Code Agent Plugins via the Customization Marketplace; extensions use code --install-extension &lt;vsix&gt;.</code></p>
+  <p class="dim">Source: <a href="https://code.visualstudio.com/docs/agent-customization/agent-skills">https://code.visualstudio.com/docs/agent-customization/agent-skills</a></p>
+</div>
+<div class="card">
+  <h3>DSH <span class="pill ok">verified locally</span></h3>
+  <h4>Skills — personal</h4><p><code>~/.dsh/skills</code><br><code>~/.agents/skills</code></p>
+  <h4>Skills — project</h4><p><code>.dsh/skills</code><br><code>.agents/skills</code></p>
+  <h4>MCP config</h4><p><span class="dim">No standalone MCP config file was found on this machine; MCP usually arrives through installed plugins.</span></p>
+  <h4>Rules / instructions</h4><p><code>~/.dsh/AGENTS.md</code><br><code>~/.agents/AGENTS.md</code></p>
+  <h4>Plugins</h4><p>dsh bundle<br><code>dsh plugin --profile {profile} add {package}</code></p>
+  <p class="dim">Source: <a href="https://github.com/MichengAI/dsh-skills-manager#readme">https://github.com/MichengAI/dsh-skills-manager#readme</a></p>
+</div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Check your own machine instead of trusting a table</h2>
+  <p class="kicker"><code>aem scan</code> resolves every path through the same registry, reports <code>installed</code> / <code>config-only</code> / <code>absent</code> per tool, and counts the skills it can see. It is read-only: no library is created, nothing is written.</p>
+<pre class="quick"><span class="c"># after: pip install git+https://github.com/Jack91124/ai-extension-manager</span>
+aem scan
+
+<span class="c"># machine-readable, for scripts and dashboards</span>
+aem scan --json
+
+<span class="c"># one tool only; exit 1 if it is not installed</span>
+aem scan --agent claude --require claude</pre>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Copy a skill from one tool to the others</h2>
+  <p class="kicker">Copy is the default because symlinks break on Windows junctions, sandboxes and tools that hash the directory. aem hashes the library, the last synced copy and the current target before it writes.</p>
+<pre class="quick"><span class="c"># 1. pull one skill into the central library (never overwrites your library copy)</span>
+aem import --source ~/.claude/skills/my-skill
+
+<span class="c"># 2. distribute it to any compatible tools</span>
+aem sync --direction distribute --agent codex --agent cursor --resource my-skill
+
+<span class="c"># 3. prove the copies still match the library</span>
+aem verify --all
+
+<span class="c"># 4. if both sides changed, aem stops with exit code 2 and writes nothing</span>
+aem compare --resource my-skill --agent codex
+aem sync --direction distribute --agent codex --resource my-skill --on-conflict keep-target</pre>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Why not just symlink the directory?</h2>
+  <p class="kicker">You can — <code>--mode link</code> exists for that, and aem verifies the target resolves before it reports success. But links are the wrong default here:</p>
+  <div class="cards">
+    <div class="card"><h3>Windows</h3><p>Directory symlinks need Developer Mode or elevation; junctions are per-directory and confuse tools that walk the tree. A copy always works.</p></div>
+    <div class="card"><h3>Divergence is the point</h3><p>You edit the copy a tool actually loads. A link hides that edit; a copy plus a hash record lets aem tell you exactly which side moved.</p></div>
+    <div class="card"><h3>Sandboxes and packaging</h3><p>Some tools hash, snapshot or ship their skill directories. A link silently changes the payload; a copy keeps every tool self-contained.</p></div>
+  </div>
+</div></section>
+
+<footer class="wrap">
+  <div>MIT · local-first · <a href="https://github.com/Jack91124/ai-extension-manager">GitHub</a> · <a href="https://gitee.com/ping-pong-squid-king/ai-extension-manager">Gitee</a></div>
+  <div><a href="./">Home</a> · <a href="https://github.com/Jack91124/ai-extension-manager/blob/main/docs/why-sync-overwrites.md">Why overwrite-on-mtime is wrong</a> · <a href="https://www.skills.sh/jack91124/ai-extension-manager">skills.sh</a></div>
+</footer>
+</body>
+</html>

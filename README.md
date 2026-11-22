@@ -179,6 +179,22 @@ wrong) is in [docs/why-sync-overwrites.md](docs/why-sync-overwrites.md).
 Plugin code is **never copied across tools**. A plugin is installed through its target tool's own
 mechanism; `aem` returns the exact command and refuses cross-tool moves for tool-specific plugins.
 
+## Where each tool keeps its skills
+
+| Tool | Personal skills | Project skills | MCP config |
+|---|---|---|---|
+| **Claude Code** | `~/.claude/skills` | `.claude/skills` | `~/.claude.json`, `.mcp.json` |
+| **OpenAI Codex** | `~/.codex/skills`, `~/.agents/skills` | `.agents/skills`, `.codex/skills` | `~/.codex/config.toml` |
+| **Gemini CLI** | `~/.gemini/skills`, `~/.agents/skills` | `.gemini/skills`, `.agents/skills` | `~/.gemini/settings.json` |
+| **Cursor** | `~/.cursor/skills` | `.cursor/skills` | `~/.cursor/mcp.json` |
+| **VS Code / Copilot** | `~/.copilot/skills` | `.github/skills` | `~/.copilot/mcp-config.json` |
+| **DSH** | `~/.dsh/skills`, `~/.agents/skills` | `.dsh/skills`, `.agents/skills` | via installed plugins |
+
+These paths come from the same registry `aem scan` reads, so the scanner can never disagree with
+this table — it also tells you which directories exist on *your* machine. The full version (rules
+files, plugin mechanisms, vendor doc links, verification level per row) is at
+**[jack91124.github.io/ai-extension-manager/where.html](https://jack91124.github.io/ai-extension-manager/where.html)**,
+with a machine-readable summary in [docs/llms.txt](docs/llms.txt).
 ## Safety by default
 
 - **Scans before import** — dangerous shell patterns, risky scripts, secrets; high risk requires
@@ -239,6 +255,8 @@ state-C conflict that it refuses to overwrite. The full captured transcript is i
 | [references/security-policy.md](references/security-policy.md) | scanning, secrets, confirmations |
 | [references/installation-methods.md](references/installation-methods.md) | copy vs link vs tool-native install |
 | [references/dsh-plugin-spec.md](references/dsh-plugin-spec.md) | the planned GUI/execution plugin (not built) |
+| [docs/where.html](https://jack91124.github.io/ai-extension-manager/where.html) | where each tool keeps skills, MCP configs and rules (generated page) |
+| [docs/llms.txt](docs/llms.txt) | machine-readable summary for AI crawlers |
 | [docs/launch.md](docs/launch.md) | launch positioning, copy and channel checklist |
 | [docs/ROADMAP.md](docs/ROADMAP.md) | where this is going |
 

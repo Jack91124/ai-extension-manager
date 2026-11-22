@@ -5,6 +5,21 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.7] - 2026-11-22
+
+### Added
+
+- `docs/where.html` — a generated page listing the exact personal/project skills directories, MCP config
+  files, rules files and plugin mechanism for all six tools, with a verification level per row.
+- `docs/make_where.py` — renders that page and `docs/llms.txt` straight from the agent registry in
+  `scripts/aem_core.py`, so the public table cannot drift from what `aem scan` reads.
+- `docs/llms.txt` — machine-readable summary (install, path table, key pages) for AI crawlers.
+
+### Changed
+
+- README (English and Chinese) gained a "where each tool keeps its skills" table and links to the new page.
+- Landing pages link to the new page from the nav, the support table and the footer; sitemap includes it.
+
 ## [1.0.6] - 2026-11-22
 
 ### Changed
