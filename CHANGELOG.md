@@ -9,6 +9,13 @@ All notable changes are documented here. The format follows
 
 - GitHub Pages landing site: <https://jack91124.github.io/ai-extension-manager/> (English) and
   `/zh.html` (中文) with a comparison table, `sitemap.xml` and `robots.txt`; linked from both READMEs.
+- `docs/launch.md`: zero-audience cold-start plan (day 1–14), awesome-list PR targets, and the
+  repo social-preview step.
+
+### Fixed
+
+- Quick-start install lines in both READMEs pinned `v1.0.3` while the latest release was `v1.0.4`;
+  they now pin `v1.0.4`.
 
 ## [1.0.4] - 2026-11-22
 

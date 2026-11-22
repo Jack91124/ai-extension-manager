@@ -54,11 +54,11 @@ OpenAI Codex、Gemini CLI、Cursor、VS Code Copilot 和 DSH。它用 SHA-256 �
 不克隆仓库直接安装（需要 `git`，锁定版本标签以保证可复现）：
 
 ```bash
-python -m pip install --user "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.3"
+python -m pip install --user "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.4"
 aem init && aem doctor
 ```
 
-想隔离安装？用 `pipx install "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.3"`，
+想隔离安装？用 `pipx install "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.4"`，
 或从[最新 Release](https://github.com/Jack91124/ai-extension-manager/releases/latest) 下载 wheel 后 `pip install`。
 
 或者克隆仓库：

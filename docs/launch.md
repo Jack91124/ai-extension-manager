@@ -122,13 +122,13 @@ documented by vendors, some is marked "partial" in the support matrix on purpose
 
 | Channel | Asset | Status |
 |---|---|---|
-| GitHub README + topics + Release | README.md / README.zh-CN.md / v1.0.1 assets | done |
-| skills.sh listing | root SKILL.md is discoverable by `npx skills add` | indexed, badge pending install count |
-| Gitee mirror | code + tag v1.0.1 | done; Release needs a fresh token |
-| X / Twitter | copy above + hero.png | ready to post |
-| 小红书 / 即刻 / V2EX | 中文文案 above + hero.png | ready to post |
+| GitHub README + topics + Release + Pages | README.md / README.zh-CN.md / v1.0.4 wheel / live site | done |
+| skills.sh listing | root SKILL.md is discoverable by `npx skills add` | indexed; badge installed in READMEs |
+| Gitee mirror | code + tag v1.0.4 | code done; Gitee Release needs a fresh token |
+| X / Twitter | copy above + og.png (1200x630) | ready to post |
+| 小红书 / 即刻 / V2EX | 中文文案 above + demo.gif or og.png | ready to post |
 | Hacker News / r/ClaudeAI | Show HN copy above | ready to post |
-| awesome-* lists / MCP directories | one-line + link | needs manual PR |
+| awesome-* lists / MCP directories | one-line + link | ready for PR (targets below) |
 
 ## 6. Launch-day checklist · 发布当天
 
@@ -139,7 +139,39 @@ documented by vendors, some is marked "partial" in the support matrix on purpose
 5. Do **not** claim verified support for Gemini/Cursor runtimes: the support matrix marks them
    `partial`. Say "documented, not runtime-verified on this machine" when asked.
 
-## 7. What not to say · 避免过度承诺
+## 7. Cold-start plan (zero audience) · 零受众冷启动
+
+The repo is indexed but nobody sees it yet (0 views). Order matters: credibility first, reach second.
+
+| Day | Action | Where | Asset |
+|---|---|---|---|
+| 1 | Add repo social preview image (Settings → Social preview → upload `docs/og.png`), confirm description/topics | GitHub web UI (no API) | og.png |
+| 1 | Post the short Chinese post in one community where you already participate | 即刻 / V2EX / 小红书 | 中文文案 + demo.gif |
+| 2 | Submit 2 awesome-list PRs (below) — reviewers care that the tool is documented and tested | GitHub PR | one-liner + link |
+| 3 | Post the English X thread, pin it on your profile | X | X copy + og.png |
+| 4–7 | Answer every reply within 3h; convert objections into README FAQ entries; ship a patch release if a bug is reported | GitHub | commit + release |
+| 8–14 | Show HN only after the README survives 2 rounds of feedback (Show HN is one-shot per project) | news.ycombinator.com | Show HN copy |
+
+**awesome-list targets (open a PR each; one line + link):**
+
+| List | Repo | Entry fits |
+|---|---|---|
+| awesome-claude-code | `hesreallyhim/awesome-claude-code` | Tools / skills section |
+| awesome-ai-agents | `e2b-dev/awesome-ai-agents` | Developer tooling |
+| awesome-mcp-servers | `punkpeye/awesome-mcp-servers` | not a server — skip unless it syncs MCP configs |
+| awesome-devtools | `mrcodedev/awesome-devtools` | CLI utilities |
+| skills.sh "packs" / directories | `vercel-labs/skills` discussions | skill pack listing |
+
+Rules that keep PRs alive: read CONTRIBUTING, keep the line in the list's existing format, no marketing
+adjectives, one PR at a time, and reply to review comments the same day.
+
+## 8. Social preview · 仓库社交预览图
+
+GitHub has no API for this. Settings → General → Social preview → **Upload an image** → `docs/og.png`
+(1200x630, 697 KB). This is what shows up when the link is pasted into X, Slack, Discord or Reddit —
+without it the preview is a generic grey box, and link cards get measurably fewer clicks.
+
+## 9. What not to say · 避免过度承诺
 
 - Don't call it a plugin manager: vendor plugins are installed via vendor mechanisms only.
 - Don't promise automatic migration of tool-specific plugins or credentials.
