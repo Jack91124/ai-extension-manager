@@ -6,6 +6,8 @@ Contract:
   output: {ok, generated_at, agents:[...], summary:{...}}
   exit  : 0 normally (absent tools are data, not errors)
 """
+
+from __future__ import annotations
 import sys
 
 sys.dont_write_bytecode = True  # keep the skill folder free of __pycache__

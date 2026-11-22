@@ -11,6 +11,7 @@ Exit code 0 when every test passes.
 """
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -22,6 +23,7 @@ SCRIPTS = SKILL_DIR / "scripts"
 EVALS = SKILL_DIR / "evals"
 TMP_ROOT = EVALS / "_tmp"
 DOLLAR = chr(36)
+TOOL_VERSION = re.search(r'TOOL_VERSION = "([^"]+)"', (SCRIPTS / "aem_core.py").read_text(encoding="utf-8")).group(1)
 
 TOOL_VARS = ("DSH_HOME", "CODEX_HOME", "CLAUDE_CONFIG_DIR", "COPILOT_HOME", "GEMINI_HOME", "CURSOR_HOME")
 
@@ -687,7 +689,7 @@ def test_22_cli_aliases(case: Case) -> str:
     check_exit(completed, 2, "unknown command")
     completed = case.run("aem.py", "version")[0]
     check_exit(completed, 0, "version")
-    check(completed.stdout.strip().startswith("aem 1.0.0"), "version should print the tool version")
+    check(completed.stdout.strip().startswith("aem " + TOOL_VERSION), "version should print the tool version")
     return "aliases dispatch correctly, unknown commands exit 2"
 
 # ---------------------------------------------------------------------------

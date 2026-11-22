@@ -10,6 +10,8 @@ The command never overwrites an existing library resource by default: a
 different payload is staged under staging/conflicts/ and reported with exit
 code 2. Pass --on-conflict to choose an explicit resolution.
 """
+
+from __future__ import annotations
 import re
 import shutil
 import subprocess

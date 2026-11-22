@@ -3,6 +3,13 @@
 All notable changes are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions use [SemVer](https://semver.org/).
 
+## [1.0.1] - 2026-11-22
+
+### Fixed
+
+- Python 3.9 compatibility: `aem.py` used PEP 604 unions at import time without deferred annotations.
+- CI: pin the Ubuntu runner to 22.04 so Python 3.9 remains available; the 3.9 Windows/macOS jobs now pass too.
+
 ## [1.0.0] - 2026-11-21
 
 First public release: a working CLI + Agent Skill. The DSH Plugin dashboard is specified, not built.

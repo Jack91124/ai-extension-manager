@@ -9,6 +9,8 @@ Modes (at least one required):
 
 Output: {ok, mode, candidates:[{type,name,confidence,evidence,path,...}], summary}
 """
+
+from __future__ import annotations
 import sys
 
 sys.dont_write_bytecode = True  # keep the skill folder free of __pycache__

@@ -17,6 +17,8 @@ Conflict policy (default skip):
 The engine is idempotent: identical content is skipped without writes or backups.
 A journal under staging/ makes interrupted runs resumable with --resume.
 """
+
+from __future__ import annotations
 import sys
 
 sys.dont_write_bytecode = True  # keep the skill folder free of __pycache__

@@ -19,6 +19,8 @@ Commands
 
 Exit codes: 0 success, 1 error or failed check, 2 conflict / difference.
 """
+
+from __future__ import annotations
 import argparse
 import json
 import os

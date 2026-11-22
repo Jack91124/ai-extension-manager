@@ -10,6 +10,8 @@ Subcommands:
 
 Global options (--home/--workspace/--json) go before the subcommand.
 """
+
+from __future__ import annotations
 import sys
 
 sys.dont_write_bytecode = True  # keep the skill folder free of __pycache__

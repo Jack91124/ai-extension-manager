@@ -9,6 +9,8 @@ Checks every recorded target (or a selected resource/agent pair):
   unmanaged   a skill exists in a tool but not in the library (with --include-unmanaged)
 Exit code: 0 all verified, 1 any problem, 2 only unmanaged findings (strict mode).
 """
+
+from __future__ import annotations
 import sys
 
 sys.dont_write_bytecode = True  # keep the skill folder free of __pycache__
