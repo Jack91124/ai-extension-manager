@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Extension Manager — 六个 AI 工具，一个技能库</title>
+<meta name="description" content="本地优先的 CLI：在 Claude Code、Codex、Gemini CLI、Cursor、VS Code Copilot、DSH 之间双向同步 Agent Skill、MCP 与规则。SHA-256 状态追踪、逐目标备份、绝不静默覆盖。">
+<meta property="og:title" content="六个 AI 工具。一个技能库。绝不静默覆盖。">
+<meta property="og:description" content="本地优先双向同步 Agent Skill / MCP / 规则；SHA-256 状态追踪，冲突退出码 2 而不是覆盖。零依赖。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://jack91124.github.io/ai-extension-manager/zh.html">
+<meta property="og:image" content="https://jack91124.github.io/ai-extension-manager/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" hreflang="en" href="https://jack91124.github.io/ai-extension-manager/">
+<link rel="alternate" hreflang="zh-CN" href="https://jack91124.github.io/ai-extension-manager/zh.html">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b1020'/><text x='50' y='68' font-size='52' font-family='monospace' font-weight='700' fill='%2364d2ff' text-anchor='middle'>aem</text></svg>">
+<style>
+:root{--bg:#080b14;--panel:#0f1524;--line:#1e2740;--fg:#e8eefc;--dim:#93a0bd;--accent:#5eead4;--blue:#64d2ff;--amber:#fbbf24;--red:#f87171}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 ui-sans-serif,-apple-system,"Segoe UI",Inter,Roboto,sans-serif}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+nav{display:flex;align-items:center;justify-content:space-between;padding:20px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(8,11,20,.88);backdrop-filter:blur(8px);z-index:10}
+.logo{font-weight:800;letter-spacing:.5px;font-size:20px}
+.logo span{color:var(--blue)}
+nav .links{display:flex;gap:22px;font-size:14px;color:var(--dim)}
+nav .links a{color:var(--dim)}
+nav .links a:hover{color:var(--fg)}
+.hero{padding:76px 0 56px;background:radial-gradient(900px 420px at 15% -10%,rgba(100,210,255,.16),transparent 60%),radial-gradient(700px 360px at 90% 0%,rgba(94,234,212,.12),transparent 60%)}
+h1{font-size:clamp(38px,6vw,66px);line-height:1.05;letter-spacing:-1.5px;margin:0 0 20px;font-weight:800}
+h1 .accent{color:var(--accent)}
+.lede{font-size:clamp(17px,2vw,21px);color:#c3cee4;max-width:760px;margin:0 0 12px}
+.sub{color:var(--dim);max-width:720px;margin:0 0 30px}
+.install{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:0 0 10px}
+.cmdbox{display:flex;align-items:center;gap:12px;background:#0b1220;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px;max-width:100%;overflow-x:auto}
+.cmdbox code{color:var(--accent);white-space:nowrap}
+.cmdbox button.copy{flex:none}
+.cmdbox .dollar{color:var(--dim)}
+button.copy{background:#17223a;color:var(--fg);border:1px solid #27354f;border-radius:7px;padding:6px 11px;font:inherit;font-size:13px;cursor:pointer}
+button.copy:hover{border-color:var(--blue)}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0}
+.badges img{height:22px}
+.badges a{display:inline-flex}
+section{padding:54px 0;border-top:1px solid var(--line)}
+h2{font-size:clamp(24px,3.2vw,34px);margin:0 0 8px;letter-spacing:-.6px}
+h2+p.kicker{color:var(--dim);margin:0 0 28px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px}
+.card h3{margin:0 0 8px;font-size:17px}
+.card p{margin:0;color:var(--dim);font-size:14.5px}
+.card .ico{font-size:20px;margin-bottom:10px}
+.shot{display:block;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#05080f;margin-top:8px}
+.shot img{display:block;width:100%;height:auto}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--dim);font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.6px}
+td code{color:#dbe4f5}
+.pill{display:inline-block;font-size:11.5px;padding:2px 8px;border-radius:999px;border:1px solid;white-space:nowrap}
+.ok{color:var(--accent);border-color:rgba(94,234,212,.4);background:rgba(94,234,212,.08)}
+.partial{color:var(--amber);border-color:rgba(251,191,36,.4);background:rgba(251,191,36,.08)}
+.terminal{background:#05080f;border:1px solid var(--line);border-radius:14px;padding:20px;overflow-x:auto;font-size:14px;line-height:1.85}
+.terminal .g{color:var(--accent)}.terminal .y{color:var(--amber)}.terminal .r{color:var(--red)}.terminal .d{color:var(--dim)}
+.split{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:start}
+@media(max-width:820px){.split{grid-template-columns:1fr}}
+ul.check{list-style:none;padding:0;margin:0;color:var(--dim);font-size:14.5px}
+ul.check li{padding:6px 0 6px 26px;position:relative}
+ul.check li:before{content:"\2713";position:absolute;left:0;color:var(--accent);font-weight:700}
+pre.quick{background:#05080f;border:1px solid var(--line);border-radius:12px;padding:18px;overflow-x:auto;font-size:13.5px;line-height:1.8;margin:0}
+pre.quick .c{color:#6f7e9e}
+footer{padding:40px 0 60px;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px;display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between}
+@media(max-width:640px){nav .links a.hide-sm{display:none}.logo{font-size:17px;white-space:nowrap}.brand-rest{display:none}nav .links{gap:14px}.cmdbox{font-size:12.5px;padding:10px 12px}.cmdbox code{white-space:normal;word-break:break-all}.install{flex-direction:column;align-items:stretch}}
+</style>
+</head>
+<body>
+<nav class="wrap">
+  <div class="logo"><span>aem</span> <span class="brand-rest">AI 扩展资源管理助手</span></div>
+  <div class="links">
+    <a href="https://github.com/Jack91124/ai-extension-manager">GitHub</a>
+    <a href="index.html">English</a>
+    <a class="hide-sm" href="https://www.skills.sh/jack91124/ai-extension-manager">skills.sh</a>
+    <a class="hide-sm" href="https://github.com/Jack91124/ai-extension-manager/blob/main/docs/why-sync-overwrites.md">为何不用 mtime 覆盖</a>
+  </div>
+</nav>
+
+<header class="hero"><div class="wrap">
+  <h1>六个 AI 工具。<br>一个技能库。<br><span class="accent">绝不静默覆盖。</span></h1>
+  <p class="lede">本地优先的双向同步：让 Agent Skill、MCP 服务器和规则在 Claude Code、Codex、Gemini CLI、Cursor、VS Code Copilot、DSH 之间保持一致。</p>
+  <p class="sub">SHA-256 状态追踪、逐目标自动备份；发生冲突时退出码 2，而不是悄悄覆盖你的修改。零运行时依赖。</p>
+  <div class="install">
+    <div class="cmdbox"><span class="dollar">$</span><code>npx skills add Jack91124/ai-extension-manager</code><button class="copy" data-cmd="npx skills add Jack91124/ai-extension-manager">复制</button></div>
+    <div class="cmdbox"><span class="dollar">$</span><code>pip install git+https://github.com/Jack91124/ai-extension-manager</code><button class="copy" data-cmd="pip install git+https://github.com/Jack91124/ai-extension-manager">复制</button></div>
+  </div>
+  <div class="badges">
+    <a href="https://github.com/Jack91124/ai-extension-manager/actions/workflows/ci.yml"><img src="https://github.com/Jack91124/ai-extension-manager/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+    <a href="https://www.skills.sh/jack91124/ai-extension-manager"><img src="https://skills.sh/b/Jack91124/ai-extension-manager" alt="skills.sh"></a>
+    <a href="https://github.com/Jack91124/ai-extension-manager/releases"><img src="https://img.shields.io/github/v/release/Jack91124/ai-extension-manager?label=release&color=5eead4" alt="release"></a>
+    <img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT">
+    <img src="https://img.shields.io/badge/dependencies-0-brightgreen" alt="零依赖">
+  </div>
+</div></header>
+
+<section><div class="wrap">
+  <a class="shot" href="demo.gif" title="打开 10 秒动图演示"><img src="hero.png" alt="aem 导入、分发、校验与冲突的真实终端输出" width="1000" height="625" loading="lazy"></a>
+</div></section>
+
+<section><div class="wrap">
+  <h2>它到底解决什么问题</h2>
+  <p class="kicker">你为一个工具写的 Skill 困在那个工具里；自己写的同步脚本又是“谁最后改谁赢”。</p>
+  <div class="grid3">
+    <div class="card"><div class="ico">📚</div><h3>一个库，按内容寻址</h3><p>每个资源只在 <code>~/.ai-extension-manager/library</code> 存一份，带清单、SHA-256 树哈希和版本历史；各工具从库里取副本或链接。</p></div>
+    <div class="card"><div class="ico">🔁</div><h3>双向、懂状态</h3><p>导入可扫描任意工具；分发可推到单个、多个或全部兼容工具。每个目标记录 <code>source_hash</code> + <code>target_hash</code>，下次同步就知道谁改了什么。</p></div>
+    <div class="card"><div class="ico">🛡️</div><h3>拒绝覆盖</h3><p>双方都改了 → 冲突、退出码 2、不写任何东西。用 <code>--on-conflict</code> 显式解决，之前先自动备份目标。</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>可推理的冲突处理</h2>
+  <p class="kicker">mtime 不是合并策略。aem 比较三个哈希：库当前哈希、上次同步哈希、目标当前哈希。</p>
+  <div class="split">
+    <div class="terminal"><span class="d">$</span> aem sync --direction distribute --agent claude --resource my-skill<br>
+<span class="d">Sync distribute (1 steps)</span><br>
+&nbsp;&nbsp;claude&nbsp;&nbsp;skill/my-skill&nbsp;&nbsp;&nbsp;&nbsp;<span class="y">conflict [C]&nbsp;&nbsp;both sides changed</span><br>
+<span class="d">summary: { "conflict": 1 }</span><br>
+<span class="d">conflicts were left untouched; use compare_resources.py and resolve them explicitly</span></div>
+    <ul class="check">
+      <li><b>A</b> 只有库变了 → 安全安装</li>
+      <li><b>B</b> 只有目标变了 → 作为新版本导入</li>
+      <li><b>C</b> 双方都变 → 冲突，不写任何文件</li>
+      <li><b>D</b> 目标被删除 → 重装或解除追踪</li>
+      <li><b>E</b> 目标目录不存在 → 创建或中止</li>
+      <li>未纳管的文件永不被触碰</li>
+    </ul>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>和常见做法比</h2>
+  <p class="kicker">不是“又一个同步脚本”，关键差别在冲突判定和安全边界。</p>
+  <table>
+    <thead><tr><th>能力</th><th>手写 cp / 软链</th><th>单向同步脚本</th><th>工具自带管理</th><th>aem</th></tr></thead>
+    <tbody>
+      <tr><td>知道“谁改了”</td><td>靠 mtime</td><td>靠 mtime</td><td>仅本工具</td><td>三哈希 + 同步记录</td></tr>
+      <tr><td>双方都改时</td><td>覆盖</td><td>覆盖</td><td>工具内处理</td><td>冲突，退出码 2</td></tr>
+      <tr><td>跨工具</td><td>手工逐个</td><td>仅一个方向</td><td>不支持</td><td>六工具双向</td></tr>
+      <tr><td>备份/回滚</td><td>无</td><td>无</td><td>部分</td><td>逐目标 + 版本快照</td></tr>
+      <tr><td>MCP 密钥</td><td>原样复制</td><td>原样复制</td><td>不一致</td><td>脱敏，不跨工具同步</td></tr>
+      <tr><td>离线可用</td><td>是</td><td>是</td><td>不一定</td><td>是，零依赖</td></tr>
+    </tbody>
+  </table>
+</div></section>
+
+<section><div class="wrap">
+  <h2>六个工具，诚实标注支持度</h2>
+  <p class="kicker">路径按官方文档与本机安装核对过。“部分”表示目录已知、但运行时行为尚未在本机验证。</p>
+  <table>
+    <thead><tr><th>工具</th><th>Skill</th><th>MCP</th><th>规则</th><th>插件</th><th>验证程度</th></tr></thead>
+    <tbody>
+      <tr><td><b>Claude Code</b></td><td>支持</td><td>支持</td><td>支持</td><td>插件 CLI</td><td><span class="pill ok">本机验证</span></td></tr>
+      <tr><td><b>Codex</b></td><td>支持</td><td>支持</td><td>支持</td><td>仅配置</td><td><span class="pill partial">仅配置</span></td></tr>
+      <tr><td><b>Gemini CLI</b></td><td>支持</td><td>支持</td><td>支持</td><td>扩展机制</td><td><span class="pill partial">文档验证</span></td></tr>
+      <tr><td><b>Cursor</b></td><td>支持</td><td>支持</td><td>支持</td><td>手动</td><td><span class="pill partial">部分</span></td></tr>
+      <tr><td><b>VS Code Copilot</b></td><td>支持</td><td>支持</td><td>支持</td><td>手动</td><td><span class="pill ok">本机验证</span></td></tr>
+      <tr><td><b>DSH</b></td><td>支持</td><td>支持</td><td>支持</td><td>profile bundles</td><td><span class="pill ok">本机验证</span></td></tr>
+    </tbody>
+  </table>
+</div></section>
+
+<section><div class="wrap">
+  <h2>60 秒上手</h2>
+  <p class="kicker">所有写操作都能先 dry-run，且写之前一定先备份。</p>
+  <pre class="quick"><span class="c"># 1. 先看本机各工具装了什么</span>
+aem scan
+
+<span class="c"># 2. 把某个工具里的技能拉进中央库</span>
+aem import --source ~/.claude/skills/my-skill
+
+<span class="c"># 3. 复制到其他工具（或全部兼容工具）</span>
+aem sync --direction distribute --agent codex --agent cursor --resource my-skill
+
+<span class="c"># 4. 证明副本仍与库一致</span>
+aem verify --all
+
+<span class="c"># 5. 双方都改过时，先看差异再决定</span>
+aem compare --resource my-skill --agent codex
+aem sync --direction distribute --agent codex --resource my-skill --on-conflict keep-target</pre>
+</div></section>
+
+<section><div class="wrap">
+  <h2>默认安全</h2>
+  <p class="kicker">无后台进程、无网络请求、无遥测；只动你指定的路径。</p>
+  <div class="grid3">
+    <div class="card"><h3>密钥不出本机</h3><p>MCP 配置逐字段合并；<code>env</code> 值在库内脱敏为 ${ENV_VAR}，不会跨工具复制。</p></div>
+    <div class="card"><h3>危险载荷会被标记</h3><p>导入时静态扫描（<code>curl | sh</code>、eval、base64 大块、凭据路径），高风险项必须显式 <code>--allow-risk</code>。</p></div>
+    <div class="card"><h3>可回滚</h3><p>每次分发与恢复前都先快照目标；<code>aem backup list/restore</code> 可取回任意版本。</p></div>
+  </div>
+</div></section>
+
+<footer class="wrap">
+  <div>MIT · 本地优先 · <a href="https://github.com/Jack91124/ai-extension-manager">GitHub</a> · <a href="https://gitee.com/ping-pong-squid-king/ai-extension-manager">Gitee 镜像</a></div>
+  <div><a href="https://github.com/Jack91124/ai-extension-manager/blob/main/docs/why-sync-overwrites.md">为什么 mtime 覆盖是错的</a> · <a href="index.html">English</a></div>
+</footer>
+
+<script>
+document.querySelectorAll("button.copy").forEach(function(b){
+  b.addEventListener("click", function(){
+    var t = b.getAttribute("data-cmd");
+    navigator.clipboard.writeText(t).then(function(){ b.textContent = "已复制"; setTimeout(function(){ b.textContent = "复制"; }, 1400); });
+  });
+});
+</script>
+</body>
+</html>

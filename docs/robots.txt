@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jack91124.github.io/ai-extension-manager/sitemap.xml

@@ -7,8 +7,8 @@ All notable changes are documented here. The format follows
 
 ### Documentation
 
-- GitHub Pages landing site (`docs/index.html`): live at
-  <https://jack91124.github.io/ai-extension-manager/>, linked from both READMEs.
+- GitHub Pages landing site: <https://jack91124.github.io/ai-extension-manager/> (English) and
+  `/zh.html` (中文) with a comparison table, `sitemap.xml` and `robots.txt`; linked from both READMEs.
 
 ## [1.0.4] - 2026-11-22
 

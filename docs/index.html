@@ -11,6 +11,8 @@
 <meta property="og:url" content="https://jack91124.github.io/ai-extension-manager/">
 <meta property="og:image" content="https://jack91124.github.io/ai-extension-manager/og.png">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" hreflang="en" href="https://jack91124.github.io/ai-extension-manager/">
+<link rel="alternate" hreflang="zh-CN" href="https://jack91124.github.io/ai-extension-manager/zh.html">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b1020'/><text x='50' y='68' font-size='52' font-family='monospace' font-weight='700' fill='%2364d2ff' text-anchor='middle'>aem</text></svg>">
 <style>
 :root{--bg:#080b14;--panel:#0f1524;--line:#1e2740;--fg:#e8eefc;--dim:#93a0bd;--accent:#5eead4;--blue:#64d2ff;--amber:#fbbf24;--red:#f87171}
@@ -76,7 +78,7 @@ footer{padding:40px 0 60px;border-top:1px solid var(--line);color:var(--dim);fon
   <div class="logo"><span>aem</span> <span class="brand-rest">AI Extension Manager</span></div>
   <div class="links">
     <a href="https://github.com/Jack91124/ai-extension-manager">GitHub</a>
-    <a href="https://github.com/Jack91124/ai-extension-manager/blob/main/README.zh-CN.md">简体中文</a>
+    <a href="zh.html">简体中文</a>
     <a class="hide-sm" href="https://www.skills.sh/jack91124/ai-extension-manager">skills.sh</a>
     <a class="hide-sm" href="https://github.com/Jack91124/ai-extension-manager/blob/main/docs/why-sync-overwrites.md">Why sync overwrites</a>
   </div>
@@ -131,6 +133,22 @@ footer{padding:40px 0 60px;border-top:1px solid var(--line);color:var(--dim);fon
       <li>untracked files are never touched</li>
     </ul>
   </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>How it compares</h2>
+  <p class="kicker">Not "yet another sync script" — the difference is how it decides what changed, and what it refuses to do.</p>
+  <table>
+    <thead><tr><th>Capability</th><th>Manual cp / symlinks</th><th>One-way sync scripts</th><th>Tool built-ins</th><th>aem</th></tr></thead>
+    <tbody>
+      <tr><td>Knows who changed what</td><td>mtime</td><td>mtime</td><td>single tool</td><td>3 hashes + sync record</td></tr>
+      <tr><td>Both sides changed</td><td>overwrites</td><td>overwrites</td><td>tool-local</td><td>conflict, exit 2</td></tr>
+      <tr><td>Cross-tool</td><td>manual, one by one</td><td>one direction only</td><td>no</td><td>six tools, both ways</td></tr>
+      <tr><td>Backup / rollback</td><td>no</td><td>no</td><td>partial</td><td>per target + versions</td></tr>
+      <tr><td>MCP secrets</td><td>copied as-is</td><td>copied as-is</td><td>varies</td><td>redacted, not synced</td></tr>
+      <tr><td>Works offline</td><td>yes</td><td>yes</td><td>varies</td><td>yes, zero deps</td></tr>
+    </tbody>
+  </table>
 </div></section>
 
 <section><div class="wrap">
