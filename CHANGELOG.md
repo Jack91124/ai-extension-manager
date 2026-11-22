@@ -5,6 +5,10 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+### Documentation
+
+- Both landing pages show the `aem report` page and what it answers.
+
 ## [1.0.5] - 2026-11-22
 
 ### Added
