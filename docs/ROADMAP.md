@@ -14,8 +14,8 @@ stop hand-copying directories** — then grow from there.
 
 ## Days 1–30 — make it trustworthy for strangers
 
-- [ ] CI on Ubuntu, macOS and Windows × Python 3.9 / 3.12 (tests + `pip install .` + `aem doctor`)
-- [ ] Publish v1.0.0, add the `npx skills`-compatible repository layout and skills.sh badge
+- [x] CI on Ubuntu, macOS and Windows × Python 3.9 / 3.12 (tests + `pip install .` + `aem doctor`) — six jobs green on v1.0.1
+- [ ] Publish v1.0.0 and v1.0.1 (done: GitHub + Gitee tags); still to do: `npx skills`-compatible layout and skills.sh badge
 - [ ] `aem doctor` detects library edits that bypass the registry (payload hash drift)
 - [ ] `aem sync --json` stable schema documented with a version field
 - [ ] One real end-to-end run recorded on each of the six tools (or documented as blocked)
