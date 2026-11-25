@@ -139,7 +139,7 @@ https://github.com/Jack91124/ai-extension-manager
 npx skills add Jack91124/ai-extension-manager
 ```
 
-28 个端到端测试，Windows/macOS/Linux CI 全绿，MIT，v1.0.5。
+28 个端到端测试，Windows/macOS/Linux CI 全绿，MIT，v1.0.13。
 
 仓库：https://github.com/Jack91124/ai-extension-manager
 在线说明页（中英）：https://jack91124.github.io/ai-extension-manager/zh.html
