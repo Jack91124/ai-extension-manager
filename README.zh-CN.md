@@ -257,6 +257,7 @@ python demo/run_demo.py
 | [references/dsh-plugin-spec.md](references/dsh-plugin-spec.md) | 规划中的 GUI/执行插件（尚未实现） |
 | [docs/where.html](https://jack91124.github.io/ai-extension-manager/where.html) | 各工具技能 / MCP / 规则目录（生成页） |
 | [docs/llms.txt](docs/llms.txt) | 面向 AI 抓取的机器可读摘要 |
+| [docs/alternatives.md](docs/alternatives.md) | 与其他技能管理工具的诚实对比（含何时该选它们） |
 | [docs/launch.md](docs/launch.md) | 发布定位、文案与渠道清单 |
 | [docs/ROADMAP.md](docs/ROADMAP.md) | 后续路线图 |
 
@@ -266,7 +267,7 @@ python demo/run_demo.py
 
 - ✅ 导入、分发、双向同步、冲突检测、备份、校验、对比、恢复；
 - ✅ 六个适配器（附诚实的验证等级）、安全扫描、JSON 契约；
-- ✅ 26 个场景测试，全部跑在一次性假 home 上；
+- ✅ 28 个场景测试，全部跑在一次性假 home 上；
 - 🚧 DSH Plugin 面板**只有规格，尚未实现**——这里不声称存在 GUI；
 - 🚧 插件安装委托给各工具原生命令（暂不自动安装）；
 - ⚠️ Gemini CLI 与 Cursor 只按官方文档/路径映射验证，未跑真实运行时；

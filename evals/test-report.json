@@ -1,7 +1,7 @@
 {
   "skill": "ai-extension-manager",
-  "started_at": "2026-11-22T10:09:27Z",
-  "duration_seconds": 26.46,
+  "started_at": "2026-11-25T15:29:51Z",
+  "duration_seconds": 30.11,
   "total": 28,
   "passed": 28,
   "failed": 0,
@@ -10,7 +10,7 @@
       "id": 1,
       "name": "test_01_classify_github_skill",
       "passed": true,
-      "duration_seconds": 0.45,
+      "duration_seconds": 0.69,
       "detail": "skill detected in repo; github URL classified",
       "error": ""
     },
@@ -18,7 +18,7 @@
       "id": 2,
       "name": "test_02_classify_github_plugin",
       "passed": true,
-      "duration_seconds": 0.19,
+      "duration_seconds": 0.41,
       "detail": "dsh plugin manifest recognised",
       "error": ""
     },
@@ -26,7 +26,7 @@
       "id": 3,
       "name": "test_03_import_skill",
       "passed": true,
-      "duration_seconds": 0.25,
+      "duration_seconds": 0.5,
       "detail": "imported with complete metadata (2 files)",
       "error": ""
     },
@@ -34,7 +34,7 @@
       "id": 4,
       "name": "test_04_import_from_claude",
       "passed": true,
-      "duration_seconds": 0.36,
+      "duration_seconds": 2.26,
       "detail": "claude skill imported and target recorded",
       "error": ""
     },
@@ -50,7 +50,7 @@
       "id": 6,
       "name": "test_06_reverse_import_modified",
       "passed": true,
-      "duration_seconds": 0.93,
+      "duration_seconds": 0.9,
       "detail": "reverse import updated the library and stayed in sync",
       "error": ""
     },
@@ -58,7 +58,7 @@
       "id": 7,
       "name": "test_07_compare_versions",
       "passed": true,
-      "duration_seconds": 0.73,
+      "duration_seconds": 0.69,
       "detail": "two versions compared with a unified diff",
       "error": ""
     },
@@ -66,7 +66,7 @@
       "id": 8,
       "name": "test_08_conflict_detection",
       "passed": true,
-      "duration_seconds": 1.88,
+      "duration_seconds": 1.91,
       "detail": "state C detected, dry-run exits 2, explicit resolutions work",
       "error": ""
     },
@@ -74,7 +74,7 @@
       "id": 9,
       "name": "test_09_restore_old_version",
       "passed": true,
-      "duration_seconds": 0.77,
+      "duration_seconds": 0.76,
       "detail": "old version restored and hash verified",
       "error": ""
     },
@@ -82,7 +82,7 @@
       "id": 10,
       "name": "test_10_missing_tool",
       "passed": true,
-      "duration_seconds": 1.42,
+      "duration_seconds": 2.41,
       "detail": "absent tool reported and never written to",
       "error": ""
     },
@@ -90,7 +90,7 @@
       "id": 11,
       "name": "test_11_blocked_target",
       "passed": true,
-      "duration_seconds": 0.46,
+      "duration_seconds": 0.62,
       "detail": "blocked path produced an actionable error instead of a crash",
       "error": ""
     },
@@ -98,7 +98,7 @@
       "id": 12,
       "name": "test_12_incompatible_plugin",
       "passed": true,
-      "duration_seconds": 0.64,
+      "duration_seconds": 0.76,
       "detail": "cross-tool plugin distribution refused with explanation",
       "error": ""
     },
@@ -106,7 +106,7 @@
       "id": 13,
       "name": "test_13_batch_sync",
       "passed": true,
-      "duration_seconds": 0.75,
+      "duration_seconds": 0.71,
       "detail": "three tools synced and verified in one command",
       "error": ""
     },
@@ -114,7 +114,7 @@
       "id": 14,
       "name": "test_14_checksum_failure",
       "passed": true,
-      "duration_seconds": 0.72,
+      "duration_seconds": 0.69,
       "detail": "missing and modified files detected by checksum verification",
       "error": ""
     },
@@ -122,7 +122,7 @@
       "id": 15,
       "name": "test_15_interrupted_and_repeat",
       "passed": true,
-      "duration_seconds": 1.52,
+      "duration_seconds": 1.37,
       "detail": "repeat run is idempotent; journal resumes; dry runs leave no journal",
       "error": ""
     },
@@ -130,7 +130,7 @@
       "id": 16,
       "name": "test_16_unsafe_skill",
       "passed": true,
-      "duration_seconds": 0.48,
+      "duration_seconds": 0.45,
       "detail": "high-risk script blocked until --allow-risk",
       "error": ""
     },
@@ -138,7 +138,7 @@
       "id": 17,
       "name": "test_17_secret_handling",
       "passed": true,
-      "duration_seconds": 0.68,
+      "duration_seconds": 0.76,
       "detail": "skill credential refused; MCP credential replaced with an env placeholder",
       "error": ""
     },
@@ -146,7 +146,7 @@
       "id": 18,
       "name": "test_18_invalid_skill",
       "passed": true,
-      "duration_seconds": 0.45,
+      "duration_seconds": 0.51,
       "detail": "invalid SKILL.md rejected unless --force is explicit",
       "error": ""
     },
@@ -154,7 +154,7 @@
       "id": 19,
       "name": "test_19_git_mirror_rewrite",
       "passed": true,
-      "duration_seconds": 0.31,
+      "duration_seconds": 0.33,
       "detail": "third-party git mirror refused before any clone",
       "error": ""
     },
@@ -162,7 +162,7 @@
       "id": 20,
       "name": "test_20_cli_doctor",
       "passed": true,
-      "duration_seconds": 1.63,
+      "duration_seconds": 1.66,
       "detail": "doctor reports actionable warnings, init fixes them, machine is healthy",
       "error": ""
     },
@@ -170,7 +170,7 @@
       "id": 21,
       "name": "test_21_cli_status",
       "passed": true,
-      "duration_seconds": 1.09,
+      "duration_seconds": 1.0,
       "detail": "status summarises each target and --strict turns drift into a failure",
       "error": ""
     },
@@ -178,7 +178,7 @@
       "id": 22,
       "name": "test_22_cli_aliases",
       "passed": true,
-      "duration_seconds": 0.8,
+      "duration_seconds": 0.7,
       "detail": "aliases dispatch correctly, unknown commands exit 2",
       "error": ""
     },
@@ -186,7 +186,7 @@
       "id": 23,
       "name": "test_23_direct_library_edit",
       "passed": true,
-      "duration_seconds": 1.33,
+      "duration_seconds": 1.19,
       "detail": "out-of-band library edits refresh the hash; later both-side edits conflict as state C",
       "error": ""
     },
@@ -194,7 +194,7 @@
       "id": 24,
       "name": "test_24_compare_missing_operand",
       "passed": true,
-      "duration_seconds": 0.95,
+      "duration_seconds": 0.81,
       "detail": "compare reports changed files, and unknown operands fail cleanly instead of crashing",
       "error": ""
     },
@@ -202,7 +202,7 @@
       "id": 25,
       "name": "test_25_cli_adopt_and_distribute",
       "passed": true,
-      "duration_seconds": 0.79,
+      "duration_seconds": 0.7,
       "detail": "aem adopt pulls from a tool; aem distribute pushes to a tool",
       "error": ""
     },
@@ -210,7 +210,7 @@
       "id": 26,
       "name": "test_26_cli_report",
       "passed": true,
-      "duration_seconds": 2.03,
+      "duration_seconds": 2.06,
       "detail": "report renders resources, targets, drift and tool status into one HTML file",
       "error": ""
     },
@@ -218,7 +218,7 @@
       "id": 27,
       "name": "test_27_cli_import_pick",
       "passed": true,
-      "duration_seconds": 0.89,
+      "duration_seconds": 1.02,
       "detail": "ambiguous bundle exits 2 with candidates; --pick imports one; --all imports every match",
       "error": ""
     },
@@ -226,7 +226,7 @@
       "id": 28,
       "name": "test_28_cli_dirs",
       "passed": true,
-      "duration_seconds": 2.81,
+      "duration_seconds": 3.05,
       "detail": "aem dirs resolves skills/MCP/rules paths per tool with scope, filters and unknown-agent errors",
       "error": ""
     }

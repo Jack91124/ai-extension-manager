@@ -5,6 +5,17 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.11] - 2026-11-25
+
+### Added
+
+- `docs/alternatives.md`: an honest comparison of installer CLIs, desktop managers and aem, with a
+  decision guide for when aem is the wrong choice.
+
+### Fixed
+
+- README status sections now state 28 scenario tests instead of 26.
+
 ## [1.0.10] - 2026-11-22
 
 ### Added

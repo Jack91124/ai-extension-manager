@@ -261,6 +261,7 @@ state-C conflict that it refuses to overwrite. The full captured transcript is i
 | [references/dsh-plugin-spec.md](references/dsh-plugin-spec.md) | the planned GUI/execution plugin (not built) |
 | [docs/where.html](https://jack91124.github.io/ai-extension-manager/where.html) | where each tool keeps skills, MCP configs and rules (generated page) |
 | [docs/llms.txt](docs/llms.txt) | machine-readable summary for AI crawlers |
+| [docs/alternatives.md](docs/alternatives.md) | honest comparison with other skill managers (and when to use them instead) |
 | [docs/launch.md](docs/launch.md) | launch positioning, copy and channel checklist |
 | [docs/ROADMAP.md](docs/ROADMAP.md) | where this is going |
 
@@ -270,7 +271,7 @@ This is a working **v1.0 CLI + Agent Skill**, not a finished product:
 
 - ✅ import, distribute, both-way sync, conflict detection, backups, verify, compare, restore;
 - ✅ six adapters with honest verification levels, safety scanner, JSON contracts;
-- ✅ 26 scenario tests on disposable fake homes;
+- ✅ 28 scenario tests on disposable fake homes;
 - 🚧 DSH Plugin dashboard is **specified, not implemented** — no GUI is claimed here;
 - 🚧 plugin installation is delegated to each tool's native command (no auto-install yet);
 - ⚠️ Gemini CLI and Cursor were verified against official docs/path maps, not exercised at runtime;
