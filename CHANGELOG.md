@@ -5,6 +5,20 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.19] - 2026-11-26
+
+### Added
+
+- URL imports now fail with an actionable hint when `git clone` cannot reach the host:
+  check `git config --global --get-regexp '^url\.'` for mirror rewrites, or download the
+  repository and import the local path (`aem import --source <folder>`). Added scenario
+  test 34 as a regression (34/34 passing).
+- Bilingual README troubleshooting section for clone failures and git URL rewrites.
+
+### Changed
+
+- Quick-start pins, test badge and user-facing docs advanced to `v1.0.19` / 34 scenario tests.
+
 ## [1.0.18] - 2026-11-26
 
 ### Added

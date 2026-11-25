@@ -1033,6 +1033,27 @@ def test_33_doctor_detects_git_mirror_rewrite(case: Case) -> str:
           "git-mirror should be ok with no rewrite rules")
     return "doctor flags git mirror rewrites and clears them when config is clean"
 
+
+# ---------------------------------------------------------------------------
+# 34. clone_failure gives an actionable hint on network errors
+# ---------------------------------------------------------------------------
+
+@test
+def test_34_clone_failure_hint(case: Case) -> str:
+    sys.path.insert(0, str(SCRIPTS))
+    import import_resource
+    network = import_resource.clone_failure(
+        "fatal: unable to access 'https://github.com/x/y.git/': Failed to connect to github.com port 443")
+    check(network["ok"] is False, "clone_failure should report failure")
+    hint = network["error"]
+    check("--get-regexp" in hint and "--source" in hint,
+          "network failure should include rewrite-check and local-import hints")
+    other = import_resource.clone_failure("fatal: repository not found")
+    check("--get-regexp" not in other["error"],
+          "non-network failures should not carry the network hint")
+    return "clone failures carry actionable guidance only when network-related"
+
+
 # runner
 # ---------------------------------------------------------------------------
 

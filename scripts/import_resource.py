@@ -67,6 +67,27 @@ def check_git_rewrites() -> list:
     return rewrites
 
 
+CLONE_HINT = (
+    "git clone could not reach the host. Check connectivity and any URL rewrite rules "
+    "(git config --global --get-regexp '^url\\.'). If GitHub is unreachable, download the "
+    "repository yourself and import the local path instead: aem import --source <downloaded-folder>. "
+    "A Gitee mirror is also listed in the README."
+)
+
+
+def clone_failure(reason: str) -> dict:
+    """Wrap a clone error with an actionable hint for the common network failures."""
+    lowered = (reason or "").lower()
+    network = any(token in lowered for token in (
+        "could not connect", "failed to connect", "could not resolve host",
+        "timed out", "connection refused", "network is unreachable",
+        "unable to access", "temporary failure"))
+    message = "git clone failed: " + (reason or "").strip()[:400]
+    if network:
+        message += "  |  " + CLONE_HINT
+    return {"ok": False, "error": message}
+
+
 def clone_source(source: str, staging: Path, ref=None) -> dict:
     if not source.startswith("https://"):
         return {"ok": False, "error": "only https:// repository URLs are cloned automatically; use a local path otherwise"}
@@ -79,9 +100,9 @@ def clone_source(source: str, staging: Path, ref=None) -> dict:
         result = subprocess.run(command, capture_output=True, text=True, timeout=300,
                                 encoding="utf-8", errors="replace")
     except (OSError, subprocess.SubprocessError) as exc:
-        return {"ok": False, "error": "git clone failed: " + str(exc)}
+        return clone_failure(str(exc))
     if result.returncode != 0:
-        return {"ok": False, "error": "git clone failed: " + (result.stderr or "").strip()[:500]}
+        return clone_failure((result.stderr or result.stdout or "").strip())
     shutil.rmtree(destination / ".git", ignore_errors=True)
     return {"ok": True, "path": destination, "command": " ".join(command)}
 

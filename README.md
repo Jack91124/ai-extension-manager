@@ -15,7 +15,7 @@ changed using SHA-256 content hashes and per-target sync records — never "the 
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Tests](https://img.shields.io/badge/scenario%20tests-33%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/scenario%20tests-34%20passing-brightgreen)
 [![CI](https://github.com/Jack91124/ai-extension-manager/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Jack91124/ai-extension-manager/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/Jack91124/ai-extension-manager?color=blue)](https://github.com/Jack91124/ai-extension-manager/releases/latest)
 ![Platforms](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
@@ -53,11 +53,11 @@ Requires **Python 3.9+**. No third-party packages, on Windows, macOS or Linux.
 Install without cloning (needs `git`; pin the tag for a reproducible install):
 
 ```bash
-python -m pip install --user "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.18"
+python -m pip install --user "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.19"
 aem init && aem doctor
 ```
 
-Prefer an isolated CLI? Use `pipx install "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.18"`,
+Prefer an isolated CLI? Use `pipx install "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.19"`,
 or download the wheel from the [latest release](https://github.com/Jack91124/ai-extension-manager/releases/latest)
 and `pip install` it.
 
@@ -211,6 +211,22 @@ with a machine-readable summary in [docs/llms.txt](docs/llms.txt).
 
 Read the full policy in [references/security-policy.md](references/security-policy.md).
 
+### Troubleshooting: `aem import --source <github-url>` fails
+
+If a URL import fails with `git clone failed: ... Failed to connect to ... port 443`
+or `Could not resolve host`, the clone could not reach the host. Two common causes:
+
+1. **A git URL rewrite rule** redirects `github.com` to a mirror that is blocked or
+   untrusted. Inspect them with `git config --global --get-regexp '^url\.'`. `aem doctor`
+   now flags such rewrites as a `git-mirror` warning. Only pass `--allow-mirror` if you
+   explicitly trust the mirror.
+2. **No direct network access to GitHub** in your environment. Download the repository
+   by any means available to you (browser, corporate proxy, or the Gitee mirror linked
+   below) and import the downloaded folder instead:
+   `aem import --source /path/to/downloaded/repo`.
+
+The same applies to `aem detect --url` — download first, then use `--path`.
+
 ## CLI at a glance
 
 | Command | What it does |
@@ -271,7 +287,7 @@ This is a working **v1.0 CLI + Agent Skill**, not a finished product:
 
 - ✅ import, distribute, both-way sync, conflict detection, backups, verify, compare, restore;
 - ✅ six adapters with honest verification levels, safety scanner, JSON contracts;
-- ✅ 33 scenario tests on disposable fake homes;
+- ✅ 34 scenario tests on disposable fake homes;
 - 🚧 DSH Plugin dashboard is **specified, not implemented** — no GUI is claimed here;
 - 🚧 plugin installation is delegated to each tool's native command (no auto-install yet);
 - ⚠️ Gemini CLI and Cursor were verified against official docs/path maps, not exercised at runtime;

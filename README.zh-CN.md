@@ -15,7 +15,7 @@ OpenAI Codex、Gemini CLI、Cursor、VS Code Copilot 和 DSH。它用 SHA-256 �
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Tests](https://img.shields.io/badge/scenario%20tests-33%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/scenario%20tests-34%20passing-brightgreen)
 [![CI](https://github.com/Jack91124/ai-extension-manager/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Jack91124/ai-extension-manager/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/Jack91124/ai-extension-manager?color=blue)](https://github.com/Jack91124/ai-extension-manager/releases/latest)
 ![Platforms](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
@@ -54,11 +54,11 @@ OpenAI Codex、Gemini CLI、Cursor、VS Code Copilot 和 DSH。它用 SHA-256 �
 不克隆仓库直接安装（需要 `git`，锁定版本标签以保证可复现）：
 
 ```bash
-python -m pip install --user "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.18"
+python -m pip install --user "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.19"
 aem init && aem doctor
 ```
 
-想隔离安装？用 `pipx install "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.18"`，
+想隔离安装？用 `pipx install "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.19"`，
 或从[最新 Release](https://github.com/Jack91124/ai-extension-manager/releases/latest) 下载 wheel 后 `pip install`。
 
 或者克隆仓库：
@@ -208,6 +208,19 @@ aem restore --resource my-skill --version <label>                               
 
 完整策略见 [references/security-policy.md](references/security-policy.md)。
 
+### 排查：`aem import --source <github-url>` 失败
+
+如果 URL 导入报 `git clone failed: ... Failed to connect to ... port 443`
+或 `Could not resolve host`，说明克隆连不上目标主机。两个常见原因：
+
+1. **git URL 重写规则**把 `github.com` 指向了被封锁或不受信的镜像。
+   用 `git config --global --get-regexp '^url\.'` 检查；`aem doctor` 现在会把这类重写标为
+   `git-mirror` 警告。只有明确信任该镜像时才传 `--allow-mirror`。
+2. **当前环境无法直连 GitHub**。用任何可行方式（浏览器、公司代理或下方 Gitee 镜像）
+   自行下载仓库，然后导入本地目录：`aem import --source <下载后的目录>`。
+
+`aem detect --url` 同理——先下载，再用 `--path`。
+
 ## CLI 速查
 
 | 命令 | 作用 |
@@ -267,7 +280,7 @@ python demo/run_demo.py
 
 - ✅ 导入、分发、双向同步、冲突检测、备份、校验、对比、恢复；
 - ✅ 六个适配器（附诚实的验证等级）、安全扫描、JSON 契约；
-- ✅ 33 个场景测试，全部跑在一次性假 home 上；
+- ✅ 34 个场景测试，全部跑在一次性假 home 上；
 - 🚧 DSH Plugin 面板**只有规格，尚未实现**——这里不声称存在 GUI；
 - 🚧 插件安装委托给各工具原生命令（暂不自动安装）；
 - ⚠️ Gemini CLI 与 Cursor 只按官方文档/路径映射验证，未跑真实运行时；
