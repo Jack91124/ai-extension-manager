@@ -211,6 +211,9 @@ def cmd_doctor(argv) -> int:
         if args.fix:
             home.ensure()
             _check(checks, "library", "ok", "created " + str(home.root))
+    elif not home.root.is_dir():
+        _check(checks, "library", "fail", str(home.root) + " exists but is not a directory",
+               "remove that file or set AEM_HOME to a writable directory")
     elif _writable(home.root):
         _check(checks, "library", "ok", str(home.root) + " is writable")
     else:

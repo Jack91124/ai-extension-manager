@@ -914,6 +914,23 @@ def test_29_init_unwritable_root(case: Case) -> str:
 
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# 30. doctor must not call a regular file at the library root "writable"
+@test
+def test_30_doctor_rejects_file_as_library_root(case: Case) -> str:
+    blocker = case.root / "blocked-doctor-home"
+    blocker.write_text("not a directory", encoding="utf-8")
+    completed, data = case.run("aem.py", "doctor", "--home", str(blocker), "--json")
+    check_exit(completed, 1, "doctor with a file as library root")
+    checks = (data or {}).get("checks") or []
+    lib = next((c for c in checks if c.get("id") == "library"), None)
+    check(lib is not None and lib.get("status") == "fail",
+          "library check should be fail, not ok")
+    check(bool(lib) and "not a directory" in (lib or {}).get("detail", ""),
+          "detail should explain the root is not a directory")
+    return "doctor correctly rejects a non-directory library root"
+
+
 # runner
 # ---------------------------------------------------------------------------
 

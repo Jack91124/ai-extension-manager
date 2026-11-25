@@ -5,6 +5,15 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.15] - 2026-11-26
+
+### Fixed
+
+- `aem doctor` no longer reports a regular file placed at the central library root as
+  "writable"; it now fails the library check with an actionable `not a directory` message.
+  Added scenario test 30 as a regression (30/30 passing).
+- Quick-start pins and test badge advanced to `v1.0.15`.
+
 ## [1.0.14] - 2026-11-26
 
 ### Fixed

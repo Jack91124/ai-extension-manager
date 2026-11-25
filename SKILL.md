@@ -16,7 +16,7 @@ allowed-tools: Read Write Edit Bash Glob Grep
 metadata:
   display_name: AI Extension Manager
   display_name_zh: AI 扩展资源管理助手
-  version: 1.0.14
+  version: 1.0.15
   category: developer-tools
   phase: v1.0 (CLI + Agent Skill; DSH Plugin specified, not built)
 ---
