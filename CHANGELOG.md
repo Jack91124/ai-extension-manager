@@ -5,10 +5,16 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.14] - 2026-11-26
+
 ### Fixed
 
-- Launch kit and long-form article still referenced `v1.0.12` for the wheel, channel checklist and
-  Gitee tag, so a visitor copying those commands installed a release behind. All now say `v1.0.13`.
+- `aem init` now catches OSError when the central library root is not writable (locked-down home,
+  sandboxed host) and returns an actionable JSON/human error suggesting `--home` / `AEM_HOME`,
+  instead of dumping a raw Python traceback. Added scenario test 29 as a regression.
+- Refreshed the awesome-list candidates in the launch kit: removed a dead list and an unmaintained
+  one, added five verified-active, contribution-friendly lists (checked 2026-11-26).
+- Quick-start install pins advanced to `v1.0.14`; scenario test badge updated to 29 passing.
 
 ## [1.0.13] - 2026-11-26
 

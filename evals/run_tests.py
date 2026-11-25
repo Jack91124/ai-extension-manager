@@ -898,8 +898,25 @@ def test_28_cli_dirs(case: Case) -> str:
 
 
 # ---------------------------------------------------------------------------
+# 29. unwritable library root produces an actionable error, not a traceback
+@test
+def test_29_init_unwritable_root(case: Case) -> str:
+    # Make the library root path itself a regular file: mkdir fails with
+    # FileExistsError (an OSError), simulating a locked-down default location.
+    blocker = case.root / "blocked-home"
+    blocker.write_text("not a directory", encoding="utf-8")
+    completed, data = case.run("aem.py", "init", "--home", str(blocker), "--json")
+    check_exit(completed, 1, "init on an unwritable root")
+    check(data is not None and data.get("ok") is False, "JSON should report ok=false")
+    check(bool(data.get("error")) and "--home" in data["error"], "error should suggest --home")
+    check(completed.duration < 20, "should fail fast, not hang")
+    return "unwritable root produced a clean actionable error"
+
+
+# ---------------------------------------------------------------------------
 # runner
 # ---------------------------------------------------------------------------
+
 
 def main(argv=None) -> int:
     argv = argv or sys.argv[1:]

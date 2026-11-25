@@ -141,9 +141,18 @@ def cmd_init(argv) -> int:
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args(argv)
     home = core.Home(args.home)
-    existed = home.root.exists()
-    registry_existed = home.registry_path.exists()
-    home.ensure()
+    try:
+        existed = home.root.exists()
+        registry_existed = home.registry_path.exists()
+        home.ensure()
+    except OSError as exc:
+        message = ("cannot initialise library at " + str(home.root) + ": " + str(exc) +
+                   ". Pass --home <writable-dir> or set AEM_HOME to a writable location.")
+        if args.json:
+            print(json.dumps({"ok": False, "error": message, "home": str(home.root)}, ensure_ascii=False))
+        else:
+            print("aem init: " + message, file=sys.stderr)
+        return 1
     result = {
         "ok": True,
         "home": str(home.root),
