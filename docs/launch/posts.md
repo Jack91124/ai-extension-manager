@@ -162,13 +162,14 @@ PR title: `Add AI Extension Manager (cross-tool skill sync)`
 PR body: one sentence on the problem, one on what is different (hash-based conflict detection, no silent
 overwrites), the install line, and a note that the repo is MIT and test-covered. No marketing adjectives.
 
-Candidate lists (check that they accept tool PRs before opening):
+Candidate lists (verified active on 2026-11-26; still confirm each list accepts tool/manager PRs before opening):
 
-- https://github.com/hesreallyhim/awesome-claude-code
-- https://github.com/vercel-labs/skills
-- https://github.com/e2b-dev/awesome-ai-agents
-- https://github.com/mrcodedev/awesome-devtools
-- https://github.com/Punkpeye/awesome-mcp-servers (only if the list covers managers, not servers)
+- https://github.com/hesreallyhim/awesome-claude-code (58k stars, active)
+- https://github.com/Punkpeye/awesome-mcp-servers (98k stars, active; only if the list covers managers, not servers)
+- https://github.com/sickn33/agentic-awesome-skills (50k stars, active, has a Contributing section; explicitly covers Claude Code, Codex, Cursor, Gemini CLI)
+- https://github.com/VoltAgent/awesome-agent-skills (37k stars, CONTRIBUTING.md welcomes contributions)
+- https://github.com/github/awesome-copilot (41k stars, has CONTRIBUTING.md; best fit for the Copilot angle)
+- https://github.com/e2b-dev/awesome-ai-agents (31k stars, but last push 2026-08-21 — lower priority)
 
 ## Rules for all posts
 
