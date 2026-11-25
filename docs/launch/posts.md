@@ -55,7 +55,7 @@ npx skills add Jack91124/ai-extension-manager
 python -m pip install --user "git+https://github.com/Jack91124/ai-extension-manager.git"
 ```
 
-28 scenario tests, CI on 3 OS, MIT.
+30 scenario tests, CI on 3 OS, MIT.
 Would love feedback from people who juggle more than one agent:
 https://github.com/Jack91124/ai-extension-manager
 
@@ -104,7 +104,7 @@ exits with code 2 and writes nothing.
 - Paths for Claude Code, Codex, Gemini CLI, Cursor, VS Code Copilot and DSH, each marked local / docs / partial
 - Python 3.9+, standard library only, MIT
 
-It is early (v1.0, 28 scenario tests), and the DSH graphical plugin is still a spec, not a product.
+It is early (v1.0, 30 scenario tests), and the DSH graphical plugin is still a spec, not a product.
 The thing I want reviewed is the conflict model and the Windows link behaviour.
 
 https://github.com/Jack91124/ai-extension-manager

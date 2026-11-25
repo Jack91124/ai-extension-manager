@@ -271,7 +271,7 @@ This is a working **v1.0 CLI + Agent Skill**, not a finished product:
 
 - ✅ import, distribute, both-way sync, conflict detection, backups, verify, compare, restore;
 - ✅ six adapters with honest verification levels, safety scanner, JSON contracts;
-- ✅ 28 scenario tests on disposable fake homes;
+- ✅ 30 scenario tests on disposable fake homes;
 - 🚧 DSH Plugin dashboard is **specified, not implemented** — no GUI is claimed here;
 - 🚧 plugin installation is delegated to each tool's native command (no auto-install yet);
 - ⚠️ Gemini CLI and Cursor were verified against official docs/path maps, not exercised at runtime;

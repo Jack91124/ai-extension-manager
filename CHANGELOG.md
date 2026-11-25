@@ -5,6 +5,11 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- Corrected stale scenario-test counts in user-facing docs (`28` → `30`) so the README,
+  landing-page copy, alternatives page and launch posts agree with the 30 passing tests.
+
 ## [1.0.15] - 2026-11-26
 
 ### Fixed
@@ -43,7 +48,6 @@ All notable changes are documented here. The format follows
   visitor following the README installed a version seven releases behind and missed `aem dirs`, the
   multi-resource import guard and the macOS CI fixes. They now pin `v1.0.12`.
 - Scenario-test badge corrected from 27 to 28 in both READMEs.
-
 
 ## [1.0.11] - 2026-11-25
 
