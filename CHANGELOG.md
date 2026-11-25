@@ -5,10 +5,17 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
-### Fixed
+## [1.0.16] - 2026-11-26
 
-- Corrected stale scenario-test counts in user-facing docs (`28` → `30`) so the README,
-  landing-page copy, alternatives page and launch posts agree with the 30 passing tests.
+### Added
+
+- `aem doctor` now detects library payloads edited directly on disk, bypassing the registry:
+  the `payloads` check reports a `warn` with the affected resource names and points to the
+  refresh path. Added scenario test 31 as a regression (31/31 passing).
+
+### Changed
+
+- Quick-start pins, test badge and user-facing docs advanced to `v1.0.16` / 31 scenario tests.
 
 ## [1.0.15] - 2026-11-26
 

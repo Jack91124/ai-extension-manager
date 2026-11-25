@@ -931,6 +931,42 @@ def test_30_doctor_rejects_file_as_library_root(case: Case) -> str:
     return "doctor correctly rejects a non-directory library root"
 
 
+# 31. doctor detects library payload edited outside the registry
+@test
+def test_31_doctor_detects_library_hash_drift(case: Case) -> str:
+    repo = case.make_repo("doctor-drift-repo")
+    case.import_skill(case.make_skill(repo, "doctor-drift"))
+    completed, data = case.run("aem.py", "doctor", "--json")
+    check_exit(completed, 0, "doctor baseline")
+    payloads = next((c for c in (data or {}).get("checks") or [] if c.get("id") == "payloads"), None)
+    check(payloads is not None and payloads.get("status") == "ok",
+          "clean library should report payloads ok")
+    before = payloads.get("detail") if payloads else ""
+    check("match registry hashes" in before,
+          "clean payload detail should state hashes match, got " + str(before))
+    library_file = case.aem("library", "skills", "doctor-drift", "payload", "SKILL.md")
+    check(library_file.exists(), "library payload should exist")
+    library_file.write_text(library_file.read_text(encoding="utf-8") + "\nout of band edit\n",
+                            encoding="utf-8")
+    completed, data = case.run("aem.py", "doctor", "--json")
+    check_exit(completed, 0, "doctor after out-of-band library edit")
+    payloads = next((c for c in (data or {}).get("checks") or [] if c.get("id") == "payloads"), None)
+    check(payloads is not None and payloads.get("status") == "warn",
+          "doctor should warn about library hash drift, got " + json.dumps(payloads))
+    check("doctor-drift" in (payloads or {}).get("detail", "") and
+          "outside aem" in (payloads or {}).get("detail", ""),
+          "detail should name the drifted resource and explain it is outside aem")
+    completed, _ = case.run("sync_resources.py", "--direction", "distribute", "--agent", "dsh",
+                            "--resource", "doctor-drift", "--json")
+    check_exit(completed, 0, "distribute refreshes the library hash")
+    completed, data = case.run("aem.py", "doctor", "--json")
+    check_exit(completed, 0, "doctor after hash refresh")
+    payloads = next((c for c in (data or {}).get("checks") or [] if c.get("id") == "payloads"), None)
+    check(payloads is not None and payloads.get("status") == "ok",
+          "doctor should be ok again after the hash is refreshed")
+    return "doctor flags out-of-band library edits and clears after hash refresh"
+
+
 # runner
 # ---------------------------------------------------------------------------
 

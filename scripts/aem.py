@@ -242,18 +242,33 @@ def cmd_doctor(argv) -> int:
         _check(checks, "registry", "warn", "no registry yet", "run: aem init")
 
     broken = []
+    drifted = []
     for record in (registry.get("resources") or {}).values():
         try:
             payload = core.payload_path(home, record)
         except Exception:
             payload = None
+        name = str(record.get("name") or record.get("id"))
         if payload is None or not Path(payload).exists():
-            broken.append(str(record.get("name") or record.get("id")))
+            broken.append(name)
+        elif record.get("type") == "skill" and record.get("hash"):
+            # Detect edits made directly in the library, bypassing the registry.
+            # Only skills have a directory payload whose tree hash is meaningful here.
+            try:
+                actual = core.tree_hash(Path(payload))
+                if actual != record.get("hash"):
+                    drifted.append(name)
+            except (OSError, ValueError):
+                drifted.append(name)
     if broken:
         _check(checks, "payloads", "fail", str(len(broken)) + " resource payload(s) missing: " +
                ", ".join(broken[:5]), "run: aem verify --all and restore from backups")
+    elif drifted:
+        _check(checks, "payloads", "warn", str(len(drifted)) + " library payload(s) changed outside aem: " +
+               ", ".join(drifted[:5]),
+               "run: aem sync --direction distribute to refresh the hash, or restore from backups")
     else:
-        _check(checks, "payloads", "ok", "all payload directories present")
+        _check(checks, "payloads", "ok", "all payload directories present and match registry hashes")
 
     lock = home.metadata / ".library.lock"
     if lock.exists():
