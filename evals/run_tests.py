@@ -9,6 +9,7 @@ Usage:
   python evals/run_tests.py [--only NAME] [--keep]
 Exit code 0 when every test passes.
 """
+import io
 import json
 import os
 import re
@@ -966,6 +967,37 @@ def test_31_doctor_detects_library_hash_drift(case: Case) -> str:
           "doctor should be ok again after the hash is refreshed")
     return "doctor flags out-of-band library edits and clears after hash refresh"
 
+
+@test
+def test_32_json_contract_fields(case: Case) -> str:
+    """Every --json result carries a stable schema and tool version (ROADMAP item)."""
+    # several commands with different result builders (success + failure)
+    commands = [
+        ("scan_agents.py", ["--agent", "claude", "--json"]),
+        ("detect_resources.py", ["--path", str(case.make_repo("json-contract-repo")), "--json"]),
+        ("sync_resources.py", ["--direction", "distribute", "--json"]),
+        ("backup_restore.py", ["--json", "list"]),
+        ("compare_resources.py", ["--left", "resource:missing-a", "--right",
+                                  "resource:missing-b", "--json"]),
+    ]
+    for script, args in commands:
+        completed, data = case.run(script, *args)
+        check(data is not None, script + " should return parseable JSON")
+        check(data.get("schema") == "aem.result/v1",
+              script + " should carry schema=aem.result/v1, got " + str(data.get("schema")))
+        check(isinstance(data.get("tool_version"), str) and
+              re.match(r"^\d+\.\d+\.\d+$", data.get("tool_version", "")),
+              script + " should carry a semantic tool_version")
+    # a caller-supplied schema wins (no clobbering)
+    sys.path.insert(0, str(SCRIPTS))
+    import aem_core
+    buf = io.StringIO()
+    aem_core.emit_json({"schema": "custom/v9", "ok": True}, stream=buf)
+    custom = json.loads(buf.getvalue())
+    check(custom["schema"] == "custom/v9", "emit_json must not overwrite caller schema")
+    check(custom["tool_version"] == aem_core.TOOL_VERSION,
+          "emit_json should still add tool_version")
+    return "all --json results carry schema/tool_version; caller override preserved"
 
 # runner
 # ---------------------------------------------------------------------------

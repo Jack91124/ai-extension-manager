@@ -5,6 +5,18 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.17] - 2026-11-26
+
+### Added
+
+- Stable, versioned JSON result contract `aem.result/v1`: every `--json` command now
+  emits `schema` and `tool_version` envelope fields via the common `emit_json()` funnel.
+  Documented in `references/json-contract.md`. Added scenario test 32 as a regression.
+
+### Changed
+
+- Quick-start pins, test badge and user-facing docs advanced to `v1.0.17` / 32 scenario tests.
+
 ## [1.0.16] - 2026-11-26
 
 ### Added

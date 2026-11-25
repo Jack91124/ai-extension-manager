@@ -21,7 +21,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 SCHEMA_VERSION = 1
-TOOL_VERSION = "1.0.16"
+TOOL_VERSION = "1.0.17"
 VCS_DIRS = {".git", ".svn", ".hg", ".bzr", "__pycache__", ".mypy_cache", ".pytest_cache"}
 SYSTEM_JUNK = {".DS_Store", "Thumbs.db", "desktop.ini"}
 
@@ -33,7 +33,23 @@ def pj(value) -> str:
     return json.dumps(value, ensure_ascii=False, indent=2, sort_keys=False)
 
 
+DEFAULT_RESULT_SCHEMA = "aem.result/v1"
+
+
 def emit_json(payload: dict, stream=None) -> None:
+    """Emit a JSON result with a stable, versioned envelope.
+
+    Contract fields (``schema``, ``tool_version``, ``generated_at``) are
+    injected only when absent, so callers that already set them keep full
+    control.  Existing top-level fields are never renamed or removed, which
+    keeps every current consumer (and test) backward compatible.
+    See references/json-contract.md for the documented schema.
+    """
+    if isinstance(payload, dict):
+        envelope = {"schema": DEFAULT_RESULT_SCHEMA, "tool_version": TOOL_VERSION}
+        merged = dict(envelope)
+        merged.update(payload)
+        payload = merged
     (stream or sys.stdout).write(pj(payload) + "\n")
 
 

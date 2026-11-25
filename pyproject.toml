@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ai-extension-manager"
-version = "1.0.16"
+version = "1.0.17"
 description = "Local-first sync and version control for AI agent skills, rules and MCP configs."
 readme = "README.md"
 license = { text = "MIT" }

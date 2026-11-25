@@ -43,7 +43,7 @@ should pick something else.
 - **No marketplace / browsing.** aem imports what you point it at; it does not discover skills for you.
 - **No automatic plugin installation.** Tool-specific plugins go through each tool's own install
   command; aem tracks them, it does not vendor them.
-- **Young project.** v1.0.x, single maintainer, 31 scenario tests. Expect sharp edges.
+- **Young project.** v1.0.x, single maintainer, 32 scenario tests. Expect sharp edges.
 
 ## A short decision guide
 
