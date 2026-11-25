@@ -104,7 +104,7 @@ Honesty is part of the design, so the README's support matrix says this out loud
 ## Try it in 60 seconds
 
 ```bash
-npx skills add Jack91124/ai-extension-manager     # or: pip install --user "git+...@v1.0.12"
+npx skills add Jack91124/ai-extension-manager     # or: pip install --user "git+...@v1.0.13"
 aem scan                     # where are the six tools on this machine?
 aem adopt                    # pull new/changed skills from every tool into one library
 aem distribute --agent claude --agent codex --resource my-skill

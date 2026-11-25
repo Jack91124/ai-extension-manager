@@ -5,6 +5,11 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- Launch kit and long-form article still referenced `v1.0.12` for the wheel, channel checklist and
+  Gitee tag, so a visitor copying those commands installed a release behind. All now say `v1.0.13`.
+
 ## [1.0.13] - 2026-11-26
 
 ### Fixed
