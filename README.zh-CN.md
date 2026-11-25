@@ -15,7 +15,7 @@ OpenAI Codex、Gemini CLI、Cursor、VS Code Copilot 和 DSH。它用 SHA-256 �
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Tests](https://img.shields.io/badge/scenario%20tests-27%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/scenario%20tests-28%20passing-brightgreen)
 [![CI](https://github.com/Jack91124/ai-extension-manager/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Jack91124/ai-extension-manager/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/Jack91124/ai-extension-manager?color=blue)](https://github.com/Jack91124/ai-extension-manager/releases/latest)
 ![Platforms](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
@@ -54,11 +54,11 @@ OpenAI Codex、Gemini CLI、Cursor、VS Code Copilot 和 DSH。它用 SHA-256 �
 不克隆仓库直接安装（需要 `git`，锁定版本标签以保证可复现）：
 
 ```bash
-python -m pip install --user "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.4"
+python -m pip install --user "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.12"
 aem init && aem doctor
 ```
 
-想隔离安装？用 `pipx install "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.4"`，
+想隔离安装？用 `pipx install "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.12"`，
 或从[最新 Release](https://github.com/Jack91124/ai-extension-manager/releases/latest) 下载 wheel 后 `pip install`。
 
 或者克隆仓库：

@@ -5,6 +5,16 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.12] - 2026-11-25
+
+### Fixed
+
+- Quick-start install commands in both READMEs and the launch kit still pinned `v1.0.4`, so a
+  visitor following the README installed a version seven releases behind and missed `aem dirs`, the
+  multi-resource import guard and the macOS CI fixes. They now pin `v1.0.12`.
+- Scenario-test badge corrected from 27 to 28 in both READMEs.
+
+
 ## [1.0.11] - 2026-11-25
 
 ### Added
