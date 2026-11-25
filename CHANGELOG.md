@@ -5,6 +5,19 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.18] - 2026-11-26
+
+### Added
+
+- `aem doctor` now warns when a git `url.<base>.insteadOf` rule redirects an official host
+  (e.g. `github.com`) to a third-party mirror — the same supply-chain risk that
+  `import_resource.py` already refuses at import time. New `git-mirror` check with an
+  actionable fix hint. Added scenario test 33 as a regression (33/33 passing).
+
+### Changed
+
+- Quick-start pins, test badge and user-facing docs advanced to `v1.0.18` / 33 scenario tests.
+
 ## [1.0.17] - 2026-11-26
 
 ### Added

@@ -999,6 +999,40 @@ def test_32_json_contract_fields(case: Case) -> str:
           "emit_json should still add tool_version")
     return "all --json results carry schema/tool_version; caller override preserved"
 
+
+# ---------------------------------------------------------------------------
+# 33. doctor warns about git insteadOf rules hijacking official hosts
+# ---------------------------------------------------------------------------
+
+@test
+def test_33_doctor_detects_git_mirror_rewrite(case: Case) -> str:
+    config = case.root / "gitconfig-doctor"
+    config.write_text(
+        "[url \"https://ghproxy.net/https://github.com/\"]\n\tinsteadOf = https://github.com/\n",
+        encoding="utf-8")
+    case.env["GIT_CONFIG_GLOBAL"] = str(config)
+    completed, data = case.run("aem.py", "doctor", "--json")
+    check_exit(completed, 0, "doctor with a git mirror rewrite present")
+    checks = {item["id"]: item for item in data["checks"]}
+    mirror = checks.get("git-mirror")
+    check(mirror is not None, "doctor should include a git-mirror check")
+    check(mirror["status"] == "warn",
+          "git-mirror should warn, got " + str(mirror["status"]))
+    check("ghproxy.net" in mirror.get("detail", ""),
+          "git-mirror detail should name the mirror host")
+    check(mirror.get("fix"), "git-mirror warning should carry an actionable fix")
+
+    # With a clean git config the check returns to ok.
+    clean = case.root / "gitconfig-clean"
+    clean.write_text("", encoding="utf-8")
+    case.env["GIT_CONFIG_GLOBAL"] = str(clean)
+    completed, data = case.run("aem.py", "doctor", "--json")
+    check_exit(completed, 0, "doctor with a clean git config")
+    checks = {item["id"]: item for item in data["checks"]}
+    check(checks.get("git-mirror", {}).get("status") == "ok",
+          "git-mirror should be ok with no rewrite rules")
+    return "doctor flags git mirror rewrites and clears them when config is clean"
+
 # runner
 # ---------------------------------------------------------------------------
 

@@ -1,14 +1,14 @@
 # Launch kit · 发布材料
 
 Everything needed to announce AI Extension Manager on developer channels. Copy, paste, adapt.
-发布时按渠道取用；所有数字和命令都在 v1.0.17 上验证过。
+发布时按渠道取用；所有数字和命令都在 v1.0.18 上验证过。
 
 - Live site: https://jack91124.github.io/ai-extension-manager/ （中文 /zh.html）
 - Repository: https://github.com/Jack91124/ai-extension-manager
 - Mirror (China): https://gitee.com/ping-pong-squid-king/ai-extension-manager
 - Skill listing: https://www.skills.sh/jack91124/ai-extension-manager
-- Install: `python -m pip install --user "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.17"`
-  (or download the v1.0.17 wheel), or `npx skills add Jack91124/ai-extension-manager`
+- Install: `python -m pip install --user "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.18"`
+  (or download the v1.0.18 wheel), or `npx skills add Jack91124/ai-extension-manager`
 - Hero image: [demo.gif](demo.gif) (animated, 109 KB), static [hero.png](hero.png), or the
   1200x630 social card [og.png](og.png) (rendered by [make_og.py](make_og.py))
 - Long-form article (post as a blog/HN/V2EX body): [why-sync-overwrites.md](why-sync-overwrites.md)
@@ -68,7 +68,7 @@ I built aem: one local library, six adapters, SHA-256 state tracking.
 - only target changed -> import it back
 - both changed -> exit 2, write nothing
 
-32 scenario tests, CI on 3 OS. No deps. MIT.
+33 scenario tests, CI on 3 OS. No deps. MIT.
 
 https://github.com/Jack91124/ai-extension-manager
 
@@ -113,7 +113,7 @@ per-file unified diffs; restore brings any snapshot back.
 Scope is deliberately boring: skills, rules, MCP server definitions. Plugins are
 detected but installed through each vendor's own mechanism, never copied across tools.
 
-Python 3.9+, no dependencies, local-first. 32 scenario tests, CI on 3 OS.
+Python 3.9+, no dependencies, local-first. 33 scenario tests, CI on 3 OS.
 Happy to answer questions about the per-tool path verification — some of it is
 documented by vendors, some is marked "partial" in the support matrix on purpose.
 ```
@@ -122,9 +122,9 @@ documented by vendors, some is marked "partial" in the support matrix on purpose
 
 | Channel | Asset | Status |
 |---|---|---|
-| GitHub README + topics + Release + Pages | README.md / README.zh-CN.md / v1.0.17 wheel / live site | done |
+| GitHub README + topics + Release + Pages | README.md / README.zh-CN.md / v1.0.18 wheel / live site | done |
 | skills.sh listing | root SKILL.md is discoverable by `npx skills add` | indexed; badge installed in READMEs |
-| Gitee mirror | code + tag v1.0.17 | code done; Gitee Release needs a fresh token |
+| Gitee mirror | code + tag v1.0.18 | code done; Gitee Release needs a fresh token |
 | X / Twitter | copy above + og.png (1200x630) | ready to post |
 | 小红书 / 即刻 / V2EX | 中文文案 above + demo.gif or og.png | ready to post |
 | Hacker News / r/ClaudeAI | Show HN copy above | ready to post |

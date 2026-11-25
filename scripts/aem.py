@@ -318,6 +318,24 @@ def cmd_doctor(argv) -> int:
     _check(checks, "conflicts", "warn" if conflicts else "ok",
            str(len(conflicts)) + " unresolved conflict(s)")
 
+    # Supply-chain: surface git insteadOf rules that silently redirect an
+    # official host (e.g. github.com) to a third-party mirror. The importer
+    # already refuses such clones; warn during routine diagnosis too.
+    try:
+        from import_resource import check_git_rewrites
+        rewrites = [item for item in check_git_rewrites() if item.get("mirror_host")]
+    except Exception:
+        rewrites = []
+    if rewrites:
+        hosts = sorted({item["mirror_host"] for item in rewrites})
+        _check(checks, "git-mirror", "warn",
+               "git redirects official hosts to third-party mirror(s): " + ", ".join(hosts),
+               "run: git config --global --get-regexp '^url\\.' and remove untrusted rules; "
+               "URL imports need --allow-mirror while a rule is present")
+    else:
+        _check(checks, "git-mirror", "ok",
+               "no git URL rewrites redirecting official hosts")
+
     fails = [item for item in checks if item["status"] == "fail"]
     warns = [item for item in checks if item["status"] == "warn"]
     result = {"ok": not fails, "generated_at": core.utcnow(), "home": str(home.root),
