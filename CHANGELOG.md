@@ -5,6 +5,16 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.13] - 2026-11-26
+
+### Fixed
+
+- SKILL.md now states explicitly that every `scripts/...` example is relative to the skill's own
+  directory, not the user's project, and tells the agent how to resolve it (framework context, or
+  locate `SKILL.md` then use an absolute path). This closes a real gap for the "install once, drive
+  with one sentence" workflow when the skill lives in an agent skills folder, not a checkout.
+- Quick-start install pins advanced to `v1.0.13` in both READMEs and the launch kit.
+
 ## [1.0.12] - 2026-11-25
 
 ### Fixed

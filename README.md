@@ -53,11 +53,11 @@ Requires **Python 3.9+**. No third-party packages, on Windows, macOS or Linux.
 Install without cloning (needs `git`; pin the tag for a reproducible install):
 
 ```bash
-python -m pip install --user "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.12"
+python -m pip install --user "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.13"
 aem init && aem doctor
 ```
 
-Prefer an isolated CLI? Use `pipx install "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.12"`,
+Prefer an isolated CLI? Use `pipx install "git+https://github.com/Jack91124/ai-extension-manager.git@v1.0.13"`,
 or download the wheel from the [latest release](https://github.com/Jack91124/ai-extension-manager/releases/latest)
 and `pip install` it.
 

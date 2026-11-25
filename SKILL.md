@@ -16,7 +16,7 @@ allowed-tools: Read Write Edit Bash Glob Grep
 metadata:
   display_name: AI Extension Manager
   display_name_zh: AI 扩展资源管理助手
-  version: 1.0.12
+  version: 1.0.13
   category: developer-tools
   phase: v1.0 (CLI + Agent Skill; DSH Plugin specified, not built)
 ---
@@ -44,6 +44,14 @@ aem status                     # resource x agent sync state
 ```
 
 Without installing, every command also works as `python scripts/aem.py <command>`.
+**Locating the scripts:** every `scripts/...` command below is relative to this skill's own
+directory (the folder containing this `SKILL.md`), not to the user's current project. Prefer the
+`aem` command when available - it has no such dependency. When using the raw scripts, first resolve
+the skill directory: agent frameworks normally expose it in the skill context; otherwise locate
+this `SKILL.md` (e.g. with Glob) and take its parent directory. Then run
+`python "<skill-dir>/scripts/aem.py" <command>` with an absolute path. All scripts also accept
+`--home` and `--workspace` to target an explicit library and project.
+
 
 | Command | Purpose |
 |---|---|
@@ -319,6 +327,12 @@ python -m pip install .              # 安装 aem 命令
 python scripts/aem.py <命令>          # 或不安装直接运行
 aem init && aem doctor && aem scan    # 建库、体检、探测六个工具
 ```
+
+**脚本定位：** 下文所有 `scripts/...` 命令都相对本 Skill 自身目录（即本 `SKILL.md` 所在文件夹），
+而非用户当前项目目录。若 `aem` 命令可用，优先使用它，不依赖 cwd。用原始脚本时先确定 Skill 目录：
+Agent 框架通常会在 Skill 上下文中提供；否则用 Glob 找到本 `SKILL.md` 并取其父目录，再用绝对路径
+运行 `python "<skill-dir>/scripts/aem.py" <命令>`。所有脚本都支持 `--home` 与 `--workspace` 指定
+中央库与项目。
 
 | 用户说 | 执行 |
 |---|---|
